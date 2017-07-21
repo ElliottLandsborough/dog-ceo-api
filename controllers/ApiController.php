@@ -36,7 +36,7 @@ class ApiController
         $path = realpath(__DIR__.'/../img');
 
         if (!$path) {
-            die('Error: Bad images directory.');
+            return false;
         }
 
         return $path;
@@ -45,7 +45,14 @@ class ApiController
     // get an aray of all the breed directories, set the var
     private function setBreedDirs()
     {
-        $dirs = glob($this->getBreedsDirectory().'/*', GLOB_ONLYDIR);
+        $dir = $this->getBreedsDirectory();
+
+        if (!$dir) {
+            $dirs = [];
+        } else {
+            // this is super dangerous on its own, make sure to check that $dir exists
+            $dirs = glob($this->getBreedsDirectory().'/*', GLOB_ONLYDIR);
+        }
 
         $this->breedDirs = $dirs;
     }
