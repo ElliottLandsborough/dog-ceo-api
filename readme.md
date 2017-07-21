@@ -6,6 +6,7 @@
  - php-yaml
  - composer
  - http://vision.stanford.edu/aditya86/ImageNetDogs/images.tar
+ - phpunit for unit tests
 
 ## Setup
  - Images go into /project/images
