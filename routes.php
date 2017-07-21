@@ -31,18 +31,6 @@ $routes->add('breedAllRandom', new Route(
     array('filename' => null, '_controller' => array(new Apicontroller(), 'breedAllRandomImage')))
 );
 
-// get master breed info
-$routes->add('breedText', new Route(
-    '/breed/{breed}',
-    array('breed' => null, 'breed2' => null, '_controller' => array(new Apicontroller(), 'breedText')))
-);
-
-// get sub breed info
-$routes->add('subBreedText', new Route(
-    '/breed/{breed}/{breed2}',
-    array('breed' => null, 'breed2' => null, '_controller' => array(new Apicontroller(), 'breedText')))
-);
-
 // get all breed images
 $routes->add('breedAllImages', new Route(
     '/breed/{breed}/images',
@@ -65,6 +53,18 @@ $routes->add('breedSubAllImages', new Route(
 $routes->add('breedSubRandomImage', new Route(
     '/breed/{breed}/{breed2}/images/random',
     array('breed' => null, 'breed2' => null, '_controller' => array(new Apicontroller(), 'breedImage')))
+);
+
+// get master breed info
+$routes->add('breedText', new Route(
+    '/breed/{breed}',
+    array('breed' => null, 'breed2' => null, '_controller' => array(new Apicontroller(), 'breedText')))
+);
+
+// get sub breed info
+$routes->add('subBreedText', new Route(
+    '/breed/{breed}/{breed2}',
+    array('breed' => null, 'breed2' => null, '_controller' => array(new Apicontroller(), 'breedText')))
 );
 
 return $routes;
