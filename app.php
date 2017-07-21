@@ -34,7 +34,13 @@ class ApiController
     // return the path to the images
     private function getBreedsDirectory()
     {
-        return realpath(__DIR__.'/../api/img');
+        $path = realpath(__DIR__.'/img');
+
+        if (!$path) {
+            die('Error: Bad images directory.');
+        }
+
+        return $path;
     }
 
     // get an aray of all the breed directories, set the var
