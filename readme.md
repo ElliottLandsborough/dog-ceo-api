@@ -3,6 +3,7 @@
 ## Requirements
 
  - php
+ - php-yaml
  - composer
  - http://vision.stanford.edu/aditya86/ImageNetDogs/images.tar
 

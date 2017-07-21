@@ -277,4 +277,83 @@ class ApiController
 
         return $response;
     }
+
+    // make sure the yaml file exists
+    private function breedYamlFile($breed = null, $breed2 = null)
+    {
+        // only keep lower case alphabetical
+        $breed = strlen($breed) ? strtolower(preg_replace('/[^A-Za-z0-9 ]/', '', $breed)) : false;
+        $breed2 = strlen($breed2) ? strtolower(preg_replace('/[^A-Za-z0-9 ]/', '', $breed2)) : false;
+
+        // generate a sensible file name
+        if ($breed) {
+            $fileName = $breed;
+
+            if ($breed2) {
+                $fileName .= '-'.$breed2;
+            }
+        }
+
+        if (isset($fileName)) {
+            $path = __DIR__.'/../content/breed-info/'.$fileName.'.yaml';
+
+            return realpath($path);
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns only array entries listed in a whitelist.
+     *
+     * @param array $array     original array to operate on
+     * @param array $whitelist keys you want to keep
+     *
+     * @return array
+     */
+    public function arrayWhitelist($array, $whitelist)
+    {
+        return array_intersect_key(
+            $array,
+            array_flip($whitelist)
+        );
+    }
+
+    // get the breed text from the yaml file
+    private function getBreedText($breed = null, $breed2 = null)
+    {
+        $whitelist = ['name', 'info'];
+
+        $path = $this->breedYamlFile($breed, $breed2);
+
+        if ($path) {
+            $array = yaml_parse_file($path);
+
+            return $this->arrayWhitelist($array, $whitelist);
+        }
+
+        return false;
+    }
+
+    // super simple dev cms
+    // add yaml files to /content/breed-info
+    // e.g spaniel.yaml
+    //     spaniel-cocker.yaml
+    public function breedText($breed = null, $breed2 = null)
+    {
+        // default response, 404
+        $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'No breed info available.'];
+
+        $content = $this->getBreedText($breed, $breed2);
+
+        if ($content !== false) {
+            $responseArray = (object) ['status' => 'success', 'message' => $content];
+        }
+
+        $response = new JsonResponse($responseArray);
+
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response;
+    }
 }

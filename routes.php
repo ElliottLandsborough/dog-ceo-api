@@ -31,6 +31,18 @@ $routes->add('breedAllRandom', new Route(
 );
 
 // get all breed images
+$routes->add('breedText', new Route(
+    '/breed/{breed}',
+    array('breed' => null, 'breed2' => null, '_controller' => 'ApiController::breedText'))
+);
+
+// get all breed images
+$routes->add('subBreedText', new Route(
+    '/breed/{breed}/{breed2}',
+    array('breed' => null, 'breed2' => null, '_controller' => 'ApiController::breedText'))
+);
+
+// get all breed images
 $routes->add('breedAllImages', new Route(
     '/breed/{breed}/images',
     array('breed' => null, 'breed2' => null, 'all' => true, '_controller' => 'ApiController::breedImage'))
