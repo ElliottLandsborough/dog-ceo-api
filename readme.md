@@ -13,7 +13,7 @@
  - Project must be inside /api folder e.g http://localhost:8000/api
  - Don't forget to run 'composer install' inside project dir
 
-## endpoints
+## Endpoints
 
 #### /breeds/list/all
 List all breed names including sub breeds.
