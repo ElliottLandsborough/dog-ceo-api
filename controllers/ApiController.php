@@ -108,6 +108,7 @@ class ApiController
         return $false;
     }
 
+    // json response of 2d breeds array
     public function breedListAll()
     {
         $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'No breeds found'];
@@ -257,10 +258,13 @@ class ApiController
         return $response;
     }
 
+    // return a random image of any breed
     public function breedAllRandomImage()
     {
+        // pick a random dir
         $randomBreedDir = $this->breedDirs[array_rand($this->breedDirs)];
 
+        // pick a random image from that dir
         $file = $this->getRandomImage($randomBreedDir);
 
         $exp = explode('/', $file);
