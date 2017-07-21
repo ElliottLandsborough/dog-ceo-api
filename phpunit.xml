@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./vendor/autoload.php" colors="true">
+	<php>
+        <server name='HTTP_HOST' value='http://localhost' />
+    </php>
+    <testsuites>
+        <testsuite name="Application Test Suite">
+            <directory>./controllers/tests/</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
