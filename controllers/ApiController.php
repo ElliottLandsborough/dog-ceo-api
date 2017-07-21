@@ -282,8 +282,8 @@ class ApiController
     private function breedYamlFile($breed = null, $breed2 = null)
     {
         // only keep lower case alphabetical
-        $breed = strlen($breed) ? strtolower(preg_replace('/[^A-Za-z0-9 ]/', '', $breed)) : false;
-        $breed2 = strlen($breed2) ? strtolower(preg_replace('/[^A-Za-z0-9 ]/', '', $breed2)) : false;
+        $breed = strlen($breed) ? strtolower(preg_replace('/[^A-Za-z0-9]/', '', $breed)) : false;
+        $breed2 = strlen($breed2) ? strtolower(preg_replace('/[^A-Za-z0-9]/', '', $breed2)) : false;
 
         // generate a sensible file name
         if ($breed) {
