@@ -2,6 +2,8 @@
 
 require_once realpath(__DIR__.'/vendor/autoload.php');
 
+require_once realpath(__DIR__.'/controllers/ApiController.php');
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RequestContext;
@@ -10,7 +12,7 @@ use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpKernel;
 
 $request = Request::createFromGlobals();
-$routes = include realpath(__DIR__.'/app.php');
+$routes = include realpath(__DIR__.'/routes.php');
 
 $context = new RequestContext();
 $context->fromRequest($request);
