@@ -1,6 +1,6 @@
 <?php
 
-namespace Controllers;
+namespace controllers;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,7 +19,7 @@ class ApiController
     // the domain and port and protocol
     private function baseUrl()
     {
-        $actual_link = (isset($_SERVER['HTTPS']) ? 'https' : 'http')."://$_SERVER[HTTP_HOST]";
+        $actual_link = (isset($_SERVER['HTTPS']) ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'];
 
         return $actual_link;
     }
@@ -57,10 +57,15 @@ class ApiController
         $this->breedDirs = $dirs;
     }
 
+    private function getBreedDirs()
+    {
+        return $this->breedDirs;
+    }
+
     // two dimensional array of all breeds
     private function getAllBreeds()
     {
-        $breeds = $this->breedDirs;
+        $breeds = $this->getBreedDirs();
 
         $breedList = [];
 
@@ -177,7 +182,7 @@ class ApiController
     // see if a string matches a directory
     private function matchBreedString($string = null, $string2 = null)
     {
-        $breedDirs = $this->breedDirs;
+        $breedDirs = $this->getBreedDirs();
 
         foreach ($breedDirs as $dir) {
             // single breed e.g /api/breed/basset
@@ -232,7 +237,7 @@ class ApiController
     }
 
     // return an image based on the $breed string passed
-    public function breedImage($breed = null, $breed2 = null, $raw = false, $all = false)
+    public function breedImage($breed = null, $breed2 = null, $all = false)
     {
         // default response, 404
         $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'Breed not found'];
@@ -271,7 +276,7 @@ class ApiController
     public function breedAllRandomImage()
     {
         // pick a random dir
-        $randomBreedDir = $this->breedDirs[array_rand($this->breedDirs)];
+        $randomBreedDir = $this->getBreedDirs()[array_rand($this->getBreedDirs())];
 
         // pick a random image from that dir
         $file = $this->getRandomImage($randomBreedDir);
@@ -320,7 +325,7 @@ class ApiController
      *
      * @return array
      */
-    public function arrayWhitelist($array, $whitelist)
+    private function arrayWhitelist($array, $whitelist)
     {
         return array_intersect_key(
             $array,
