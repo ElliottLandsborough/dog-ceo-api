@@ -7,10 +7,6 @@
  - http://vision.stanford.edu/aditya86/ImageNetDogs/images.tar
 
 ## Setup
-```
-$ cd path/to/project
-$ php -S localhost:8000
-$ cd path/to/project/api
-$ composer install
-
-```
+ - Images go into /project/images
+ - Project must be inside /api folder e.g http://localhost:8000/api
+ - Don't forget to run 'composer install' inside project dir
