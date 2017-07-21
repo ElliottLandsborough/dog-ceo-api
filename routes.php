@@ -30,13 +30,13 @@ $routes->add('breedAllRandom', new Route(
     array('filename' => null, '_controller' => 'ApiController::breedAllRandomImage'))
 );
 
-// get all breed images
+// get master breed info
 $routes->add('breedText', new Route(
     '/breed/{breed}',
     array('breed' => null, 'breed2' => null, '_controller' => 'ApiController::breedText'))
 );
 
-// get all breed images
+// get sub breed info
 $routes->add('subBreedText', new Route(
     '/breed/{breed}/{breed2}',
     array('breed' => null, 'breed2' => null, '_controller' => 'ApiController::breedText'))
@@ -54,11 +54,13 @@ $routes->add('breedRandomImage', new Route(
     array('breed' => null, 'breed2' => null, '_controller' => 'ApiController::breedImage'))
 );
 
+// get all images from sub breed
 $routes->add('breedSubAllImages', new Route(
     '/breed/{breed}/{breed2}/images',
     array('breed' => null, 'breed2' => null, 'all' => true, '_controller' => 'ApiController::breedImage'))
 );
 
+// get random image from sub breed
 $routes->add('breedSubRandomImage', new Route(
     '/breed/{breed}/{breed2}/images/random',
     array('breed' => null, 'breed2' => null, '_controller' => 'ApiController::breedImage'))
