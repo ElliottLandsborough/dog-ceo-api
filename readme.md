@@ -10,7 +10,7 @@
 
 ## Setup
  - Must be inside /api folder e.g http://localhost:8000/api
- - Images go into /api/img
+ - Images go into /api/img (e.g /api/img/spaniel-irish and /api/img/spaniel-cocker or /api/img/spaniel)
  - Don't forget to run 'composer install' inside api dir
 
 ## Endpoints
