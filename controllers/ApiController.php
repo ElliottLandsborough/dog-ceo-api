@@ -12,8 +12,31 @@ class ApiController
 
     public function __construct()
     {
-        $this->setBreedDirs();
+        $this->breedDirs = $this->cache('returnBreedDirs', 60, function() {
+            return $this->returnBreedDirs();  
+        });
         $this->setimageUrl();
+    }
+
+    // cache something, cache name, how many minutes to cache, function to use
+    private function cache($name, $minutes = 1, $closure)
+    {
+        $path = realpath(__DIR__.'/../cache');
+        $cacheFile = $path . '/' . $name;
+        // if path is writeable
+        if (is_writable($path)) {
+            // if the cache file does not exist or exists and is older than $minutes
+            if (!file_exists($cacheFile) || time()-filemtime($cacheFile) > $minutes * 60) {
+                // run the function
+                $data = $closure();
+                // write the file
+                file_put_contents($cacheFile, serialize($data));
+            } else {
+                // othwerwise just get the file contents
+                $data = unserialize(file_get_contents($cacheFile));
+            }
+        }
+        return $data;
     }
 
     // the domain and port and protocol
@@ -43,7 +66,8 @@ class ApiController
     }
 
     // get an aray of all the breed directories, set the var
-    private function setBreedDirs()
+    // should only be called from construct, cached
+    private function returnBreedDirs()
     {
         $dir = $this->getBreedsDirectory();
 
@@ -54,7 +78,7 @@ class ApiController
             $dirs = glob($this->getBreedsDirectory().'/*', GLOB_ONLYDIR);
         }
 
-        $this->breedDirs = $dirs;
+        return $dirs;
     }
 
     private function getBreedDirs()
@@ -216,14 +240,20 @@ class ApiController
     // get all images from the specified directory
     private function getAllImages($imagesDir)
     {
-        if (is_array($imagesDir) && count($imagesDir)) {
-            $images = [];
-            foreach ($imagesDir as $iDir) {
-                $images = array_merge($images, glob($iDir.'/*.{jpg,jpeg,png,gif}', GLOB_BRACE));
+        $images = $this->breedDirs = $this->cache('getAllImages.'.md5(serialize($imagesDir)), 60, function() use ($imagesDir) { 
+            if (is_array($imagesDir) && count($imagesDir)) {
+                // match multi breeds
+                $images = [];
+                foreach ($imagesDir as $iDir) {
+                    $images = array_merge($images, glob($iDir.'/*.{jpg,jpeg,png,gif}', GLOB_BRACE));
+                }
+            } else {
+                // match single breed
+                $images = glob($imagesDir.'/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
             }
-        } else {
-            $images = glob($imagesDir.'/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
-        }
+
+            return $images;
+        });
 
         return $images;
     }
