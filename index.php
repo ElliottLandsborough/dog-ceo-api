@@ -8,7 +8,11 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpKernel;
+use Dotenv\Dotenv;
 use models\Statistic;
+
+$dotenv = new Dotenv(__DIR__);
+$dotenv->load();
 
 $request = Request::createFromGlobals();
 $routes = include realpath(__DIR__.'/routes.php');
@@ -33,5 +37,8 @@ try {
 
 $response->send();
 
-$stats = new Statistic();
-$stats->save();
+if (isset($request)) {
+    $routeName = $request->get('_route');
+    $stats = new Statistic();
+    $stats->save($routeName);
+}
