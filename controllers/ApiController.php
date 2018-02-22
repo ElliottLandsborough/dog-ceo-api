@@ -12,21 +12,21 @@ class ApiController
 
     public function __construct()
     {
-        $this->breedDirs = $this->cache('returnBreedDirs', 60, function() {
-            return $this->returnBreedDirs();  
+        $this->breedDirs = $this->cache('returnBreedDirs', 60, function () {
+            return $this->returnBreedDirs();
         });
         $this->setimageUrl();
     }
 
     // cache something, cache name, how many minutes to cache, function to use
-    private function cache($name, $minutes = 1, $closure)
+    private function cache($name, $minutes, $closure)
     {
         $path = realpath(__DIR__.'/../cache');
-        $cacheFile = $path . '/' . $name;
+        $cacheFile = $path.'/'.$name;
         // if path is writeable
         if (is_writable($path)) {
             // if the cache file does not exist or exists and is older than $minutes
-            if (!file_exists($cacheFile) || time()-filemtime($cacheFile) > $minutes * 60) {
+            if (!file_exists($cacheFile) || time() - filemtime($cacheFile) > $minutes * 60) {
                 // run the function
                 $data = $closure();
                 // write the file
@@ -36,6 +36,7 @@ class ApiController
                 $data = unserialize(file_get_contents($cacheFile));
             }
         }
+
         return $data;
     }
 
@@ -240,7 +241,7 @@ class ApiController
     // get all images from the specified directory
     private function getAllImages($imagesDir)
     {
-        $images = $this->breedDirs = $this->cache('getAllImages.'.md5(serialize($imagesDir)), 60, function() use ($imagesDir) { 
+        $images = $this->breedDirs = $this->cache('getAllImages.'.md5(serialize($imagesDir)), 60, function () use ($imagesDir) {
             if (is_array($imagesDir) && count($imagesDir)) {
                 // match multi breeds
                 $images = [];
