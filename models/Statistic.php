@@ -42,7 +42,7 @@ class Statistic
         return $this->conn->query($sql);
     }
 
-    public function save($routeName)
+    public function save($routeName = null)
     {
         $this->conn = new mysqli('localhost', $this->dbuser, $this->dbpass, $this->dbname);
 
