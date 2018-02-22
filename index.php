@@ -41,7 +41,7 @@ try {
     if (isset($request)) {
         $routeName = $request->get('_route');
         $stats = new Statistic();
-        $stats->save($routeName);
+        $stats->save($request->getRequestUri());
     }
 } catch (InvalidPathException $e) {
     // the .env file does not exist
