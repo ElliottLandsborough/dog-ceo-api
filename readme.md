@@ -52,17 +52,16 @@ cp .env.example .env
 ```
 
 ```
-CREATE DATABASE `statistics`;
+CREATE DATABASE `dogstats`;
 
 CREATE TABLE `daily` (
-    `id` int(11) NOT NULL,
+    `id` int(11) NOT NULL primary key,
     `route` varchar(100),
     `date` date NOT NULL,
     `hits` int(11) NOT NULL DEFAULT '0'
-);
+) ENGINE = InnoDB;
 
 ALTER TABLE `daily`
-    ADD PRIMARY KEY (`id`),
     ADD KEY `route` (`route`),
     ADD KEY `date` (`date`);
 
