@@ -6,25 +6,7 @@ use mysqli;
 
 class Statistic
 {
-    // CREATE DATABASE `statistics`;
-
-    /*
-    CREATE TABLE `daily` (
-        `id` int(11) NOT NULL,
-        `route` varchar(100),
-        `date` date NOT NULL,
-        `hits` int(11) NOT NULL DEFAULT '0'
-    );
-
-    ALTER TABLE `daily`
-        ADD PRIMARY KEY (`id`),
-        ADD KEY `route` (`route`),
-        ADD KEY `date` (`date`);
-
-    ALTER TABLE `daily`
-        MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
-    */
-
+    private $dbhost;
     private $dbname;
     private $dbuser;
     private $dbpass;
@@ -32,6 +14,7 @@ class Statistic
 
     public function __construct()
     {
+        $this->dbhost = getenv('DB_HOST') ?: false;
         $this->dbname = getenv('DB_NAME') ?: false;
         $this->dbuser = getenv('DB_USER') ?: false;
         $this->dbpass = getenv('DB_PASS') ?: false;
@@ -44,18 +27,22 @@ class Statistic
 
     public function save($routeName = null)
     {
-        $this->conn = new mysqli('localhost', $this->dbuser, $this->dbpass, $this->dbname);
+        $this->conn = new mysqli($this->dbhost, $this->dbuser, $this->dbpass, $this->dbname);
 
         // if in debug mode, show when cant connect to db
-        if (getenv('DEBUG') && $this->conn->connect_error) {
-            die('Connection failed: '.$this->conn->connect_error);
+        if ($this->conn->connect_error) {
+            if (getenv('DEBUG')) {
+                die('Connection failed: '.$this->conn->connect_error);
+            } else {
+                die();
+            }
         }
 
         // get todays date
         $dateString = date('Y-m-d');
 
         // only run this if there isn't a connection error, no need for any output
-        if (!$conn->connect_error) {
+        if (!$this->conn->connect_error) {
 
             // does an entry for today exist?
             $sql = "SELECT hits FROM daily WHERE date = '$dateString' AND route = '$routeName'";

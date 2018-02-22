@@ -11,9 +11,6 @@ use Symfony\Component\HttpKernel;
 use Dotenv\Dotenv;
 use models\Statistic;
 
-$dotenv = new Dotenv(__DIR__);
-$dotenv->load();
-
 $request = Request::createFromGlobals();
 $routes = include realpath(__DIR__.'/routes.php');
 
@@ -37,8 +34,15 @@ try {
 
 $response->send();
 
-if (isset($request)) {
-    $routeName = $request->get('_route');
-    $stats = new Statistic();
-    $stats->save($routeName);
+// keep some stats after the response is sent
+try {
+    $dotenv = new Dotenv(__DIR__);
+    $dotenv->load();
+    if (isset($request)) {
+        $routeName = $request->get('_route');
+        $stats = new Statistic();
+        $stats->save($routeName);
+    }
+} catch (InvalidPathException $e) {
+    // the .env file does not exist
 }

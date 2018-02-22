@@ -12,6 +12,7 @@
  - Must be inside /api folder e.g http://localhost:8000/api
  - Images go into /api/img (e.g /api/img/spaniel-irish and /api/img/spaniel-cocker or /api/img/spaniel)
  - Don't forget to run 'composer install' inside api dir
+ - php -S localhost:8000
 
 ## Endpoints
 
@@ -45,8 +46,29 @@ Get all images from sub breed.
 #### /breed/{breed}/{breed2}/images/random
 Get random image from sub breed.
 
+## Stats (optional)
+```
+cp .env.example .env
+```
 
+```
+CREATE DATABASE `statistics`;
 
+CREATE TABLE `daily` (
+    `id` int(11) NOT NULL,
+    `route` varchar(100),
+    `date` date NOT NULL,
+    `hits` int(11) NOT NULL DEFAULT '0'
+);
+
+ALTER TABLE `daily`
+    ADD PRIMARY KEY (`id`),
+    ADD KEY `route` (`route`),
+    ADD KEY `date` (`date`);
+
+ALTER TABLE `daily`
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
+```
 
 ## MIT License
 
