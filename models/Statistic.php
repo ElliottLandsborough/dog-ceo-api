@@ -59,7 +59,6 @@ class Statistic
 
             // does an entry for today exist?
             $sql = "SELECT hits FROM daily WHERE date = '$dateString' AND route = '$routeName'";
-            echo $sql;
             $result = $this->query($sql);
 
             // if not, create one
@@ -68,6 +67,7 @@ class Statistic
                 $this->query($sql);
             }
 
+            // increment the hit count by 1
             $sql = "UPDATE daily SET hits = hits + 1 WHERE date = '$dateString' AND route = '$routeName'";
             $this->query($sql);
         }
