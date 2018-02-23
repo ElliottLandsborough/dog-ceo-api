@@ -1,4 +1,7 @@
 {
+    "name": "ElliottLandsborough/dog-ceo-api",
+    "description": "The API hosted at http://dog.ceo",
+    "minimum-stability": "stable",
     "require": {
         "symfony/class-loader": "^3.3",
         "symfony/http-foundation": "^3.3",
