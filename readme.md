@@ -9,9 +9,10 @@
  - phpunit for unit tests
 
 ## Setup
- - Must be inside /api folder e.g http://localhost:8000/api
- - Images go into /api/img (e.g /api/img/spaniel-irish and /api/img/spaniel-cocker or /api/img/spaniel)
- - Don't forget to run 'composer install' inside api dir
+ - Clone repo
+ - cd repo dir
+ - composer install
+ - Images go into /img (e.g /api/img/spaniel-irish and /api/img/spaniel-cocker or /api/img/spaniel)
  - php -S localhost:8000
 
 ## Endpoints

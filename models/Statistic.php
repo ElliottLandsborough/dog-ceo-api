@@ -14,6 +14,7 @@ class Statistic
 
     public function __construct()
     {
+        // hosting provider has env 'issues'
         if ($_SERVER['SERVER_NAME'] == 'dog.ceo') {
             $this->dbhost = 'localhost';
             $this->dbname = 'dogstats';
