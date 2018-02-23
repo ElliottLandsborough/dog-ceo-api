@@ -106,8 +106,8 @@ class StatsController
 
         $object = $stats->global;
 
-        $projectedPerSecond = round($projectedPerSecond);
-        $projectedPerMinute = round($projectedPerMinute);
+        $projectedPerSecond = round($projectedPerSecond, 2);
+        $projectedPerMinute = round($projectedPerMinute, 2);
 
         $string .= "<p>Roughly <b>$projectedPerMinute requests per minute</b> ($projectedPerSecond per second).</p>".PHP_EOL;
 
