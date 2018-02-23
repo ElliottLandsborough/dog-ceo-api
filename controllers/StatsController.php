@@ -6,18 +6,27 @@ use \stdClass;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use models\Statistic;
+use models\Cache;
 
 class StatsController
 {
     private $stats;
     private $conn;
+    private $statsObject;
 
     public function __construct()
     {
         $stats = new Statistic;
         $this->stats = $stats;
+
+        $this->cache = new Cache;
+
+        $this->statsObject = $this->cache->storeAndReturn('generateStats', 10, function () {
+            return $this->generateStats();
+        });
     }
 
+    // recursively convert array to object
     private function array_to_object($array)
     {
         $obj = new stdClass;
@@ -33,8 +42,8 @@ class StatsController
         return $obj;
     }
 
-    // lazy - manually generate the html for now
-    public function statsPage()
+    // generate the stats
+    private function generateStats()
     {
         $endpoints = $this->getUniqueEndpoints();
 
@@ -93,10 +102,16 @@ class StatsController
         $stats['global']['averagePerDay'] = round($averagePerDay);
         $stats['global']['projectedYearly'] = round($projectedYearly);
         $stats['global']['projectedMonthly'] = round($projectedMonthly);
-        $stats['global']['projectedPerMinute'] = round($projectedPerMinute);
-        $stats['global']['projectedPerSecond'] = round($projectedPerSecond);
+        $stats['global']['projectedPerMinute'] = round($projectedPerMinute, 2);
+        $stats['global']['projectedPerSecond'] = round($projectedPerSecond, 2);
 
-        $stats = $this->array_to_object($stats);
+        return $this->array_to_object($stats);
+    }
+
+    // lazy - manually generate the html for now
+    public function statsPage()
+    {
+        $stats = $this->statsObject;
 
         $string = null;
 
@@ -106,8 +121,8 @@ class StatsController
 
         $object = $stats->global;
 
-        $projectedPerSecond = round($projectedPerSecond, 2);
-        $projectedPerMinute = round($projectedPerMinute, 2);
+        $projectedPerSecond = $stats->global->projectedPerSecond;
+        $projectedPerMinute = $stats->global->projectedPerMinute;
 
         $string .= "<p>Roughly <b>$projectedPerMinute requests per minute</b> ($projectedPerSecond per second).</p>".PHP_EOL;
 

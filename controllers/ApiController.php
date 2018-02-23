@@ -4,40 +4,27 @@ namespace controllers;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use models\Cache;
 
 class ApiController
 {
     private $imageUrl = false;
     private $breedDirs = [];
+    private $cache;
 
     public function __construct()
     {
-        $this->breedDirs = $this->cache('returnBreedDirs', 60, function () {
+        $this->cache = new Cache;
+        $this->breedDirs = $this->cache->storeAndReturn('returnBreedDirs', 60, function () {
             return $this->returnBreedDirs();
         });
         $this->setimageUrl();
     }
 
-    // cache something, cache name, how many minutes to cache, function to use
-    private function cache($name, $minutes, $closure)
+    // lazy - put this here just to avoid refactoring
+    private function cache()
     {
-        $path = realpath(__DIR__.'/../cache');
-        $cacheFile = $path.'/'.$name;
-        // if path is writeable
-        if (is_writable($path)) {
-            // if the cache file does not exist or exists and is older than $minutes
-            if (!file_exists($cacheFile) || time() - filemtime($cacheFile) > $minutes * 60) {
-                // run the function
-                $data = $closure();
-                // write the file
-                file_put_contents($cacheFile, serialize($data));
-            } else {
-                // othwerwise just get the file contents
-                $data = unserialize(file_get_contents($cacheFile));
-            }
-        }
-
-        return $data;
+        return $this->cache;
     }
 
     // the domain and port and protocol
