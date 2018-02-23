@@ -95,7 +95,7 @@ class StatsController
 
                 //$stats['routes'][$endpointResult->route]['dayCount'] = round($dayCount);
                 //$stats['routes'][$endpointResult->route]['firstDay'] = $firstDay;
-                $stats['routes'][$endpointResult->route]['hitCount'] = $hitCount;
+                $stats['routes'][$endpointResult->route]['hitCount'] = round($hitCount);
                 $stats['routes'][$endpointResult->route]['averagePerDay'] = round($averagePerDay);
                 $stats['routes'][$endpointResult->route]['projectedMonthly'] = round($projectedMonthly);
                 $stats['routes'][$endpointResult->route]['projectedYearly'] = round($projectedYearly);
