@@ -21,12 +21,6 @@ class ApiController
         $this->setimageUrl();
     }
 
-    // lazy - put this here just to avoid refactoring
-    private function cache()
-    {
-        return $this->cache;
-    }
-
     // the domain and port and protocol
     private function baseUrl()
     {
@@ -228,7 +222,7 @@ class ApiController
     // get all images from the specified directory
     private function getAllImages($imagesDir)
     {
-        $images = $this->breedDirs = $this->cache('getAllImages.'.md5(serialize($imagesDir)), 60, function () use ($imagesDir) {
+        $images = $this->breedDirs = $this->cache->storeAndReturn('getAllImages.'.md5(serialize($imagesDir)), 60, function () use ($imagesDir) {
             if (is_array($imagesDir) && count($imagesDir)) {
                 // match multi breeds
                 $images = [];
