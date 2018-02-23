@@ -156,11 +156,11 @@ class ApiController
 
         if (count($allBreeds)) {
             $responseArray = (object) ['status' => 'success', 'message' => $allBreeds];
-
-            $response = new JsonResponse($responseArray);
-
-            $response->headers->set('Access-Control-Allow-Origin', '*');
         }
+
+        $response = new JsonResponse($responseArray);
+
+        $response->headers->set('Access-Control-Allow-Origin', '*');
 
         return $response;
     }
