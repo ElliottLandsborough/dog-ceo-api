@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Matcher\UrlMatcher;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpKernel;
 use Dotenv\Dotenv;
+use Dotenv\Exception\InvalidPathException;
 use models\Statistic;
 
 $request = Request::createFromGlobals();
