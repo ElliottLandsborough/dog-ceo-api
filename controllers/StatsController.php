@@ -62,6 +62,20 @@ class StatsController
                 foreach ($daysAndHits as $daysResult) {
                     // route specifics
                     $day = $daysResult->date;
+
+                    // today won't have a full set of stats yet, so lets compensate
+                    if (date('Y-m-d') == $day) {
+                        $dateTimeStart = $day . ' 00:00:00';
+                        //$dateTimeFinish = $day . ' 23:59:59';
+                        $dateTime = date('Y-m-d H:i:s');
+                        $secondsInDay = 24 * 60 * 60;
+                        $secondsSinceDayStart = strtotime($dateTime) - strtotime($dateTimeStart);
+                        //$secondsuntilDayEnd = $secondsInDay - $secondsSinceDayStart;
+                        $hitsSinceDayStart = $hits;
+                        $ratio = $secondsInDay / $secondsSinceDayStart;
+                        $hits = $ratio * $hits;
+                    }
+
                     $hits = $daysResult->hits;
                     $hitCount += $hits;
 
@@ -173,6 +187,11 @@ class StatsController
     // get a list of all endpoints in the db
     private function getUniqueDays()
     {
+        // get todays date
+        //$dateString = date('Y-m-d');
+        //$sql = "SELECT DISTINCT date FROM daily WHERE date !== '$dateString' ORDER BY date ASC;";
+        //$result = $this->stats->query($sql);
+        
         $sql = "SELECT DISTINCT date FROM daily ORDER BY date ASC;";
 
         $result = $this->stats->query($sql);
