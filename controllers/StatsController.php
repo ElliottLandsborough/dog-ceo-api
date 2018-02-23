@@ -63,6 +63,8 @@ class StatsController
                     // route specifics
                     $day = $daysResult->date;
 
+                    $hits = $daysResult->hits;
+
                     // today won't have a full set of stats yet, so lets compensate
                     if (date('Y-m-d') == $day) {
                         $dateTimeStart = $day . ' 00:00:00';
@@ -76,7 +78,6 @@ class StatsController
                         $hits = $ratio * $hits;
                     }
 
-                    $hits = $daysResult->hits;
                     $hitCount += $hits;
 
                     //$stats['routes'][$endpointResult->route]['dayHits'][] = ['day' => $day, 'hits' => $hits];
