@@ -63,7 +63,7 @@ CREATE TABLE `dogstats`.`daily` ( `id` INT NOT NULL AUTO_INCREMENT , `route` VAR
 
 ## MIT License
 
-Copyright (c) 2017 Dog CEO
+Copyright (c) 2018 Dog CEO
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
