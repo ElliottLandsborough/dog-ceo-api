@@ -117,7 +117,7 @@ class StatsController
 
         $string .= '<h1>Stats</h1>'.PHP_EOL;
 
-        $string .= '<h2>Global</h2>'.PHP_EOL;
+        //$string .= '<h2>Global</h2>'.PHP_EOL;
 
         $object = $stats->global;
 
