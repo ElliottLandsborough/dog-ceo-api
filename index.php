@@ -1,5 +1,9 @@
 <?php
 
+// Turn off all error reporting
+// See php console or error log to fix issues
+error_reporting(0);
+
 require_once realpath(__DIR__.'/vendor/autoload.php');
 
 use Symfony\Component\HttpFoundation\Request;
