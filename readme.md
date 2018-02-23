@@ -48,6 +48,7 @@ Get all images from sub breed.
 Get random image from sub breed.
 
 ## Stats (optional)
+http://dog.ceo/api/stats
 ```
 cp .env.example .env
 ```

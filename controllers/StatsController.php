@@ -141,6 +141,7 @@ class StatsController
         $string .= '</li>'.PHP_EOL;
         $string .= '</ul>'.PHP_EOL;
 
+        /*
         $string .= '<h2>Routes</h2>'.PHP_EOL;
 
         $object = $stats->routes;
@@ -148,6 +149,7 @@ class StatsController
         $string .= '<pre>'.PHP_EOL;
         $string .= print_r($object, true);
         $string .= '</pre>'.PHP_EOL;
+        */
 
         $response = new Response(
             $string,
