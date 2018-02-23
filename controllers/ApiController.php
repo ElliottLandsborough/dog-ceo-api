@@ -12,8 +12,13 @@ class ApiController
     private $breedDirs = [];
     private $cache;
 
+    private $imagePath = false;
+
     public function __construct()
     {
+        $test = (php_sapi_name() == "cli");
+        $this->imagePath = $this->imagePath($test);
+
         $this->cache = new Cache;
         $this->breedDirs = $this->cache->storeAndReturn('returnBreedDirs', 60, function () {
             return $this->returnBreedDirs();
@@ -39,16 +44,25 @@ class ApiController
         $this->imageUrl = $this->baseUrl().'/api/img/'; // must have trailing slash for now
     }
 
-    // return the path to the images
-    private function getBreedsDirectory()
+    private function imagePath($test = false)
     {
         $path = realpath(__DIR__.'/../img');
+
+        if ($test === true) {
+            $path = realpath(__DIR__.'/../controllers/tests/img');
+        }
 
         if (!$path) {
             return false;
         }
 
         return $path;
+    }
+
+    // return the path to the images
+    private function getBreedsDirectory()
+    {
+        return $this->imagePath;
     }
 
     // get an aray of all the breed directories, set the var
