@@ -110,10 +110,10 @@ class StatsController
         $projectedPerMinute = $averagePerDay / 24 / 60;
         $projectedPerSecond = $projectedPerMinute / 60;
          
-        $stats['global']['totalHits'] = $totalHits;
+        $stats['global']['totalHits'] = round($totalHits);
         //$stats['global']['firstDay'] = $this->getFirstDate();
         //$stats['global']['lastDay'] = $this->getLastDate();
-        $stats['global']['dayCont'] = $dayCount;
+        $stats['global']['dayCont'] = round($dayCount);
         $stats['global']['averagePerDay'] = round($averagePerDay);
         $stats['global']['projectedYearly'] = round($projectedYearly);
         $stats['global']['projectedMonthly'] = round($projectedMonthly);
