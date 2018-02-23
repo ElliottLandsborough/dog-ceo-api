@@ -28,6 +28,19 @@ class Statistic
         }
     }
 
+    // important to clean the string so that people can't manipulate mysql
+    private function cleanString($string)
+    {
+        // remove any '?' vars (we currently don't need any)
+        // stackoverflow.com/questions/1251582/beautiful-way-to-remove-get-variables-with-php/1251650#1251650
+        $string = strtok($string, '?');
+
+        // remove all apart from a-z, 0-9, dash, forward/backslash
+        $string = preg_replace('/[^\w\/\\-]/', '', $string);
+        
+        return $string;
+    }
+
     private function query($sql)
     {
         $query = $this->conn->query($sql);
@@ -40,6 +53,9 @@ class Statistic
 
     public function save($routeName = null)
     {
+        // clean the string for queries
+        $routeName = $this->cleanString($routeName);
+
         $this->conn = new mysqli($this->dbhost, $this->dbuser, $this->dbpass, $this->dbname);
 
         // if in debug mode, show when cant connect to db
