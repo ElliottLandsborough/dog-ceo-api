@@ -33,21 +33,23 @@ class Statistic
         }
 
         // connect to mysql
-        $this->connect();
+        $this->conn = $this->connect();
     }
 
     // attempt to connect to mysql
     private function connect()
     {
-        $this->conn = new mysqli($this->dbhost, $this->dbuser, $this->dbpass, $this->dbname);
+        $conn = new mysqli($this->dbhost, $this->dbuser, $this->dbpass, $this->dbname);
 
         // if in debug mode, show when cant connect to db
-        if ($this->conn->connect_error) {
+        if ($conn->connect_error) {
             if (getenv('DEBUG')) {
                 error_log('Connection failed: ' . $this->conn->connect_error);
             }
             die();
         }
+
+        return $conn;
     }
 
     // important to clean the string so that people can't manipulate mysql
@@ -64,10 +66,10 @@ class Statistic
     }
 
     // run a query, send error to log if debug is enabled
-    private function query($sql)
+    public function query($sql)
     {
         $query = $this->conn->query($sql);
-        if (getenv('DEBUG') && $query !== true && strlen($conn->error)) {
+        if (getenv('DEBUG') && $query !== true && strlen($this->conn->error)) {
             error_log('Error: '.$sql.': '.$conn->error);
         }
 
@@ -83,22 +85,18 @@ class Statistic
         // get todays date
         $dateString = date('Y-m-d');
 
-        // only run this if there isn't a connection error, no need for any output
-        if (!$this->conn->connect_error) {
+        // does an entry for today exist?
+        $sql = "SELECT hits FROM daily WHERE date = '$dateString' AND route = '$routeName'";
+        $result = $this->query($sql);
 
-            // does an entry for today exist?
-            $sql = "SELECT hits FROM daily WHERE date = '$dateString' AND route = '$routeName'";
-            $result = $this->query($sql);
-
-            // if not, create one
-            if ($result->num_rows == 0) {
-                $sql = "INSERT into daily (date, route) VALUES ('$dateString', '$routeName')";
-                $this->query($sql);
-            }
-
-            // increment the hit count by 1
-            $sql = "UPDATE daily SET hits = hits + 1 WHERE date = '$dateString' AND route = '$routeName'";
+        // if not, create one
+        if ($result->num_rows == 0) {
+            $sql = "INSERT into daily (date, route) VALUES ('$dateString', '$routeName')";
             $this->query($sql);
         }
+
+        // increment the hit count by 1
+        $sql = "UPDATE daily SET hits = hits + 1 WHERE date = '$dateString' AND route = '$routeName'";
+        $this->query($sql);
     }
 }

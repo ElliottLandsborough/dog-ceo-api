@@ -2,7 +2,8 @@
 
 // Turn off all error reporting
 // See php console or error log to fix issues
-error_reporting(0);
+//error_reporting(0);
+@ini_set('display_errors', 0);
 
 require_once realpath(__DIR__.'/vendor/autoload.php');
 
@@ -15,6 +16,17 @@ use Symfony\Component\HttpKernel;
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 use models\Statistic;
+
+// try to load .env, silently error if it doesn't exist
+//try {
+    $dotenv = new Dotenv(__DIR__);
+    $dotenv->load();
+/*}
+
+} catch (InvalidPathException $e) {
+    // the .env file does not exist
+}
+*/
 
 $request = Request::createFromGlobals();
 $routes = include realpath(__DIR__.'/routes.php');
@@ -40,14 +52,13 @@ try {
 $response->send();
 
 // keep some stats after the response is sent
-try {
-    $dotenv = new Dotenv(__DIR__);
-    $dotenv->load();
-    if (isset($request)) {
-        $routeName = $request->get('_route');
+// only do stats if db exists in .env
+if (isset($request) && getenv('DB_HOST')) {
+    //$routeName = $request->get('_route');
+    $uri = $request->getRequestUri();
+    // only save stats if successful request
+    if ($uri !== '/stats' && $response->getStatusCode() == '200') {
         $stats = new Statistic();
-        $stats->save($request->getRequestUri());
+        $stats->save($uri);
     }
-} catch (InvalidPathException $e) {
-    // the .env file does not exist
 }
