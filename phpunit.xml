@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit bootstrap="./vendor/autoload.php" colors="true">
 	<php>
-        <server name='HTTP_HOST' value='http://localhost' />
+        <server name='HTTP_HOST' value='localhost' />
+        <server name='SERVER_PORT' value='8000' />
     </php>
     <testsuites>
         <testsuite name="Application Test Suite">

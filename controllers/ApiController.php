@@ -26,6 +26,10 @@ class ApiController
     {
         $actual_link = (isset($_SERVER['HTTPS']) ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'];
 
+        if (php_sapi_name() == "cli" && $_SERVER['SERVER_PORT'] !== 80 && $_SERVER['SERVER_PORT'] !== 443) {
+            $actual_link .= ':' . $_SERVER['SERVER_PORT'];
+        }
+
         return $actual_link;
     }
 
@@ -271,7 +275,7 @@ class ApiController
                 $explodedPath = explode('/', $image);
                 $directory = $explodedPath[count($explodedPath) - 2];
                 // json response with url to image
-                if ($image) {
+                if ($image !== false) {
                     $responseArray = (object) ['status' => 'success', 'message' => $this->imageUrl.$directory.'/'.basename($image)];
                 }
             }

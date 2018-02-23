@@ -128,14 +128,17 @@ class ApiTest extends TestCase
 
     public function testBreedImage()
     {
-        $response = $this->api->breedImage('spaniel');
+        $response = $this->invokeMethod($this->api, 'breedImage', ['spaniel']);
         $this->assertNotContains('"code":"404"', $response->getContent());
 
-        $response = $this->api->breedImage('spaniel', null, true);
-        $this->assertNotContains('"code":"404"', $response->getContent());
-
-        $response = $this->api->breedImage(null, 'cocker');
+        $response = $this->invokeMethod($this->api, 'breedImage', [null, 'cocker']);
         $this->assertContains('"code":"404"', $response->getContent());
+    }
+
+    public function testBreedImage2()
+    {
+        $response = $this->invokeMethod($this->api, 'breedImage', ['spaniel', null, true]);
+        $this->assertNotContains('"code":"404"', $response->getContent());
     }
 
     public function testBreedAllRandomImage()
