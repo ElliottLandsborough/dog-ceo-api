@@ -14,15 +14,27 @@ class Statistic
 
     public function __construct()
     {
-        $this->dbhost = getenv('DB_HOST') ?: false;
-        $this->dbname = getenv('DB_NAME') ?: false;
-        $this->dbuser = getenv('DB_USER') ?: false;
-        $this->dbpass = getenv('DB_PASS') ?: false;
+        if ($_SERVER['SERVER_NAME'] == 'dog.ceo') {
+            $this->dbhost = 'localhost';
+            $this->dbname = 'dogstats';
+            $this->dbuser = 'dogstats';
+            $this->dbpass = null;
+        } else {
+            $this->dbhost = getenv('DB_HOST') ?: false;
+            $this->dbname = getenv('DB_NAME') ?: false;
+            $this->dbuser = getenv('DB_USER') ?: false;
+            $this->dbpass = getenv('DB_PASS') ?: false;
+        }
     }
 
     private function query($sql)
     {
-        return $this->conn->query($sql);
+        $query = $this->conn->query($sql);
+        if (getenv('DEBUG') && $query !== true && strlen($conn->error)) {
+            error_log('Error: '.$sql.': '.$conn->error);
+        }
+
+        return $query;
     }
 
     public function save($routeName = null)
@@ -32,10 +44,9 @@ class Statistic
         // if in debug mode, show when cant connect to db
         if ($this->conn->connect_error) {
             if (getenv('DEBUG')) {
-                die('Connection failed: '.$this->conn->connect_error);
-            } else {
-                die();
+                error_log('Connection failed: '.$this->conn->connect_error);
             }
+            die();
         }
 
         // get todays date

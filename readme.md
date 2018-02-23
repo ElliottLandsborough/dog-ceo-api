@@ -54,19 +54,7 @@ cp .env.example .env
 ```
 CREATE DATABASE `dogstats`;
 
-CREATE TABLE `daily` (
-    `id` int(11) NOT NULL primary key,
-    `route` varchar(100),
-    `date` date NOT NULL,
-    `hits` int(11) NOT NULL DEFAULT '0'
-) ENGINE = InnoDB;
-
-ALTER TABLE `daily`
-    ADD KEY `route` (`route`),
-    ADD KEY `date` (`date`);
-
-ALTER TABLE `daily`
-    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;COMMIT;
+CREATE TABLE `dogstats`.`daily` ( `id` INT NOT NULL AUTO_INCREMENT , `route` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL , `date` DATE NOT NULL , `hits` INT NOT NULL DEFAULT '0' , PRIMARY KEY (`id`), INDEX (`route`), INDEX (`date`)) ENGINE = InnoDB;
 ```
 
 ## MIT License
