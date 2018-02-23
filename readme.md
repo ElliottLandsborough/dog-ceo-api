@@ -1,5 +1,7 @@
 # Dog CEO API
 
+[![Build Status](https://travis-ci.org/ElliottLandsborough/dog-ceo-api.svg?branch=master)](https://travis-ci.org/ElliottLandsborough/dog-ceo-api)
+
 ## Requirements
 
  - php
