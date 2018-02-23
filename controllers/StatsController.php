@@ -83,6 +83,8 @@ class StatsController
         $averagePerDay = $totalHits / $dayCount;
         $projectedYearly = $averagePerDay * 365;
         $projectedMonthly = $projectedYearly / 12;
+        $projectedPerMinute = $averagePerDay / 24 / 60;
+        $projectedPerSecond = $projectedPerMinute / 60;
          
         $stats['global']['totalHits'] = $totalHits;
         //$stats['global']['firstDay'] = $this->getFirstDate();
@@ -91,6 +93,8 @@ class StatsController
         $stats['global']['averagePerDay'] = round($averagePerDay);
         $stats['global']['projectedYearly'] = round($projectedYearly);
         $stats['global']['projectedMonthly'] = round($projectedMonthly);
+        $stats['global']['projectedPerMinute'] = round($projectedPerMinute);
+        $stats['global']['projectedPerSecond'] = round($projectedPerSecond);
 
         $stats = $this->array_to_object($stats);
 
@@ -101,6 +105,11 @@ class StatsController
         $string .= '<h2>Global</h2>'.PHP_EOL;
 
         $object = $stats->global;
+
+        $projectedPerSecond = round($projectedPerSecond);
+        $projectedPerMinute = round($projectedPerMinute);
+
+        $string .= "<p>Roughly <b>$projectedPerMinute requests per minute</b> ($projectedPerSecond per second).</p>".PHP_EOL;
 
         $string .= '<ul>'.PHP_EOL;
         $string .= '<li>'.PHP_EOL;
