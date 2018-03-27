@@ -218,7 +218,7 @@ class StatsController
     // get all the days and hits for a route
     private function getDaysAndHits($route)
     {
-        $sql = "SELECT date, hits FROM daily WHERE route = '$route' ORDER BY date ASC";
+        $sql = "SELECT date, hits FROM daily WHERE route = '$route' GROUP BY date ORDER BY date ASC;";
 
         $result = $this->stats->query($sql);
 
