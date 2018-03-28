@@ -59,6 +59,15 @@ cp .env.example .env
 CREATE DATABASE `dogstats`;
 
 CREATE TABLE `dogstats`.`daily` ( `id` INT NOT NULL AUTO_INCREMENT , `route` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL , `date` DATE NOT NULL , `hits` INT NOT NULL DEFAULT '0' , PRIMARY KEY (`id`), INDEX (`route`), INDEX (`date`)) ENGINE = InnoDB;
+
+CREATE TABLE `visits` (
+  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `ip` char(12) COLLATE 'utf8_unicode_ci' NULL,
+  `date` datetime NOT NULL,
+  `country` text COLLATE 'utf8_unicode_ci' NULL,
+  `user-agent` varchar(255) COLLATE 'utf8_unicode_ci' NULL,
+  `referrer` text COLLATE 'utf8_unicode_ci' NULL
+);
 ```
 
 ## MIT License
