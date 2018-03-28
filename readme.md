@@ -65,6 +65,7 @@ CREATE TABLE `visits` (
   `ip` char(12) COLLATE 'utf8_unicode_ci' NULL,
   `date` datetime NOT NULL,
   `country` text COLLATE 'utf8_unicode_ci' NULL,
+  `endpoint` text COLLATE 'utf8_unicode_ci' NULL,
   `user-agent` varchar(255) COLLATE 'utf8_unicode_ci' NULL,
   `referrer` text COLLATE 'utf8_unicode_ci' NULL
 );

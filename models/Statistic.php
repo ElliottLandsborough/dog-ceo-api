@@ -104,7 +104,12 @@ class Statistic
         $userAgent = ((isset($_SERVER['HTTP_USER_AGENT']) && strlen($_SERVER['HTTP_USER_AGENT'])) ? "'" . $_SERVER['HTTP_USER_AGENT'] . "'" : null);
         $referrer = ((isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER'])) ? "'" . $_SERVER['HTTP_REFERER'] . "'" : 'NULL');
 
-        $sql = "INSERT INTO `visits` (`ip`, `date`, `user-agent`, `referrer`) VALUES ($ip, $date, $userAgent, $referrer);";
+        // escape
+        $ip = $this->conn->real_escape_string($ip);
+        $userAgent = $this->conn->real_escape_string($userAgent);
+        $referrer = $this->conn->real_escape_string($referrer);
+
+        $sql = "INSERT INTO `visits` (`ip`, `date`, `endpoint`, `user-agent`, `referrer`) VALUES ($ip, $routeName, $date, $userAgent, $referrer);";
         $this->query($sql);
     }
 }
