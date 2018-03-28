@@ -62,7 +62,7 @@ CREATE TABLE `dogstats`.`daily` ( `id` INT NOT NULL AUTO_INCREMENT , `route` VAR
 
 CREATE TABLE `visits` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `ip` char(12) COLLATE 'utf8_unicode_ci' NULL,
+  `ip` varchar(39) COLLATE 'utf8_unicode_ci' NULL,
   `date` datetime NOT NULL,
   `country` text COLLATE 'utf8_unicode_ci' NULL,
   `endpoint` text COLLATE 'utf8_unicode_ci' NULL,

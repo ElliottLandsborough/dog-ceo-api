@@ -20,7 +20,7 @@ class Statistic
     public function __construct()
     {
         // hosting provider has env 'issues'
-        if ($_SERVER['SERVER_NAME'] == 'dog.ceo') {
+        if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'dog.ceo') {
             $this->dbhost = 'localhost';
             $this->dbname = 'dogstats';
             $this->dbuser = 'dogstats';
@@ -44,7 +44,7 @@ class Statistic
         // if in debug mode, show when cant connect to db
         if ($conn->connect_error) {
             if (getenv('DEBUG')) {
-                error_log('Connection failed: ' . $this->conn->connect_error);
+                error_log('Connection failed: ' . $conn->connect_error);
             }
             die();
         }
@@ -70,7 +70,7 @@ class Statistic
     {
         $query = $this->conn->query($sql);
         if (getenv('DEBUG') && $query !== true && strlen($this->conn->error)) {
-            error_log('Error: '.$sql.': '.$conn->error);
+            error_log('Error: '.$sql.': '.$this->conn->error);
         }
 
         return $query;
@@ -106,5 +106,12 @@ class Statistic
 
         $sql = "INSERT INTO `visits` (`ip`, `date`, `endpoint`, `user-agent`, `referrer`) VALUES ($ip, $date, '$routeName', $userAgent, $referrer);";
         $this->query($sql);
+    }
+
+    // get all stats
+    public function getAllVisitsWithNoCountry()
+    {
+        $sql = "SELECT id, ip, country FROM `visits` where `country` IS NULL;";
+        return $this->query($sql);
     }
 }
