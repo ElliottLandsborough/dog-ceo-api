@@ -122,4 +122,20 @@ class Statistic
         $result = $this->query($sql);
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    // get count of user agents
+    public function getUserAgentCount()
+    {
+        $sql = 'select `user-agent`, count(*) as count from visits group by `user-agent`;';
+        $result = $this->query($sql);
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    // get count of user agents
+    public function getReferrerCount()
+    {
+        $sql = 'select `referrer`, count(*) as count from visits group by `referrer`;';
+        $result = $this->query($sql);
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 }

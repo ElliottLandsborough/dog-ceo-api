@@ -75,6 +75,59 @@ class StatsController
         return $percentages;
     }
 
+    public function userAgentPercentages()
+    {
+        $raw = $this->stats->getUserAgentCount();
+
+        $total = 0;
+
+        // get the total
+        foreach ($raw as $stat) {
+            $total += $stat['count'];
+        }
+
+        $percentages = [];
+
+        // calculate the %s
+        foreach ($raw as $stat) {
+            $userAgent = 'n/a';
+            if ($stat['user-agent']) {
+                $userAgent = $stat['user-agent'];
+            }
+            $percentages[$userAgent] = round(intval($stat['count']) / $total * 100, 2);
+        }
+
+        arsort($percentages);
+
+        return $percentages;
+    }
+
+    public function referrerPercentages()
+    {
+        $raw = $this->stats->getReferrerCount();
+
+        $total = 0;
+
+        // get the total
+        foreach ($raw as $stat) {
+            $total += $stat['count'];
+        }
+
+        $percentages = [];
+
+        // calculate the %s
+        foreach ($raw as $stat) {
+            $referrer = $stat['referrer'] ?: 'Direct access';
+            if (strlen($referrer) && !strpos($referrer, 'localhost') && !strpos($referrer, '127.0.0.1')) {
+                $percentages[$referrer] = round(intval($stat['count']) / $total * 100, 2);
+            }
+        }
+
+        arsort($percentages);
+
+        return $percentages;
+    }
+
     // generate the stats
     private function generateStats()
     {
@@ -154,6 +207,8 @@ class StatsController
         $stats['global']['projectedPerSecond'] = round($projectedPerSecond, 2);
 
         $stats['global']['countryCount'] = $this->countryPercentages();
+        $stats['global']['userAgentCount'] = $this->userAgentPercentages();
+        $stats['global']['referrerCount'] = $this->referrerPercentages();
 
         //print_r($stats['global']['countryCount']);
         //die;
@@ -199,12 +254,21 @@ class StatsController
         $string .= '<ul>'.PHP_EOL;
         foreach ($object->countryCount as $countryName => $percentage) {
             $string .= '<li>'.PHP_EOL;
-            $string .= $countryName . ': ' . $percentage . '%' . PHP_EOL;
+            $string .=  '<span style="display:inline-block;min-width:50px;">' . $percentage . '%</span> ' . $countryName . PHP_EOL;
             $string .= '</li>'.PHP_EOL;
         }
         $string .= '</ul>'.PHP_EOL;
 
-        //$string .= '<h2>User Agents</h2>' . PHP_EOL;
+        $string .= '<h2>User Agents</h2>' . PHP_EOL;
+        $string .= '<ul>'.PHP_EOL;
+        foreach ($object->userAgentCount as $userAgent => $percentage) {
+            $string .= '<li>'.PHP_EOL;
+            $string .= '<span style="display:inline-block;min-width:50px;">' . $percentage . '%</span> ' . $userAgent . PHP_EOL;
+            $string .= '</li>'.PHP_EOL;
+        }
+        $string .= '</ul>'.PHP_EOL;
+
+        $string .= '<!-- Referrers with %...' . PHP_EOL . PHP_EOL . print_r($object->referrerCount, true) . PHP_EOL . '-->';
 
         /*
         $string .= '<h2>Routes</h2>'.PHP_EOL;
