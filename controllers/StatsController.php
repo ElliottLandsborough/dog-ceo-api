@@ -21,9 +21,13 @@ class StatsController
 
         $this->cache = new Cache;
 
-        $this->statsObject = $this->cache->storeAndReturn('generateStats', 10, function () {
-            return $this->generateStats();
-        });
+        if ($_SERVER['SERVER_NAME'] == 'dog.ceo') {
+            $this->statsObject = $this->cache->storeAndReturn('generateStats', 10, function () {
+                return $this->generateStats();
+            });
+        } else {
+            $this->statsObject = $this->generateStats();
+        }
     }
 
     // recursively convert array to object
