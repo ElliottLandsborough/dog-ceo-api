@@ -114,4 +114,12 @@ class Statistic
         $sql = "SELECT id, ip, country FROM `visits` where `country` IS NULL;";
         return $this->query($sql);
     }
+
+    // get count of countries
+    public function getCountryCount()
+    {
+        $sql = 'select country, count(*) as count from visits group by country;';
+        $result = $this->query($sql);
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
 }

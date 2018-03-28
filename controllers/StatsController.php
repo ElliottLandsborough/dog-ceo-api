@@ -3,6 +3,7 @@
 namespace controllers;
 
 use \stdClass;
+use \Locale;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use models\Statistic;
@@ -44,6 +45,34 @@ class StatsController
             }
         }
         return $obj;
+    }
+
+    public function countryPercentages()
+    {
+        $raw = $this->stats->getCountryCount();
+
+        $total = 0;
+
+        // get the total
+        foreach ($raw as $stat) {
+            $total += $stat['count'];
+        }
+
+        $percentages = [];
+
+        // calculate the %s
+        foreach ($raw as $stat) {
+            $country = 'n/a';
+            if ($stat['country']) {
+                $country = $stat['country'];
+                $country = Locale::getDisplayRegion('-'.$stat['country'], 'en');
+            }
+            $percentages[$country] = round(intval($stat['count']) / $total * 100, 2);
+        }
+
+        arsort($percentages);
+
+        return $percentages;
     }
 
     // generate the stats
@@ -124,6 +153,11 @@ class StatsController
         $stats['global']['projectedPerMinute'] = round($projectedPerMinute, 2);
         $stats['global']['projectedPerSecond'] = round($projectedPerSecond, 2);
 
+        $stats['global']['countryCount'] = $this->countryPercentages();
+
+        //print_r($stats['global']['countryCount']);
+        //die;
+
         return $this->array_to_object($stats);
     }
 
@@ -159,6 +193,18 @@ class StatsController
         $string .= 'Projected Yearly: ' . $object->projectedYearly .PHP_EOL;
         $string .= '</li>'.PHP_EOL;
         $string .= '</ul>'.PHP_EOL;
+
+        $string .= '<h2>Countries</h2>' . PHP_EOL;
+
+        $string .= '<ul>'.PHP_EOL;
+        foreach ($object->countryCount as $countryName => $percentage) {
+            $string .= '<li>'.PHP_EOL;
+            $string .= $countryName . ': ' . $percentage . '%' . PHP_EOL;
+            $string .= '</li>'.PHP_EOL;
+        }
+        $string .= '</ul>'.PHP_EOL;
+
+        //$string .= '<h2>User Agents</h2>' . PHP_EOL;
 
         /*
         $string .= '<h2>Routes</h2>'.PHP_EOL;
