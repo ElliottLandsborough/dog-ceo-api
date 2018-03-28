@@ -99,17 +99,12 @@ class Statistic
         $sql = "UPDATE daily SET hits = hits + 1 WHERE date = '$dateString' AND route = '$routeName'";
         $this->query($sql);
 
-        $ip = ((isset($_SERVER['REMOTE_ADDR']) && strlen($_SERVER['REMOTE_ADDR'])) ? "'" . $_SERVER['REMOTE_ADDR'] . "'" : 'NULL');
+        $ip = ((isset($_SERVER['REMOTE_ADDR']) && strlen($_SERVER['REMOTE_ADDR'])) ? "'" . $this->conn->real_escape_string($_SERVER['REMOTE_ADDR']) . "'" : 'NULL');
         $date = "'" . date('Y-m-d h:i:s') . "'";
-        $userAgent = ((isset($_SERVER['HTTP_USER_AGENT']) && strlen($_SERVER['HTTP_USER_AGENT'])) ? "'" . $_SERVER['HTTP_USER_AGENT'] . "'" : null);
-        $referrer = ((isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER'])) ? "'" . $_SERVER['HTTP_REFERER'] . "'" : 'NULL');
+        $userAgent = ((isset($_SERVER['HTTP_USER_AGENT']) && strlen($_SERVER['HTTP_USER_AGENT'])) ? "'" . $this->conn->real_escape_string($_SERVER['HTTP_USER_AGENT']) . "'" : null);
+        $referrer = ((isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER'])) ? "'" . $this->conn->real_escape_string($_SERVER['HTTP_REFERER']) . "'" : 'NULL');
 
-        // escape
-        $ip = $this->conn->real_escape_string($ip);
-        $userAgent = $this->conn->real_escape_string($userAgent);
-        $referrer = $this->conn->real_escape_string($referrer);
-
-        $sql = "INSERT INTO `visits` (`ip`, `date`, `endpoint`, `user-agent`, `referrer`) VALUES ($ip, $routeName, $date, $userAgent, $referrer);";
+        $sql = "INSERT INTO `visits` (`ip`, `date`, `endpoint`, `user-agent`, `referrer`) VALUES ($ip, $date, '$routeName', $userAgent, $referrer);";
         $this->query($sql);
     }
 }
