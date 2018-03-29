@@ -53,7 +53,7 @@ $response->send();
 
 // keep some stats after the response is sent
 // only do stats if db exists in .env
-if (isset($request) && getenv('DB_HOST')) {
+if (isset($request) && getenv('DOG_CEO_DB_HOST')) {
     //$routeName = $request->get('_route');
     $uri = $request->getRequestUri();
     // only save stats if successful request

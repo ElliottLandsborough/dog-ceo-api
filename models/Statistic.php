@@ -19,18 +19,10 @@ class Statistic
 
     public function __construct()
     {
-        // hosting provider has env 'issues'
-        if (php_sapi_name() == "cli" || (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'dog.ceo')) {
-            $this->dbhost = 'localhost';
-            $this->dbname = 'dogstats';
-            $this->dbuser = 'dogstats';
-            $this->dbpass = null;
-        } else {
-            $this->dbhost = getenv('DB_HOST') ?: false;
-            $this->dbname = getenv('DB_NAME') ?: false;
-            $this->dbuser = getenv('DB_USER') ?: false;
-            $this->dbpass = getenv('DB_PASS') ?: false;
-        }
+        $this->dbhost = getenv('DOG_CEO_DB_HOST') ?: false;
+        $this->dbname = getenv('DOG_CEO_DB_NAME') ?: false;
+        $this->dbuser = getenv('DOG_CEO_DB_USER') ?: false;
+        $this->dbpass = getenv('DOG_CEO_DB_PASS') ?: false;
 
         // connect to mysql
         $this->conn = $this->connect();
@@ -43,7 +35,7 @@ class Statistic
 
         // if in debug mode, show when cant connect to db
         if ($conn->connect_error) {
-            if (getenv('DEBUG')) {
+            if (getenv('DOG_CEO_DEBUG')) {
                 error_log('Connection failed: ' . $conn->connect_error);
             }
             die();
@@ -69,7 +61,7 @@ class Statistic
     public function query($sql)
     {
         $query = $this->conn->query($sql);
-        if (getenv('DEBUG') && $query !== true && strlen($this->conn->error)) {
+        if (getenv('DOG_CEO_DEBUG') && $query !== true && strlen($this->conn->error)) {
             error_log('Error: '.$sql.': '.$this->conn->error);
         }
 
