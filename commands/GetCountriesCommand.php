@@ -51,16 +51,14 @@ class GetCountriesCommand extends Command
         foreach ($this->stats->getAllVisitsWithNoCountry() as $visit) {
             $ID = $visit['id'];
             $ip = $visit['ip'];
-            if ($ip && strlen($ip)) {
+            if ($ip && strlen($ip) && !in_array($ip, $doneIps)) {
                 $details = json_decode(file_get_contents("http://www.geoplugin.net/json.gp?ip={$ip}"));
                 if ($details->geoplugin_countryCode) {
                     $country = $details->geoplugin_countryCode;
-                    if (!in_array($ip, $doneIps)) {
-                        $sql = "UPDATE visits SET country = '$country' WHERE ip = '$ip' AND `country` IS NULL;";
-                        $this->stats->query($sql);
-                        $doneIps[] = $ip;
-                        $output->writeln("<info>Entry set was updated for ip $ip</info>");
-                    }
+                    $sql = "UPDATE visits SET country = '$country' WHERE ip = '$ip' AND `country` IS NULL;";
+                    $this->stats->query($sql);
+                    $doneIps[] = $ip;
+                    $output->writeln("<info>Entry set was updated for ip $ip</info>");
                 }
                 sleep(1); // sleep for half a second after an api call;
             }
