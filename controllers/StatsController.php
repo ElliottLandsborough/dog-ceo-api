@@ -213,7 +213,8 @@ class StatsController
     {
         // don't do this in construct!
         if ($_SERVER['SERVER_NAME'] == 'dog.ceo') {
-            $this->statsObject = $this->cache->storeAndReturn('generateStats', 10, function () {
+            // only get the stats every i minutes (keep this high on production e.g 6 hours)
+            $this->statsObject = $this->cache->storeAndReturn('generateStats', 360, function () {
                 return $this->generateStats();
             });
         } else {
