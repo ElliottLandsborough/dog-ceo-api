@@ -64,11 +64,14 @@ CREATE TABLE `visits` (
   `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `ip` varchar(39) COLLATE 'utf8_unicode_ci' NULL,
   `date` datetime NOT NULL,
-  `country` text COLLATE 'utf8_unicode_ci' NULL,
+  `country` varchar(2) COLLATE 'utf8_unicode_ci' NULL,
   `endpoint` text COLLATE 'utf8_unicode_ci' NULL,
   `user-agent` varchar(255) COLLATE 'utf8_unicode_ci' NULL,
   `referrer` text COLLATE 'utf8_unicode_ci' NULL
 );
+
+ALTER TABLE `visits` ADD INDEX(`country`);
+ALTER TABLE `daily` ADD INDEX( `route`, `date`);
 ```
 
 ## MIT License
