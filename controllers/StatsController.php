@@ -17,10 +17,6 @@ class StatsController
 
     public function __construct()
     {
-        $stats = new Statistic;
-        $this->stats = $stats;
-
-        $this->cache = new Cache;
     }
 
     // recursively convert array to object
@@ -212,6 +208,9 @@ class StatsController
     public function statsPage()
     {
         // don't do this in construct!
+        $stats = new Statistic;
+        $this->stats = $stats;
+        $this->cache = new Cache;
         if ($_SERVER['SERVER_NAME'] == 'dog.ceo') {
             // only get the stats every i minutes (keep this high on production e.g 6 hours)
             $this->statsObject = $this->cache->storeAndReturn('generateStats', 360, function () {
