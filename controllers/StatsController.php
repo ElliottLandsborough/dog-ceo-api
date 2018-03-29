@@ -21,14 +21,6 @@ class StatsController
         $this->stats = $stats;
 
         $this->cache = new Cache;
-
-        if ($_SERVER['SERVER_NAME'] == 'dog.ceo') {
-            $this->statsObject = $this->cache->storeAndReturn('generateStats', 10, function () {
-                return $this->generateStats();
-            });
-        } else {
-            $this->statsObject = $this->generateStats();
-        }
     }
 
     // recursively convert array to object
@@ -219,6 +211,15 @@ class StatsController
     // lazy - manually generate the html for now
     public function statsPage()
     {
+        // don't do this in construct!
+        if ($_SERVER['SERVER_NAME'] == 'dog.ceo') {
+            $this->statsObject = $this->cache->storeAndReturn('generateStats', 10, function () {
+                return $this->generateStats();
+            });
+        } else {
+            $this->statsObject = $this->generateStats();
+        }
+
         $stats = $this->statsObject;
 
         $string = null;
