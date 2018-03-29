@@ -101,7 +101,7 @@ class Statistic
 
         $ip = ((isset($_SERVER['REMOTE_ADDR']) && strlen($_SERVER['REMOTE_ADDR'])) ? "'" . $this->conn->real_escape_string($_SERVER['REMOTE_ADDR']) . "'" : 'NULL');
         $date = "'" . date('Y-m-d h:i:s') . "'";
-        $userAgent = ((isset($_SERVER['HTTP_USER_AGENT']) && strlen($_SERVER['HTTP_USER_AGENT'])) ? "'" . $this->conn->real_escape_string($_SERVER['HTTP_USER_AGENT']) . "'" : null);
+        $userAgent = ((isset($_SERVER['HTTP_USER_AGENT']) && strlen($_SERVER['HTTP_USER_AGENT'])) ? "'" . $this->conn->real_escape_string($_SERVER['HTTP_USER_AGENT']) . "'" : 'NULL');
         $referrer = ((isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER'])) ? "'" . $this->conn->real_escape_string($_SERVER['HTTP_REFERER']) . "'" : 'NULL');
 
         $sql = "INSERT INTO `visits` (`ip`, `date`, `endpoint`, `user-agent`, `referrer`) VALUES ($ip, $date, '$routeName', $userAgent, $referrer);";
