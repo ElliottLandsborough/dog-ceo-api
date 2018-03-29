@@ -72,6 +72,7 @@ CREATE TABLE `visits` (
 
 ALTER TABLE `visits` ADD INDEX(`country`);
 ALTER TABLE `daily` ADD INDEX( `route`, `date`);
+ALTER TABLE `visits` ADD INDEX(`ip`);
 ```
 
 ## MIT License
