@@ -20,7 +20,7 @@ class Statistic
     public function __construct()
     {
         // hosting provider has env 'issues'
-        if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'dog.ceo') {
+        if (php_sapi_name() == "cli" || (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'dog.ceo')) {
             $this->dbhost = 'localhost';
             $this->dbname = 'dogstats';
             $this->dbuser = 'dogstats';
