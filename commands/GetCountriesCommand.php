@@ -56,7 +56,7 @@ class GetCountriesCommand extends Command
                 if ($details->geoplugin_countryCode) {
                     $country = $details->geoplugin_countryCode;
                     if (!in_array($ip, $doneIps)) {
-                        $sql = "UPDATE visits SET country = '$country' WHERE ip = '$ip';";
+                        $sql = "UPDATE visits SET country = '$country' WHERE ip = '$ip' AND `country` IS NULL;";
                         $this->stats->query($sql);
                         $doneIps[] = $ip;
                         $output->writeln("<info>Entry set was updated for ip $ip</info>");
