@@ -194,9 +194,11 @@ class StatsController
         $stats['global']['projectedPerMinute'] = round($projectedPerMinute, 2);
         $stats['global']['projectedPerSecond'] = round($projectedPerSecond, 2);
 
+        /*
         $stats['global']['countryCount'] = $this->countryPercentages();
         $stats['global']['userAgentCount'] = $this->userAgentPercentages();
         $stats['global']['referrerCount'] = $this->referrerPercentages();
+        */
 
         //print_r($stats['global']['countryCount']);
         //die;
@@ -249,7 +251,7 @@ class StatsController
         $string .= 'Projected Yearly: ' . $object->projectedYearly .PHP_EOL;
         $string .= '</li>'.PHP_EOL;
         $string .= '</ul>'.PHP_EOL;
-
+        /*
         $string .= '<h2>Countries</h2>' . PHP_EOL;
 
         $string .= '<ul>'.PHP_EOL;
@@ -270,7 +272,7 @@ class StatsController
         $string .= '</ul>'.PHP_EOL;
 
         $string .= '<!-- Referrers with %...' . PHP_EOL . PHP_EOL . print_r($object->referrerCount, true) . PHP_EOL . '-->';
-
+        */
         /*
         $string .= '<h2>Routes</h2>'.PHP_EOL;
 
