@@ -194,14 +194,11 @@ class StatsController
         $stats['global']['projectedPerMinute'] = round($projectedPerMinute, 2);
         $stats['global']['projectedPerSecond'] = round($projectedPerSecond, 2);
 
-        /*
-        $stats['global']['countryCount'] = $this->countryPercentages();
-        $stats['global']['userAgentCount'] = $this->userAgentPercentages();
-        $stats['global']['referrerCount'] = $this->referrerPercentages();
-        */
-
-        //print_r($stats['global']['countryCount']);
-        //die;
+        if ($_SERVER['SERVER_NAME'] !== 'dog.ceo') {
+            $stats['global']['countryCount'] = $this->countryPercentages();
+            $stats['global']['userAgentCount'] = $this->userAgentPercentages();
+            $stats['global']['referrerCount'] = $this->referrerPercentages();
+        }
 
         return $this->array_to_object($stats);
     }
@@ -251,28 +248,37 @@ class StatsController
         $string .= 'Projected Yearly: ' . $object->projectedYearly .PHP_EOL;
         $string .= '</li>'.PHP_EOL;
         $string .= '</ul>'.PHP_EOL;
-        /*
-        $string .= '<h2>Countries</h2>' . PHP_EOL;
 
-        $string .= '<ul>'.PHP_EOL;
-        foreach ($object->countryCount as $countryName => $percentage) {
-            $string .= '<li>'.PHP_EOL;
-            $string .=  '<span style="display:inline-block;min-width:50px;">' . $percentage . '%</span> ' . $countryName . PHP_EOL;
-            $string .= '</li>'.PHP_EOL;
+        if ($_SERVER['SERVER_NAME'] !== 'dog.ceo') {
+            $string .= '<h2>Countries</h2>' . PHP_EOL;
+
+            $string .= '<ul>'.PHP_EOL;
+            foreach ($object->countryCount as $countryName => $percentage) {
+                $string .= '<li>'.PHP_EOL;
+                $string .=  '<span style="display:inline-block;min-width:50px;">' . $percentage . '%</span> ' . $countryName . PHP_EOL;
+                $string .= '</li>'.PHP_EOL;
+            }
+            $string .= '</ul>'.PHP_EOL;
+
+            $string .= '<h2>User Agents</h2>' . PHP_EOL;
+            $string .= '<ul>'.PHP_EOL;
+            foreach ($object->userAgentCount as $userAgent => $percentage) {
+                $string .= '<li>'.PHP_EOL;
+                $string .= '<span style="display:inline-block;min-width:50px;">' . $percentage . '%</span> ' . $userAgent . PHP_EOL;
+                $string .= '</li>'.PHP_EOL;
+            }
+            $string .= '</ul>'.PHP_EOL;
+
+            $string .= '<h2>Referrers</h2>' . PHP_EOL;
+            $string .= '<ul>'.PHP_EOL;
+            foreach ($object->referrerCount as $referrer => $percentage) {
+                $string .= '<li>'.PHP_EOL;
+                $string .= '<span style="display:inline-block;min-width:50px;">' . $percentage . '%</span> <a href="' . $referrer . '">' . $referrer . '</a>' . PHP_EOL;
+                $string .= '</li>'.PHP_EOL;
+            }
+            $string .= '</ul>'.PHP_EOL;
         }
-        $string .= '</ul>'.PHP_EOL;
 
-        $string .= '<h2>User Agents</h2>' . PHP_EOL;
-        $string .= '<ul>'.PHP_EOL;
-        foreach ($object->userAgentCount as $userAgent => $percentage) {
-            $string .= '<li>'.PHP_EOL;
-            $string .= '<span style="display:inline-block;min-width:50px;">' . $percentage . '%</span> ' . $userAgent . PHP_EOL;
-            $string .= '</li>'.PHP_EOL;
-        }
-        $string .= '</ul>'.PHP_EOL;
-
-        $string .= '<!-- Referrers with %...' . PHP_EOL . PHP_EOL . print_r($object->referrerCount, true) . PHP_EOL . '-->';
-        */
         /*
         $string .= '<h2>Routes</h2>'.PHP_EOL;
 
