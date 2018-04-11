@@ -16,10 +16,10 @@ class ApiController
 
     public function __construct()
     {
-        $test = (php_sapi_name() == "cli");
+        $test = (php_sapi_name() == 'cli');
         $this->imagePath = $this->imagePath($test);
 
-        $this->cache = new Cache;
+        $this->cache = new Cache();
         $this->breedDirs = $this->cache->storeAndReturn('returnBreedDirs', 60, function () {
             return $this->returnBreedDirs();
         });
@@ -31,8 +31,8 @@ class ApiController
     {
         $actual_link = (isset($_SERVER['HTTPS']) ? 'https' : 'http').'://'.$_SERVER['HTTP_HOST'];
 
-        if (php_sapi_name() == "cli" && $_SERVER['SERVER_PORT'] !== 80 && $_SERVER['SERVER_PORT'] !== 443) {
-            $actual_link .= ':' . $_SERVER['SERVER_PORT'];
+        if (php_sapi_name() == 'cli' && $_SERVER['SERVER_PORT'] !== 80 && $_SERVER['SERVER_PORT'] !== 443) {
+            $actual_link .= ':'.$_SERVER['SERVER_PORT'];
         }
 
         return $actual_link;
@@ -41,7 +41,8 @@ class ApiController
     // set the url to the images
     private function setimageUrl()
     {
-        $this->imageUrl = $this->baseUrl().'/api/img/'; // must have trailing slash for now
+        //$this->imageUrl = $this->baseUrl().'/api/img/'; // must have trailing slash for now
+        $this->imageUrl = 'https://s3-eu-west-1.amazonaws.com/dog-ceo-stanford-files/';
     }
 
     private function imagePath($test = false)
