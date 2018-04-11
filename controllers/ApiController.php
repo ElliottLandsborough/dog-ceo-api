@@ -20,9 +20,13 @@ class ApiController
         $this->imagePath = $this->imagePath($test);
 
         $this->cache = new Cache();
-        $this->breedDirs = $this->cache->storeAndReturn('returnBreedDirs', 60, function () {
-            return $this->returnBreedDirs();
-        });
+        if ($_SERVER['SERVER_NAME'] == 'dog.ceo') {
+            $this->breedDirs = $this->cache->storeAndReturn('returnBreedDirs', 60, function () {
+                return $this->returnBreedDirs();
+            });
+        } else {
+            $this->breedDirs = $this->returnBreedDirs();
+        }
         $this->setimageUrl();
     }
 
