@@ -400,15 +400,17 @@ class ApiController
     public function breedText($breed = null, $breed2 = null)
     {
         // default response, 404
-        $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'No breed info available.'];
+        $status = 404;
+        $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'Breed not found'];
 
         $content = $this->getBreedText($breed, $breed2);
 
         if ($content !== false) {
+            $status = 200;
             $responseArray = (object) ['status' => 'success', 'message' => $content];
         }
 
-        $response = new JsonResponse($responseArray);
+        $response = new JsonResponse($responseArray, $status);
 
         $response->headers->set('Access-Control-Allow-Origin', '*');
 
