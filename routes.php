@@ -5,7 +5,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
 $classToUse = 'controllers\ApiController';
-if ($_SERVER['SERVER_NAME'] == 'dog.ceo') {
+if (getenv('DOG_CEO_GATEWAY_ENABLE')) {
     $classToUse = 'controllers\ApiControllerGateway';
 }
 
