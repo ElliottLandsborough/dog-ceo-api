@@ -5,6 +5,7 @@
 ## Info
 
  - To add your own images submit a pull request to https://github.com/jigsawpieces/dog-api-images
+ - API requests are cached from lambda https://github.com/ElliottLandsborough/dog-ceo-api-node
 
 ## Requirements
 
