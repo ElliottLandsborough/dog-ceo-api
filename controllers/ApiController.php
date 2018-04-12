@@ -4,6 +4,8 @@ namespace controllers;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
 use models\Cache;
 
 class ApiController
@@ -376,7 +378,11 @@ class ApiController
         $path = $this->breedYamlFile($breed, $breed2);
 
         if ($path) {
-            $array = yaml_parse_file($path);
+            try {
+                $array = Yaml::parse(file_get_contents($path));
+            } catch (ParseException $exception) {
+                die('Unable to parse the YAML string: '. $exception->getMessage());
+            }
 
             return $this->arrayWhitelist($array, $whitelist);
         }
