@@ -21,7 +21,7 @@ class ApiControllerGateway extends ApiController
 
     private function apiGet($endpoint)
     {
-        $url = 'https://f01bypu3bb.execute-api.eu-west-1.amazonaws.com/dev/'.$endpoint;
+        $url = getenv('DOG_CEO_GATEWAY').$endpoint;
 
         $client = new \GuzzleHttp\Client();
 
@@ -39,7 +39,7 @@ class ApiControllerGateway extends ApiController
 
     private function cacheEndPoint($endpoint)
     {
-        return $this->cache->storeAndReturn(str_replace('/', '.', $endpoint),  $this->minutes, function () use ($endpoint) {
+        return $this->cache->storeAndReturn(str_replace('/', '.', $endpoint), $this->minutes, function () use ($endpoint) {
             return $this->apiGet($endpoint);
         });
     }
