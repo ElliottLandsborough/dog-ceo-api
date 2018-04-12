@@ -145,7 +145,7 @@ class ApiController
             }
         }
 
-        return $false;
+        return false;
     }
 
     // json response of 2d breeds array
