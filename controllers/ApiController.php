@@ -18,11 +18,10 @@ class ApiController
 
     public function __construct()
     {
-        $test = (php_sapi_name() == 'cli');
-        $this->imagePath = $this->imagePath($test);
+        $this->imagePath = $this->imagePath();
 
         $this->cache = new Cache();
-        if ($_SERVER['SERVER_NAME'] == 'dog.ceo') {
+        if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'dog.ceo') {
             $this->breedDirs = $this->cache->storeAndReturn('returnBreedDirs', 60, function () {
                 return $this->returnBreedDirs();
             });
@@ -54,10 +53,6 @@ class ApiController
     private function imagePath($test = false)
     {
         $path = realpath(__DIR__.'/../img');
-
-        if ($test === true) {
-            $path = realpath(__DIR__.'/../controllers/tests/img');
-        }
 
         if (!$path) {
             return false;
@@ -269,6 +264,9 @@ class ApiController
     private function getRandomImage($imagesDir)
     {
         $images = $this->getAllImages($imagesDir);
+
+        print_r($imagesDir);
+        print_r($images);
 
         return $images[array_rand($images)];
     }
