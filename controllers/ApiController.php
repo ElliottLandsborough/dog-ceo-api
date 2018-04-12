@@ -267,9 +267,6 @@ class ApiController
     {
         $images = $this->getAllImages($imagesDir);
 
-        print_r($imagesDir);
-        print_r($images);
-
         return $images[array_rand($images)];
     }
 
