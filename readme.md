@@ -2,6 +2,10 @@
 
 [![Build Status](https://travis-ci.org/ElliottLandsborough/dog-ceo-api.svg?branch=master)](https://travis-ci.org/ElliottLandsborough/dog-ceo-api)
 
+## Info
+
+ - To add your own images submit a pull request to https://github.com/jigsawpieces/dog-api-images
+
 ## Requirements
 
  - php
