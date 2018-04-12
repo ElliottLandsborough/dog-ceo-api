@@ -6,7 +6,7 @@ use Symfony\Component\Routing\RouteCollection;
 
 $classToUse = 'controllers\ApiController';
 if ($_SERVER['SERVER_NAME'] == 'dog.ceo') {
-    $classToUse = 'controllers\ApiControllerGateway';
+    //$classToUse = 'controllers\ApiControllerGateway';
 }
 
 // define routes

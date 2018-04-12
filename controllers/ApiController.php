@@ -181,15 +181,17 @@ class ApiController
     // json response of sub breeds
     public function breedListSub($breed = null)
     {
+        $status = 404;
         $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'Breed not found'];
 
         $breedSubList = $this->getSubBreeds($breed);
 
         if (is_array($breedSubList)) {
+            $status = 200;
             $responseArray = (object) ['status' => 'success', 'message' => $breedSubList];
         }
 
-        $response = new JsonResponse($responseArray);
+        $response = new JsonResponse($responseArray, $status);
 
         $response->headers->set('Access-Control-Allow-Origin', '*');
 
@@ -275,6 +277,7 @@ class ApiController
     public function breedImage($breed = null, $breed2 = null, $all = false)
     {
         // default response, 404
+        $status = 404;
         $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'Breed not found'];
 
         $match = $this->matchBreedString($breed, $breed2);
@@ -287,6 +290,7 @@ class ApiController
                     $directory = $explodedPath[count($explodedPath) - 2];
                     $images[$key] = $this->imageUrl.$directory.'/'.basename($image);
                 }
+                $status = 200;
                 $responseArray = (object) ['status' => 'success', 'message' => $images];
             } else {
                 // otherwise, we just want one image
@@ -295,12 +299,13 @@ class ApiController
                 $directory = $explodedPath[count($explodedPath) - 2];
                 // json response with url to image
                 if ($image !== false) {
+                    $status = 200;
                     $responseArray = (object) ['status' => 'success', 'message' => $this->imageUrl.$directory.'/'.basename($image)];
                 }
             }
         }
 
-        $response = new JsonResponse($responseArray);
+        $response = new JsonResponse($responseArray, $status);
 
         $response->headers->set('Access-Control-Allow-Origin', '*');
 
