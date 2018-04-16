@@ -47,7 +47,7 @@ class ApiController
     private function setimageUrl()
     {
         //$this->imageUrl = $this->baseUrl().'/api/img/'; // must have trailing slash for now
-        $this->imageUrl = 'https://s3-eu-west-1.amazonaws.com/dog-ceo-stanford-files/';
+        $this->imageUrl = 'https://images.dog.ceo/breeds/';
     }
 
     private function imagePath($test = false)
