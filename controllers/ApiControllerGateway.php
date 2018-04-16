@@ -34,6 +34,7 @@ class ApiControllerGateway extends ApiController
         return [
             'status' => $res->getStatusCode(),
             'body' => $res->getBody()->getContents(),
+            'headers' => $res->getHeaders()
         ];
     }
 
@@ -49,7 +50,9 @@ class ApiControllerGateway extends ApiController
         $response = new JsonResponse();
         $response = $response->fromJsonString($endpointResponse['body'], $endpointResponse['status']);
         $response->headers->set('Access-Control-Allow-Origin', '*');
-
+        if (isset($endpointResponse['headers']['cache-control'][0])) {
+            $response->headers->set('Cache-Control', $endpointResponse['headers']['cache-control'][0]);
+        }
         return $response;
     }
 
