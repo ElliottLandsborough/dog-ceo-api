@@ -316,7 +316,6 @@ class ApiController
         if ($amount == 0) {
             return $this->breedAllRandomImage();
         } 
-        //pick random dirs
         $breedDirectories = $this->getBreedDirs();
         $images = array();
 
