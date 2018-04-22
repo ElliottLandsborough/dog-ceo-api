@@ -309,6 +309,30 @@ class ApiController
         return $response;
     }
 
+    // get multiple random images of any breed
+    public function breedAllRandomImages($count = 0)
+    {
+        //exit early if count was not supplied
+        if ($count == 0) {
+            return $this->breedAllRandomImage();
+        } 
+        //pick random dirs
+        $breedDirectories = $this->getBreedDirs();
+        $rand_keys = array_rand($breedDirectories, $count);
+        $images = array();
+
+        foreach ($rand_keys as $key) {
+            $image = $this->getRandomImage($breedDirectories[$key]);
+            $exp = explode('/', $image);
+            $images[] = $this->imageUrl.$exp[count($exp) - 2].'/'.basename($image);
+        }
+        $responseArray = (object) ['status' => 'success', 'message' => $images];
+        $response = new JsonResponse($responseArray);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response;
+    }
+
     // return a random image of any breed
     public function breedAllRandomImage()
     {
