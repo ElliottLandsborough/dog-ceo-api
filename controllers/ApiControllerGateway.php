@@ -91,9 +91,9 @@ class ApiControllerGateway extends ApiController
         return $this->respond($this->apiGet('breeds/image/random'));
     }
 
-    public function breedAllRandomImages($count = 0)
+    public function breedAllRandomImages($amount = 0)
     {
-        return $this->respond($this->apiGet('breeds/image/random/$count'));
+        return $this->respond($this->apiGet('breeds/image/random/$amount'));
     }
 
     public function breedImage($breed = null, $breed2 = null, $all = false)

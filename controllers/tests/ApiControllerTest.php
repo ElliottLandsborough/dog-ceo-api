@@ -159,6 +159,12 @@ class ApiTest extends TestCase
         $this->assertContains('"status":"success"', $response->getContent());
     }
 
+    public function testBreedAllRandomImages2()
+    {
+        $response = $this->api->breedAllRandomImages(3000);
+        $this->assertContains('"status":"success"', $response->getContent());
+    }
+
     public function testBreedYamlFile()
     {
         $result = $this->invokeMethod($this->api, 'breedYamlFile', ['spaniel', null]);

@@ -310,19 +310,21 @@ class ApiController
     }
 
     // get multiple random images of any breed
-    public function breedAllRandomImages($count = 0)
+    public function breedAllRandomImages($amount = 0)
     {
         //exit early if count was not supplied
-        if ($count == 0) {
+        if ($amount == 0) {
             return $this->breedAllRandomImage();
         } 
         //pick random dirs
         $breedDirectories = $this->getBreedDirs();
-        $rand_keys = array_rand($breedDirectories, $count);
         $images = array();
 
-        foreach ($rand_keys as $key) {
-            $image = $this->getRandomImage($breedDirectories[$key]);
+        //ensure amount never excedes directory count
+        $amount = $amount > count($breedDirectories) ? count($breedDirectories) : $amount;
+
+        for ($i = 0; $i < $amount; $i++) {
+            $image = $this->getRandomImage($breedDirectories[mt_rand(0, count($breedDirectories) - 1)]);
             $exp = explode('/', $image);
             $images[] = $this->imageUrl.$exp[count($exp) - 2].'/'.basename($image);
         }
