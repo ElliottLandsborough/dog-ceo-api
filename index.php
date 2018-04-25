@@ -46,6 +46,7 @@ try {
 } catch (ResourceNotFoundException $e) {
     if ($request->getPathInfo() == '/') {
         header('Location: https://dog.ceo/dog-api');
+        die;
     } else {
         $response = new Response('404 Error, page not found. API documentation is located at https://dog.ceo/dog-api', 404);
     }
