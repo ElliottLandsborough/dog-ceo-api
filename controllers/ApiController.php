@@ -315,7 +315,7 @@ class ApiController
         //exit early if count was not supplied
         if ($amount == 0) {
             return $this->breedAllRandomImage();
-        } 
+        }
         $breedDirectories = $this->getBreedDirs();
         $images = array();
 
