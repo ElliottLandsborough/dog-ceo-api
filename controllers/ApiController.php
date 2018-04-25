@@ -320,7 +320,7 @@ class ApiController
             return $this->breedAllRandomImage();
         }
         $breedDirectories = $this->getBreedDirs();
-        $images = array();
+        $images = [];
 
         //ensure amount never excedes directory count
         $amount = $amount > count($breedDirectories) ? count($breedDirectories) : $amount;
