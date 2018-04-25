@@ -38,8 +38,8 @@ $routes->add('breedAllRandom', new Route(
 
 // get multiple random images of any breed
 $routes->add('breedAllMultiRandom', new Route(
-    '/breeds/image/random/{count}',
-    array('filename' => null, '_controller' => array(new $classToUse(), 'breedImage'))
+    '/breeds/image/random/{amount}',
+    array('filename' => null, '_controller' => array(new $classToUse(), 'breedAllRandomImages'))
 ));
 
 // get all breed images
