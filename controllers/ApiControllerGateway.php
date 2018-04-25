@@ -127,7 +127,10 @@ class ApiControllerGateway extends ApiController
         }
 
         $response['status'] = 200;
-        $response['body'] = json_encode($randomImages);
+        $response['body'] = json_encode([
+            'status' => 'success',
+            'messages' => $randomImages,
+        ]);
 
         return $this->respond($response);
     }
