@@ -312,6 +312,9 @@ class ApiController
     // get multiple random images of any breed
     public function breedAllRandomImages($amount = 0)
     {
+        // convert to int
+        $amount = (int) $amount;
+
         //exit early if count was not supplied
         if ($amount == 0) {
             return $this->breedAllRandomImage();
