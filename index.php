@@ -44,7 +44,11 @@ try {
 
     $response = call_user_func_array($controller, $arguments);
 } catch (ResourceNotFoundException $e) {
-    $response = new Response('Not found', 404);
+    if ($request->getPathInfo() == '/') {
+        header('Location: https://dog.ceo/dog-api');
+    } else {
+        $response = new Response('404 Error, page not found. API documentation is located at https://dog.ceo/dog-api', 404);
+    }
 } catch (Exception $e) {
     $response = new Response('Error occurred', 500);
 }
