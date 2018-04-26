@@ -1,6 +1,6 @@
 <?php
 
-use controllers\StatsController;
+//use controllers\StatsController;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
@@ -78,10 +78,12 @@ $routes->add('subBreedText', new Route(
     array('breed' => null, 'breed2' => null, '_controller' => array(new $classToUse(), 'breedText'))
 ));
 
+/*
 // get sub breed info
 $routes->add('statsPage', new Route(
     '/stats',
     array('_controller' => array(new StatsController(), 'statsPage'))
 ));
+*/
 
 return $routes;
