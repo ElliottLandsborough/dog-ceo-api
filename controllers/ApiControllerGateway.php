@@ -8,7 +8,7 @@ use models\Cache;
 class ApiControllerGateway extends ApiController
 {
     private $cache;
-    private $minutes = 600; // how many minutes to cache for on live
+    private $minutes = 2400; // cache for 24 hours
 
     public function __construct()
     {
