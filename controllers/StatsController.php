@@ -292,7 +292,7 @@ class StatsController
         $response = new Response(
             $string,
             Response::HTTP_OK,
-            array('content-type' => 'text/html')
+            ['content-type' => 'text/html']
         );
 
         return $response;
