@@ -88,10 +88,10 @@ class ApiControllerGateway extends ApiController
 
     public function breedAllRandomImage()
     {
-        return $this->respond($this->apiGet('breeds/image/random'));
+        return $this->breedAllRandomImages(1, true);
     }
 
-    public function breedAllRandomImages($amount = 0)
+    public function breedAllRandomImages($amount = 0, $single = false)
     {
         // make sure its always an int
         $amount = (int) $amount;
@@ -126,10 +126,14 @@ class ApiControllerGateway extends ApiController
             $randomImages[] = $image;
         }
 
+        if ($single === true) {
+            $randomImages = $randomImages[0];
+        }
+
         $response['status'] = 200;
         $response['body'] = json_encode([
             'status' => 'success',
-            'messages' => $randomImages,
+            'message' => $randomImages,
         ]);
 
         return $this->respond($response);
