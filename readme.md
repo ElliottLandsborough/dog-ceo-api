@@ -42,6 +42,9 @@ Get sub breed info (data is incomplete, see content folder).
 #### /breeds/image/random
 Random image from any breed.
 
+#### /breeds/image/random/3
+Get 3 random images from any breed (max. 50)
+
 #### /breed/{breed}/images
 Get all breed images.
 
