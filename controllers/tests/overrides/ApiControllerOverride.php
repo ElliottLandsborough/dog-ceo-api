@@ -4,6 +4,10 @@ namespace controllers\tests\overrides;
 
 use controllers\ApiController;
 
+/**
+ * Some overrides to make the tests work
+ * See controllers\ApiController for function definitions
+ **/
 class ApiControllerOverride extends ApiController
 {
     public function __construct()
@@ -11,8 +15,11 @@ class ApiControllerOverride extends ApiController
         parent::__construct();
     }
 
-    // get an aray of all the breed directories, set the var
-    // should only be called from construct, cached
+    public function getBreedsDirectory()
+    {
+        return '/directory/that/exists/or/not';
+    }
+
     public function returnBreedDirs()
     {
         return [
@@ -23,7 +30,6 @@ class ApiControllerOverride extends ApiController
         return $array;
     }
 
-    // get all images from the specified directory
     public function getAllImages($imagesDir)
     {
         $images = [
