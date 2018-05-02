@@ -29,4 +29,16 @@ class Cache
 
         return $data;
     }
+
+    // clear all cache files
+    public function clearAll()
+    {
+        $path = realpath(__DIR__.'/../cache');
+        $files = glob($path . '/*');
+        foreach($files as $file) { // iterate files
+            if(is_file($file)) {
+                unlink($file); // delete file
+            }
+        }
+    }
 }

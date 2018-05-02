@@ -3,6 +3,7 @@
 //use controllers\StatsController;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
+use controllers\CacheController;
 
 $classToUse = 'controllers\ApiController';
 if (getenv('DOG_CEO_GATEWAY_ENABLE')) {
@@ -76,6 +77,12 @@ $routes->add('breedText', new Route(
 $routes->add('subBreedText', new Route(
     '/breed/{breed}/{breed2}',
     array('breed' => null, 'breed2' => null, '_controller' => array(new $classToUse(), 'breedText'))
+));
+
+// clear the cache
+$routes->add('clearAllCacheFiles', new Route(
+    '/clear-cache',
+    array('_controller' => array(new CacheController(), 'clearAllCacheFiles'))
 ));
 
 /*
