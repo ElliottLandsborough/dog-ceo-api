@@ -62,14 +62,14 @@ class ApiController
     }
 
     // return the path to the images
-    private function getBreedsDirectory()
+    protected function getBreedsDirectory()
     {
         return $this->imagePath;
     }
 
     // get an aray of all the breed directories, set the var
     // should only be called from construct, cached
-    private function returnBreedDirs()
+    protected function returnBreedDirs()
     {
         $dir = $this->getBreedsDirectory();
 
@@ -242,9 +242,9 @@ class ApiController
     }
 
     // get all images from the specified directory
-    private function getAllImages($imagesDir)
+    protected function getAllImages($imagesDir)
     {
-        $images = $this->breedDirs = $this->cache->storeAndReturn('getAllImages.'.md5(serialize($imagesDir)), 60, function () use ($imagesDir) {
+        $images = $this->cache->storeAndReturn('getAllImages.'.md5(serialize($imagesDir)), 60, function () use ($imagesDir) {
             if (is_array($imagesDir) && count($imagesDir)) {
                 // match multi breeds
                 $images = [];

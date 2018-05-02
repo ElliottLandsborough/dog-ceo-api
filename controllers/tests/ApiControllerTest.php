@@ -3,7 +3,7 @@
 namespace controllers\tests;
 
 use PHPUnit\Framework\TestCase;
-use controllers\ApiController;
+use controllers\tests\overrides\ApiControllerOverride;
 
 class ApiTest extends TestCase
 {
@@ -11,7 +11,7 @@ class ApiTest extends TestCase
 
     protected function SetUp()
     {
-        $this->api = new ApiController();
+        $this->api = new ApiControllerOverride();
     }
 
     protected function tearDown()
