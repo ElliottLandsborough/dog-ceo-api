@@ -56,12 +56,31 @@ class ApiControllerGateway extends ApiController
         return $response;
     }
 
-    public function selectRandomItemFromResponse($response)
+    public function selectRandomItemFromResponse($response, int $amount = 0)
     {
         if (isset($response['status']) && $response['status'] == 200 && isset($response['body'])) {
             $object = json_decode($response['body']);
             if (is_object($object)) {
-                $object->message = $object->message[array_rand($object->message)];
+                // have we requested a specific number of randoms?
+                if ($amount > 0) {
+                    // get total number of images in cache
+                    $total = count($object->message);
+                    // reset $amount if its higher than the total
+                    if ($amount > $total) {
+                        $amount = $total;
+                    }
+                    // get the keys
+                    $randomKeys = array_rand($object->message, $amount);
+                    // lolphp, for some reason array_rand returns mixes types...
+                    if ($amount === 1) {
+                        $randomKeys = [$randomKeys];
+                    }
+                    // get the values
+                    $object->message = array_values(array_intersect_key($object->message, array_flip($randomKeys)));
+                } else {
+                    $object->message = $object->message[array_rand($object->message)];
+                }
+
                 $response['body'] = json_encode($object);
 
                 return $response;
@@ -139,7 +158,7 @@ class ApiControllerGateway extends ApiController
         return $this->respond($response);
     }
 
-    public function breedImage($breed = null, $breed2 = null, $all = false)
+    public function breedImage($breed = null, $breed2 = null, $all = false, int $amount = 0)
     {
         if (strlen($breed) && $breed2 === null) {
             $allImages = $this->cacheEndPoint("breed/$breed/images");
@@ -151,7 +170,7 @@ class ApiControllerGateway extends ApiController
 
             // breed/{breed}/images/random
             if ($all === false) {
-                $randomImageResponse = $this->selectRandomItemFromResponse($allImages);
+                $randomImageResponse = $this->selectRandomItemFromResponse($allImages, $amount);
                 if ($randomImageResponse) {
                     return $this->respond($randomImageResponse);
                 }
@@ -171,7 +190,7 @@ class ApiControllerGateway extends ApiController
 
             // breed/{breed}/{breed2}/images/random
             if ($all === false) {
-                $randomImageResponse = $this->selectRandomItemFromResponse($allImages);
+                $randomImageResponse = $this->selectRandomItemFromResponse($allImages, $amount);
                 if ($randomImageResponse) {
                     return $this->respond($randomImageResponse);
                 }

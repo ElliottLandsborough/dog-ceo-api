@@ -263,15 +263,34 @@ class ApiController
     }
 
     // get a random image from the specified directory
-    private function getRandomImage($imagesDir)
+    private function getRandomImage($imagesDir, $amount = 0)
     {
         $images = $this->getAllImages($imagesDir);
+
+        if ($amount > 0) {
+            $total = count($images);
+
+            if ($amount > $total) {
+                $amount = $total;
+            }
+
+            // get the keys
+            $randomKeys = array_rand($images, $amount);
+
+            // lolphp, for some reason array_rand returns mixes types...
+            if ($amount === 1) {
+                $randomKeys = [$randomKeys];
+            }
+
+            // get the values
+            return array_values(array_intersect_key($images, array_flip($randomKeys)));
+        }
 
         return $images[array_rand($images)];
     }
 
     // return an image based on the $breed string passed
-    public function breedImage($breed = null, $breed2 = null, $all = false)
+    public function breedImage($breed = null, $breed2 = null, $all = false, int $amount = 0)
     {
         // default response, 404
         $status = 404;
@@ -290,14 +309,27 @@ class ApiController
                 $status = 200;
                 $responseArray = (object) ['status' => 'success', 'message' => $images];
             } else {
-                // otherwise, we just want one image
-                $image = $this->getRandomImage($match);
-                $explodedPath = explode('/', $image);
-                $directory = $explodedPath[count($explodedPath) - 2];
-                // json response with url to image
-                if ($image !== false) {
+                if ($amount > 0) {
+                    $images = $this->getRandomImage($match, $amount);
+
+                    foreach ($images as $key => $image) {
+                        $explodedPath = explode('/', $image);
+                        $directory = $explodedPath[count($explodedPath) - 2];
+                        $images[$key] = $this->imageUrl.$directory.'/'.basename($image);
+                    }
+
                     $status = 200;
-                    $responseArray = (object) ['status' => 'success', 'message' => $this->imageUrl.$directory.'/'.basename($image)];
+                    $responseArray = (object) ['status' => 'success', 'message' => $images];
+                } else {
+                    // otherwise, we just want one image
+                    $image = $this->getRandomImage($match, $amount);
+                    $explodedPath = explode('/', $image);
+                    $directory = $explodedPath[count($explodedPath) - 2];
+                    // json response with url to image
+                    if ($image !== false) {
+                        $status = 200;
+                        $responseArray = (object) ['status' => 'success', 'message' => $this->imageUrl.$directory.'/'.basename($image)];
+                    }
                 }
             }
         }

@@ -6,7 +6,7 @@ use Symfony\Component\Routing\RouteCollection;
 use controllers\CacheController;
 
 $classToUse = 'controllers\ApiController';
-if (getenv('DOG_CEO_GATEWAY_ENABLE')) {
+if (getenv('DOG_CEO_GATEWAY_ENABLE') && getenv('DOG_CEO_GATEWAY_ENABLE') == 'true') {
     $classToUse = 'controllers\ApiControllerGateway';
 }
 
@@ -102,6 +102,19 @@ $routes->add('breedRandomImage', new Route(
     ]
 ));
 
+// get multiple random images of a breed
+$routes->add('breedRandomImageAmount', new Route(
+    '/breed/{breed}/images/random/{amount}',
+    [
+        'breed' => null,
+        'breed2' => null,
+        '_controller' => [
+            new $classToUse(),
+            'breedImage'
+        ]
+    ]
+));
+
 // get all images from sub breed
 $routes->add('breedSubAllImages', new Route(
     '/breed/{breed}/{breed2}/images',
@@ -119,6 +132,19 @@ $routes->add('breedSubAllImages', new Route(
 // get random image from sub breed
 $routes->add('breedSubRandomImage', new Route(
     '/breed/{breed}/{breed2}/images/random',
+    [
+        'breed' => null,
+        'breed2' => null,
+        '_controller' => [
+            new $classToUse(),
+            'breedImage'
+        ]
+    ]
+));
+
+// get multiple random images from sub breed
+$routes->add('breedSubRandomImageAmount', new Route(
+    '/breed/{breed}/{breed2}/images/random/{amount}',
     [
         'breed' => null,
         'breed2' => null,

@@ -51,11 +51,17 @@ Get all breed images.
 #### /breed/{breed}/images/random
 Get random image from a breed (and all its sub-breeds).
 
+#### /breed/{breed}/images/random/4
+Get 4 random images from a breed (and all its sub-breeds).
+
 #### /breed/{breed}/{breed2}/images
-Get all images from sub breed.
+Get all images from a sub breed.
 
 #### /breed/{breed}/{breed2}/images/random
-Get random image from sub breed.
+Get random image from a sub breed.
+
+#### /breed/{breed}/{breed2}/images/random/5
+Get 5 random images from a sub breed.
 
 ## Stats (optional)
 ```
