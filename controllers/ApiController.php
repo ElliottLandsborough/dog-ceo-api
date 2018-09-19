@@ -148,6 +148,20 @@ class ApiController
         return false;
     }
 
+    private function niceBreedNameFromFolder($folder = false)
+    {
+        $strings = explode('-', $folder);
+        $strings = array_reverse($strings);
+        $strings = implode(' ', $strings);
+        return ucfirst($strings);
+    }
+
+    private function niceBreedAltFromFolder($folder = false)
+    {
+        $alt = $this->niceBreedNameFromFolder($folder) . ' dog';
+        return $alt;
+    }
+
     // json response of 2d breeds array
     public function breedListAll()
     {
@@ -290,7 +304,7 @@ class ApiController
     }
 
     // return an image based on the $breed string passed
-    public function breedImage($breed = null, $breed2 = null, $all = false, int $amount = 0)
+    public function breedImage($breed = null, $breed2 = null, $all = false, bool $alt = false, int $amount = 0)
     {
         // default response, 404
         $status = 404;
@@ -304,7 +318,15 @@ class ApiController
                 foreach ($images as $key => $image) {
                     $explodedPath = explode('/', $image);
                     $directory = $explodedPath[count($explodedPath) - 2];
-                    $images[$key] = $this->imageUrl.$directory.'/'.basename($image);
+
+                    if (!$alt) {
+                        $images[$key] = $this->imageUrl.$directory.'/'.basename($image);
+                    } else {
+                        $images[$key] = [
+                            'image' => $this->imageUrl.$directory.'/'.basename($image),
+                            'alt'   => $this->niceBreedAltFromFolder($directory),
+                        ];
+                    }
                 }
                 $status = 200;
                 $responseArray = (object) ['status' => 'success', 'message' => $images];
@@ -315,7 +337,14 @@ class ApiController
                     foreach ($images as $key => $image) {
                         $explodedPath = explode('/', $image);
                         $directory = $explodedPath[count($explodedPath) - 2];
-                        $images[$key] = $this->imageUrl.$directory.'/'.basename($image);
+                        if (!$alt) {
+                            $images[$key] = $this->imageUrl.$directory.'/'.basename($image);
+                        } else {
+                            $images[$key] = [
+                                'image' => $this->imageUrl.$directory.'/'.basename($image),
+                                'alt'   => $this->niceBreedAltFromFolder($directory),
+                            ];
+                        }
                     }
 
                     $status = 200;
@@ -329,6 +358,17 @@ class ApiController
                     if ($image !== false) {
                         $status = 200;
                         $responseArray = (object) ['status' => 'success', 'message' => $this->imageUrl.$directory.'/'.basename($image)];
+                        if (!$alt) {
+                            $responseArray = (object) ['status' => 'success', 'message' => $this->imageUrl.$directory.'/'.basename($image)];
+                        } else {
+                            $responseArray = (object) [
+                                'status' => 'success',
+                                'message' => [
+                                    'image' => $this->imageUrl.$directory.'/'.basename($image),
+                                    'alt' => $this->niceBreedAltFromFolder($directory)
+                                ]
+                            ];
+                        }
                     }
                 }
             }
@@ -342,7 +382,7 @@ class ApiController
     }
 
     // get multiple random images of any breed
-    public function breedAllRandomImages($amount = 0)
+    public function breedAllRandomImages($amount = 0, $alt = false)
     {
         // convert to int
         $amount = (int) $amount;
@@ -360,8 +400,17 @@ class ApiController
         for ($i = 0; $i < $amount; $i++) {
             $image = $this->getRandomImage($breedDirectories[mt_rand(0, count($breedDirectories) - 1)]);
             $exp = explode('/', $image);
-            $images[] = $this->imageUrl.$exp[count($exp) - 2].'/'.basename($image);
+            $breedDir = $exp[count($exp) - 2];
+            if (!$alt) {
+                $images[] = $this->imageUrl.$breedDir.'/'.basename($image);
+            } else {
+                $images[] = [
+                    'image' => $this->imageUrl.$breedDir.'/'.basename($image),
+                    'alt'   => $this->niceBreedAltFromFolder($breedDir),
+                ];
+            }
         }
+
         $responseArray = (object) ['status' => 'success', 'message' => $images];
         $response = new JsonResponse($responseArray);
         $response->headers->set('Access-Control-Allow-Origin', '*');
@@ -370,7 +419,7 @@ class ApiController
     }
 
     // return a random image of any breed
-    public function breedAllRandomImage()
+    public function breedAllRandomImage($alt = false)
     {
         // pick a random dir
         $randomBreedDir = $this->getBreedDirs()[array_rand($this->getBreedDirs())];
@@ -380,7 +429,19 @@ class ApiController
 
         $exp = explode('/', $file);
 
-        $responseArray = (object) ['status' => 'success', 'message' => $this->imageUrl.$exp[count($exp) - 2].'/'.basename($file)];
+        $breedDir = $exp[count($exp) - 2];
+
+        if (!$alt) {
+            $responseArray = (object) ['status' => 'success', 'message' => $this->imageUrl.$breedDir.'/'.basename($file)];
+        } else {
+            $responseArray = (object) [
+                'status' => 'success',
+                'message' => [
+                    'image' => $this->imageUrl.$breedDir.'/'.basename($file),
+                    'alt' => $this->niceBreedAltFromFolder($breedDir)
+                ]
+            ];
+        }
 
         $response = new JsonResponse($responseArray);
 
