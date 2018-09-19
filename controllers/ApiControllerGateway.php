@@ -105,12 +105,12 @@ class ApiControllerGateway extends ApiController
         return $this->respond($this->cacheEndPoint("breed/$breed/list"));
     }
 
-    public function breedAllRandomImage()
+    public function breedAllRandomImage(bool $alt = false)
     {
-        return $this->breedAllRandomImages(1, true);
+        return $this->breedAllRandomImages(1, true, $alt);
     }
 
-    public function breedAllRandomImages($amount = 0, $single = false)
+    public function breedAllRandomImages($amount = 0, $single = false, bool $alt = false)
     {
         // make sure its always an int
         $amount = (int) $amount;
@@ -142,7 +142,17 @@ class ApiControllerGateway extends ApiController
             $randomImageResponse = $this->selectRandomItemFromResponse($allImages);
             $randomBreed = json_decode($randomImageResponse['body']);
             $image = $randomBreed->message;
-            $randomImages[] = $image;
+
+            if (!$alt) {
+                $randomImages[] = $image;
+            } else {
+                $explodedPath = explode('/', $image);
+                $directory = $explodedPath[count($explodedPath) - 2];
+                $randomImages[] = [
+                    'image' => $image,
+                    'alt'   => $this->niceBreedAltFromFolder($directory),
+                ];
+            }
         }
 
         if ($single === true) {
@@ -158,7 +168,7 @@ class ApiControllerGateway extends ApiController
         return $this->respond($response);
     }
 
-    public function breedImage($breed = null, $breed2 = null, $all = false, int $amount = 0)
+    public function breedImage($breed = null, $breed2 = null, $all = false, int $amount = 0, $alt = false)
     {
         if (strlen($breed) && $breed2 === null) {
             $allImages = $this->cacheEndPoint("breed/$breed/images");

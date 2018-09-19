@@ -156,7 +156,7 @@ class ApiController
         return ucfirst($strings);
     }
 
-    private function niceBreedAltFromFolder($folder = false)
+    protected function niceBreedAltFromFolder($folder = false)
     {
         $alt = $this->niceBreedNameFromFolder($folder) . ' dog';
         return $alt;
