@@ -10,280 +10,102 @@ if (getenv('DOG_CEO_GATEWAY_ENABLE') && getenv('DOG_CEO_GATEWAY_ENABLE') == 'tru
     $classToUse = 'controllers\ApiControllerGateway';
 }
 
+// path, function, params (todo: somehow make this more readable, move into class)
+$routesArray = [
+    ['path' => '/breeds/list',                                      'function' => 'breedList'],
+    ['path' => '/breeds/list/all',                                  'function' => 'breedListAll'],
+    ['path' => '/breed/{breed}/list',                               'function' => 'breedListSub',           'params' => [
+                                                                                                                            'breed' => null
+                                                                                                                        ]],
+    ['path' => '/breeds/image/random',                              'function' => 'breedAllRandomImage',    'params' => [
+                                                                                                                            'alt' => false
+                                                                                                                        ]],
+    ['path' => '/breeds/image/random/{amount}',                     'function' => 'breedAllRandomImages',   'params' => [
+                                                                                                                            'alt' => false
+                                                                                                                        ]],
+    ['path' => '/breed/{breed}/images',                             'function' => 'breedImage',             'params' => [
+                                                                                                                            'breed'  => null, 
+                                                                                                                            'breed2' => null, 
+                                                                                                                            'all'    => true,
+                                                                                                                            'alt'    => false,
+                                                                                                                        ]],
+    ['path' => '/breed/{breed}/images/random',                      'function' => 'breedImage',                             'params' => [
+                                                                                                                            'breed'  => null, 
+                                                                                                                            'breed2' => null, 
+                                                                                                                            'alt'    => false,
+                                                                                                                        ]],
+    ['path' => '/breed/{breed}/images/random/{amount}',             'function' => 'breedImage',                             'params' => [
+                                                                                                                            'breed'  => null, 
+                                                                                                                            'breed2' => null, 
+                                                                                                                            'alt'    => false,
+                                                                                                                        ]],
+    ['path' => '/breed/{breed}/{breed2}/images',                    'function' => 'breedImage',             'params' => [
+                                                                                                                            'breed'  => null,
+                                                                                                                            'breed2' => null,
+                                                                                                                            'all'    => true,
+                                                                                                                            'alt'    => false,
+                                                                                                                        ]],
+    ['path' => '/breed/{breed}/{breed2}/images/random',             'function' => 'breedImage',             'params' => [
+                                                                                                                            'breed'  => null, 
+                                                                                                                            'breed2' => null, 
+                                                                                                                            'alt'    => false,
+                                                                                                                        ]],
+    ['path' => '/breed/{breed}/{breed2}/images/random/{amount}',    'function' => 'breedImage',             'params' => [
+                                                                                                                            'breed'  => null, 
+                                                                                                                            'breed2' => null, 
+                                                                                                                            'alt'    => false,
+                                                                                                                        ]],
+    ['path' => '/breed/{breed}',                                    'function' => 'breedText',             'params' => [
+                                                                                                                            'breed'  => null, 
+                                                                                                                            'breed2' => null, 
+                                                                                                                        ]],
+    ['path' => '/breed/{breed}/{breed2}',                           'function' => 'breedText',             'params' => [
+                                                                                                                            'breed'  => null, 
+                                                                                                                            'breed2' => null, 
+                                                                                                                        ]],
+
+];
+
 // define routes
 $routes = new RouteCollection();
 
-// list all breed names
-$routes->add('breedList', new Route(
-    '/breeds/list',
-    [
-        '_controller' => [
-            new $classToUse(),
-            'breedList'
-        ]
-    ]
-));
+// todo, move these somewhere less stupid
+function getRouteSlug($path) {
+    $slug = $path;
+    $slug = str_replace(['{', '}'], '', $slug);
+    $slug = str_replace('/', ' ', $slug);
+    $slug = trim($slug);
+    $slug = ucwords($slug);
+    $slug = str_replace(' ', '', $slug);
+    return $slug;
+}
 
-// list all breed names including sub breeds
-$routes->add('breedListAll', new Route(
-    '/breeds/list/all',
-    [
-        '_controller' => [
-            new $classToUse(),
-            'breedListAll'
-        ]
-    ]
-));
+function generateRoute($route) {
+    global $routes;
+    global $classToUse;
 
-// list sub breeds
-$routes->add('breedSubList', new Route(
-    '/breed/{breed}/list',
-    [
-        'breed' => null,
-        '_controller' => [
-            new $classToUse(),
-            'breedListSub'
-        ]
-    ]
-));
+    $slug = getRouteSlug($route['path']);
 
-// random image from all breeds
-$routes->add('breedAllRandom', new Route(
-    '/breeds/image/random',
-    [
-        '_controller' => [
-            new $classToUse(),
-            'breedAllRandomImage'
-        ]
-    ]
-));
+    $params = [];
 
-// random image from all breeds
-$routes->add('breedAllRandomAlt', new Route(
-    '/breeds/image/random/alt',
-    [
-        'alt'      => true,
-        '_controller' => [
-            new $classToUse(),
-            'breedAllRandomImage'
-        ]
-    ]
-));
+    if (isset($route['params'])) {
+        $params = array_merge($params, $route['params']);
+    }
 
-// get multiple random images of any breed
-$routes->add('breedAllMultiRandom', new Route(
-    '/breeds/image/random/{amount}',
-    [
-        '_controller' => [
-            new $classToUse(),
-            'breedAllRandomImages'
-        ]
-    ]
-));
+    $params['_controller'] = [new $classToUse(), $route['function']];
 
-// get multiple random images of any breed
-$routes->add('breedAllMultiRandomAlt', new Route(
-    '/breeds/image/random/{amount}/alt',
-    [
-        'alt'      => true,
-        '_controller' => [
-            new $classToUse(),
-            'breedAllRandomImages'
-        ]
-    ]
-));
+    $routes->add($slug, new Route($route['path'], $params));
+}
 
-// get all breed images
-$routes->add('breedAllImages', new Route(
-    '/breed/{breed}/images',
-    [
-        'breed'  => null,
-        'breed2' => null,
-        'all'    => true,
-        '_controller' => [
-            new $classToUse(),
-            'breedImage'
-        ]
-    ]
-));
-
-// get all breed images
-$routes->add('breedAllImagesAlt', new Route(
-    '/breed/{breed}/images/alt',
-    [
-        'breed'  => null,
-        'breed2' => null,
-        'all'    => true,
-        'alt'    => true,
-        '_controller' => [
-            new $classToUse(),
-            'breedImage'
-        ]
-    ]
-));
-
-// get a random image of a breed
-$routes->add('breedRandomImage', new Route(
-    '/breed/{breed}/images/random',
-    [
-        'breed'  => null,
-        'breed2' => null,
-        '_controller' => [
-            new $classToUse(),
-            'breedImage'
-        ]
-    ]
-));
-
-// get a random image of a breed
-$routes->add('breedRandomImageAlt', new Route(
-    '/breed/{breed}/images/random/alt',
-    [
-        'breed'  => null,
-        'breed2' => null,
-        'alt'    => true,
-        '_controller' => [
-            new $classToUse(),
-            'breedImage'
-        ]
-    ]
-));
-
-// get multiple random images of a breed
-$routes->add('breedRandomImageAmount', new Route(
-    '/breed/{breed}/images/random/{amount}',
-    [
-        'breed'  => null,
-        'breed2' => null,
-        '_controller' => [
-            new $classToUse(),
-            'breedImage'
-        ]
-    ]
-));
-
-// get multiple random images of a breed
-$routes->add('breedRandomImageAmountAlt', new Route(
-    '/breed/{breed}/images/random/{amount}/alt',
-    [
-        'breed'  => null,
-        'breed2' => null,
-        'alt'    => true,
-        '_controller' => [
-            new $classToUse(),
-            'breedImage'
-        ]
-    ]
-));
-
-// get all images from sub breed
-$routes->add('breedSubAllImages', new Route(
-    '/breed/{breed}/{breed2}/images',
-    [
-        'breed'  => null,
-        'breed2' => null,
-        'all'    => true,
-        '_controller' => [
-            new $classToUse(),
-            'breedImage'
-        ]
-    ]
-));
-
-// get all images from sub breed
-$routes->add('breedSubAllImagesAlt', new Route(
-    '/breed/{breed}/{breed2}/images/alt',
-    [
-        'breed'  => null,
-        'breed2' => null,
-        'all'    => true,
-        'alt'    => true,
-        '_controller' => [
-            new $classToUse(),
-            'breedImage'
-        ]
-    ]
-));
-
-// get random image from sub breed
-$routes->add('breedSubRandomImage', new Route(
-    '/breed/{breed}/{breed2}/images/random',
-    [
-        'breed'  => null,
-        'breed2' => null,
-        '_controller' => [
-            new $classToUse(),
-            'breedImage'
-        ]
-    ]
-));
-
-// get random image from sub breed
-$routes->add('breedSubRandomImageAlt', new Route(
-    '/breed/{breed}/{breed2}/images/random/alt',
-    [
-        'breed'  => null,
-        'breed2' => null,
-        'alt'    => true,
-        '_controller' => [
-            new $classToUse(),
-            'breedImage'
-        ]
-    ]
-));
-
-// get multiple random images from sub breed
-$routes->add('breedSubRandomImageAmount', new Route(
-    '/breed/{breed}/{breed2}/images/random/{amount}',
-    [
-        'breed'  => null,
-        'breed2' => null,
-        '_controller' => [
-            new $classToUse(),
-            'breedImage'
-        ]
-    ]
-));
-
-// get multiple random images from sub breed
-$routes->add('breedSubRandomImageAmountAlt', new Route(
-    '/breed/{breed}/{breed2}/images/random/{amount}/alt',
-    [
-        'breed'  => null,
-        'breed2' => null,
-        'alt'    => true,
-        '_controller' => [
-            new $classToUse(),
-            'breedImage'
-        ]
-    ]
-));
-
-// get master breed info
-$routes->add('breedText', new Route(
-    '/breed/{breed}',
-    [
-        'breed' => null,
-        'breed2' => null,
-        '_controller' => [
-            new $classToUse(),
-            'breedText'
-        ]
-    ]
-));
-
-// get sub breed info
-$routes->add('subBreedText', new Route(
-    '/breed/{breed}/{breed2}',
-    [
-        'breed' => null,
-        'breed2' => null,
-        '_controller' => [
-            new $classToUse(),
-            'breedText'
-        ]
-    ]
-));
+foreach ($routesArray as $route) {
+    generateRoute($route);
+    // if the route is capable of alts, make another one with alts enabled
+    if (isset($route['params']['alt']) && $route['params']['alt'] === false) {
+        $route['path'] .= '/alt';
+        $route['params']['alt'] = true;
+        generateRoute($route);
+    }
+}
 
 // clear the cache
 $routes->add('clearAllCacheFiles', new Route(

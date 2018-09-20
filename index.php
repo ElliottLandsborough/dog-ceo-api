@@ -29,7 +29,7 @@ use models\Statistic;
 */
 
 $request = Request::createFromGlobals();
-$routes = include realpath(__DIR__.'/routes.php');
+$routes = include realpath(__DIR__.'/routes.php'); // make this into a class...
 
 $context = new RequestContext();
 $context->fromRequest($request);
