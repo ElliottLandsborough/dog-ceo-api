@@ -37,13 +37,41 @@ class ApiController
         $this->setimageUrl();
     }
 
+    protected function formatDataForXmlOutput($data) {
+        // error
+        if(isset($data->status) && $data->status == 'error') {
+            return $data;
+        }
+        // single image
+        else if (is_string($data->message) || (isset($data->message['url']) && isset($data->message['altText']))) {
+            $data->message = [$data->message];
+            unset($data->message);
+            unset($data->status);
+        }
+        // multiple images
+        else {
+            $array = [];
+            foreach ($data->message as $image) {
+                if (is_string($image)) {
+                    $array[] = ['url' => $image];
+                } else {
+                    $array[] = $image;
+                }
+                unset($data->message);
+                unset($data->status);
+            }
+            $data->image = $array;
+        }
+
+        return $data;
+    }
+
     protected function response($data, $status = 200) {
         if (!$this->xml) {
             $response = new JsonResponse($data, $status);
         }
         if ($this->xml) {
-            $data->message->image = $data->message;
-            $response = new Response(ArrayToXml::convert((array) $data));
+            $response = new Response(ArrayToXml::convert((array) $this->formatDataForXmlOutput($data)));
             $response->headers->set('Content-Type', 'xml');
         }
 
