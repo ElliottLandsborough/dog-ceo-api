@@ -52,7 +52,13 @@ try {
         $response = new Response('404 Error, page not found. API documentation is located at https://dog.ceo/dog-api', 404);
     }
 } catch (Exception $e) {
-    $response = new Response('Error occurred', 500);
+
+    $error = 'Error occurred';
+
+    if (getenv('DOG_CEO_DEBUG') && getenv('DOG_CEO_DEBUG') == 'true') {
+        $error = $e->getMessage();
+    }
+    $response = new Response($error, 500);
 }
 
 $response->send();
