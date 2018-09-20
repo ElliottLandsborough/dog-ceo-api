@@ -34,13 +34,14 @@ $routes = include realpath(__DIR__.'/routes.php'); // make this into a class...
 $context = new RequestContext();
 $context->fromRequest($request);
 $matcher = new UrlMatcher($routes, $context);
-$resolver = new HttpKernel\Controller\ControllerResolver();
+$controllerResolver = new HttpKernel\Controller\ControllerResolver();
+$argumentResolver = new HttpKernel\Controller\ArgumentResolver();
 
 try {
     $request->attributes->add($matcher->match($request->getPathInfo()));
 
-    $controller = $resolver->getController($request);
-    $arguments = $resolver->getArguments($request, $controller);
+    $controller = $controllerResolver->getController($request);
+    $arguments = $argumentResolver->getArguments($request, $controller);
 
     $response = call_user_func_array($controller, $arguments);
 } catch (ResourceNotFoundException $e) {
