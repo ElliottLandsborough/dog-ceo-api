@@ -36,32 +36,14 @@ $routesMaker->addRoute('/breeds/list/all', 'breedListAll');
 $routesMaker->addRoute('/breed/{breed}/list', 'breedListSub', ['breed' => null]);
 $routesMaker->addRoute('/breeds/image/random', 'breedAllRandomImage', ['alt' => false]);
 $routesMaker->addRoute('/breeds/image/random/{amount}', 'breedAllRandomImages', ['alt' => false]);
-$routesMaker->addRoute('/breed/{breed}/images', 'breedImage', ['breed'  => null,
-                                                                                                                            'breed2' => null,
-                                                                                                                            'all'    => true,
-                                                                                                                            'alt'    => false,]);
-$routesMaker->addRoute('/breed/{breed}/images/random', 'breedImage', [
-                                                                                                                            'breed'  => null,
-                                                                                                                            'breed2' => null,
-                                                                                                                            'alt'    => false,]);
-$routesMaker->addRoute('/breed/{breed}/images/random/{amount}', 'breedImage', [
-                                                                                                                            'breed'  => null,
-                                                                                                                            'breed2' => null,
-                                                                                                                            'alt'    => false,]);
-$routesMaker->addRoute('/breed/{breed}/{breed2}/images', 'breedImage', ['breed'  => null,
-                                                                                                                            'breed2' => null,
-                                                                                                                            'all'    => true,
-                                                                                                                            'alt'    => false,]);
-$routesMaker->addRoute('/breed/{breed}/{breed2}/images/random', 'breedImage', ['breed'  => null,
-                                                                                                                            'breed2' => null,
-                                                                                                                            'alt'    => false,]);
-$routesMaker->addRoute('/breed/{breed}/{breed2}/images/random/{amount}', 'breedImage', ['breed'  => null,
-                                                                                                                            'breed2' => null,
-                                                                                                                            'alt'    => false,]);
-$routesMaker->addRoute('/breed/{breed}', 'breedText', ['breed'  => null,
-                                                                                                                            'breed2' => null, ]);
-$routesMaker->addRoute('/breed/{breed}/{breed2}', 'breedText', ['breed'  => null,
-                                                                                                                            'breed2' => null, ]);
+$routesMaker->addRoute('/breed/{breed}/images', 'breedImage', ['breed'  => null, 'breed2' => null, 'all'  => true, 'alt' => false]);
+$routesMaker->addRoute('/breed/{breed}/images/random', 'breedImage', ['breed'  => null, 'breed2' => null, 'alt' => false,]);
+$routesMaker->addRoute('/breed/{breed}/images/random/{amount}', 'breedImage', ['breed'  => null, 'breed2' => null, 'alt' => false]);
+$routesMaker->addRoute('/breed/{breed}/{breed2}/images', 'breedImage', ['breed'  => null, 'breed2' => null, 'all' => true, 'alt' => false,]);
+$routesMaker->addRoute('/breed/{breed}/{breed2}/images/random', 'breedImage', ['breed'  => null, 'breed2' => null, 'alt' => false,]);
+$routesMaker->addRoute('/breed/{breed}/{breed2}/images/random/{amount}', 'breedImage', ['breed'  => null, 'breed2' => null, 'alt' => false,]);
+$routesMaker->addRoute('/breed/{breed}', 'breedText', ['breed'  => null, 'breed2' => null]);
+$routesMaker->addRoute('/breed/{breed}/{breed2}', 'breedText', ['breed'  => null, 'breed2' => null]);
 
 $routes = $routesMaker->generateRoutesFromArray()->clearCacheRoute()->getRoutes();
 
