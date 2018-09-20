@@ -15,8 +15,10 @@ class ApiController
 
     private $imagePath = false;
 
-    // is are alts enabled?
+    // are alts enabled?
     protected $alt = false;
+    // is xml enabled (hacky, need to find a way to send request to contructor...)
+    protected $xml = false;
 
     public function __construct()
     {
@@ -31,6 +33,17 @@ class ApiController
             $this->breedDirs = $this->returnBreedDirs();
         }
         $this->setimageUrl();
+    }
+
+    protected function response($data, $status = 200) {
+        if (!$this->xml) {
+            $response = new JsonResponse($data, $status);
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            return $response;
+        }
+        if ($this->xml) {
+            // generate some xml here...
+        }
     }
 
     // the domain and port and protocol
@@ -171,8 +184,10 @@ class ApiController
     }
 
     // json response of 2d breeds array
-    public function breedListAll()
+    public function breedListAll(bool $xml = false)
     {
+        $this->xml = $xml;
+
         $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'No breeds found'];
 
         $allBreeds = $this->getAllBreeds();
@@ -181,28 +196,24 @@ class ApiController
             $responseArray = (object) ['status' => 'success', 'message' => $allBreeds];
         }
 
-        $response = new JsonResponse($responseArray);
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $this->response($responseArray);
     }
 
     // json response of master breeds
-    public function breedList()
+    public function breedList(bool $xml = false)
     {
+        $this->xml = $xml;
+
         $responseArray = (object) ['status' => 'success', 'message' => $this->getMasterBreeds()];
 
-        $response = new JsonResponse($responseArray);
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $this->response($responseArray);;
     }
 
     // json response of sub breeds
-    public function breedListSub($breed = null)
+    public function breedListSub($breed = null, bool $xml = false)
     {
+        $this->xml = $xml;
+
         $status = 404;
         $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'Breed not found'];
 
@@ -213,11 +224,7 @@ class ApiController
             $responseArray = (object) ['status' => 'success', 'message' => $breedSubList];
         }
 
-        $response = new JsonResponse($responseArray, $status);
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $this->response($responseArray, $status);
     }
 
     // clean up a breed subdirectory name
@@ -312,9 +319,10 @@ class ApiController
     }
 
     // return an image based on the $breed string passed
-    public function breedImage($breed = null, $breed2 = null, $all = false, bool $alt = false, int $amount = 0)
+    public function breedImage($breed = null, $breed2 = null, bool $all = false, bool $alt = false, int $amount = 0, bool $xml = false)
     {
         $this->alt = $alt;
+        $this->xml = $xml;
 
         // default response, 404
         $status = 404;
@@ -381,17 +389,14 @@ class ApiController
             }
         }
 
-        $response = new JsonResponse($responseArray, $status);
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $this->response($responseArray, $status);
     }
 
     // get multiple random images of any breed
-    public function breedAllRandomImages($amount = 0, $alt = false)
+    public function breedAllRandomImages(int $amount = 0, bool $alt = false, bool $xml = false)
     {
         $this->alt = $alt;
+        $this->xml = $xml;
 
         // convert to int
         $amount = (int) $amount;
@@ -419,17 +424,14 @@ class ApiController
             }
         }
 
-        $responseArray = (object) ['status' => 'success', 'message' => $images];
-        $response = new JsonResponse($responseArray);
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $this->response($responseArray);
     }
 
     // return a random image of any breed
-    public function breedAllRandomImage(bool $alt = false)
+    public function breedAllRandomImage(bool $alt = false, bool $xml = false)
     {
         $this->alt = $alt;
+        $this->xml = $xml;
 
         // pick a random dir
         $randomBreedDir = $this->getBreedDirs()[array_rand($this->getBreedDirs())];
@@ -451,11 +453,7 @@ class ApiController
             ];
         }
 
-        $response = new JsonResponse($responseArray);
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $this->response($responseArray);
     }
 
     // make sure the yaml file exists
@@ -491,7 +489,7 @@ class ApiController
      *
      * @return array
      */
-    private function arrayWhitelist($array, $whitelist)
+    private function arrayWhitelist(array $array, $whitelist)
     {
         return array_intersect_key(
             $array,
@@ -523,8 +521,10 @@ class ApiController
     // add yaml files to /content/breed-info
     // e.g spaniel.yaml
     //     spaniel-cocker.yaml
-    public function breedText($breed = null, $breed2 = null)
+    public function breedText($breed = null, $breed2 = null, bool $xml = false)
     {
+        $this->xml = $xml;
+
         // default response, 404
         $status = 404;
         $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'Breed not found'];
@@ -536,10 +536,6 @@ class ApiController
             $responseArray = (object) ['status' => 'success', 'message' => $content];
         }
 
-        $response = new JsonResponse($responseArray, $status);
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $this->response($responseArray, $status);
     }
 }
