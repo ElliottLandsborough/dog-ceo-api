@@ -2,7 +2,9 @@
 
 namespace controllers;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Spatie\ArrayToXml\ArrayToXml;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 use models\Cache;
@@ -38,12 +40,15 @@ class ApiController
     protected function response($data, $status = 200) {
         if (!$this->xml) {
             $response = new JsonResponse($data, $status);
-            $response->headers->set('Access-Control-Allow-Origin', '*');
-            return $response;
         }
         if ($this->xml) {
-            // generate some xml here...
+            $data->message->image = $data->message;
+            $response = new Response(ArrayToXml::convert((array) $data));
+            $response->headers->set('Content-Type', 'xml');
         }
+
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
     }
 
     // the domain and port and protocol
