@@ -4,5 +4,7 @@ before_script:
   - composer install --no-interaction
 php:
   - '7.1'
+  - '7.2'
+  - '7.3'
   - hhvm # on Trusty only
   - nightly
