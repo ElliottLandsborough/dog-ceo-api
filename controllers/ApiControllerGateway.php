@@ -188,16 +188,7 @@ class ApiControllerGateway extends ApiController
             $randomBreed = json_decode($randomImageResponse['body']);
             $image = $randomBreed->message;
 
-            if (!$this->alt) {
-                $randomImages[] = $image;
-            } else {
-                $explodedPath = explode('/', $image);
-                $directory = $explodedPath[count($explodedPath) - 2];
-                $randomImages[] = [
-                    'image' => $image,
-                    'alt'   => $this->niceBreedAltFromFolder($directory),
-                ];
-            }
+            $randomImages[] = $image;
         }
 
         if ($single === true) {
