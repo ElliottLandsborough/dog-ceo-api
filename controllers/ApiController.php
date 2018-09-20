@@ -71,7 +71,7 @@ class ApiController
             $response = new JsonResponse($data, $status);
         }
         if ($this->xml) {
-            $response = new Response(ArrayToXml::convert((array) $this->formatDataForXmlOutput($data)));
+            $response = new Response(ArrayToXml::convert((array) $this->formatDataForXmlOutput($data)), $status);
             $response->headers->set('Content-Type', 'xml');
         }
 
