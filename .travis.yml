@@ -5,6 +5,5 @@ before_script:
 php:
   - '7.1'
   - '7.2'
-  - '7.3'
   - hhvm # on Trusty only
   - nightly
