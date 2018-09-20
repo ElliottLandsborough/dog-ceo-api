@@ -35,7 +35,7 @@ class Statistic
 
         // if in debug mode, show when cant connect to db
         if ($conn->connect_error) {
-            if (getenv('DOG_CEO_DEBUG')) {
+            if (getenv('DOG_CEO_DEBUG') && getenv('DOG_CEO_DEBUG') == 'true') {
                 error_log('Connection failed: ' . $conn->connect_error);
             }
             die();
@@ -61,7 +61,7 @@ class Statistic
     public function query($sql)
     {
         $query = $this->conn->query($sql);
-        if (getenv('DOG_CEO_DEBUG') && $query !== true && strlen($this->conn->error)) {
+        if (getenv('DOG_CEO_DEBUG') && getenv('DOG_CEO_DEBUG') == 'true' && $query !== true && strlen($this->conn->error)) {
             error_log('Error: '.$sql.': '.$this->conn->error);
         }
 
