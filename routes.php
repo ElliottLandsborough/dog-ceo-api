@@ -17,8 +17,6 @@ $routes = new RouteCollection();
 $routes->add('breedList', new Route(
     '/breeds/list',
     [
-        'filename' => null,
-        'raw' => false,
         '_controller' => [
             new $classToUse(),
             'breedList'
@@ -30,8 +28,6 @@ $routes->add('breedList', new Route(
 $routes->add('breedListAll', new Route(
     '/breeds/list/all',
     [
-        'filename' => null,
-        'raw' => false,
         '_controller' => [
             new $classToUse(),
             'breedListAll'
@@ -55,7 +51,6 @@ $routes->add('breedSubList', new Route(
 $routes->add('breedAllRandom', new Route(
     '/breeds/image/random',
     [
-        'filename' => null,
         '_controller' => [
             new $classToUse(),
             'breedAllRandomImage'
@@ -67,7 +62,6 @@ $routes->add('breedAllRandom', new Route(
 $routes->add('breedAllRandomAlt', new Route(
     '/breeds/image/random/alt',
     [
-        'filename' => null,
         'alt'      => true,
         '_controller' => [
             new $classToUse(),
@@ -80,7 +74,6 @@ $routes->add('breedAllRandomAlt', new Route(
 $routes->add('breedAllMultiRandom', new Route(
     '/breeds/image/random/{amount}',
     [
-        'filename' => null,
         '_controller' => [
             new $classToUse(),
             'breedAllRandomImages'
@@ -92,7 +85,6 @@ $routes->add('breedAllMultiRandom', new Route(
 $routes->add('breedAllMultiRandomAlt', new Route(
     '/breeds/image/random/{amount}/alt',
     [
-        'filename' => null,
         'alt'      => true,
         '_controller' => [
             new $classToUse(),
