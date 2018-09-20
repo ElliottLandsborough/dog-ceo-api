@@ -436,17 +436,17 @@ class ApiController
         $randomBreedDir = $this->getBreedDirs()[array_rand($this->getBreedDirs())];
 
         // pick a random image from that dir
-        $file = $this->getRandomImage($randomBreedDir);
+        $image = $this->getRandomImage($randomBreedDir);
 
         $directory = $this->breedFolderFromUrl($image);
 
         if (!$this->alt) {
-            $responseArray = (object) ['status' => 'success', 'message' => $this->imageUrl.$directory.'/'.basename($file)];
+            $responseArray = (object) ['status' => 'success', 'message' => $this->imageUrl.$directory.'/'.basename($image)];
         } else {
             $responseArray = (object) [
                 'status' => 'success',
                 'message' => [
-                    'image' => $this->imageUrl.$directory.'/'.basename($file),
+                    'image' => $this->imageUrl.$directory.'/'.basename($image),
                     'alt' => $this->niceBreedAltFromFolder($directory)
                 ]
             ];
