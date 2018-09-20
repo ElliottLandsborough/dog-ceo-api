@@ -12,7 +12,8 @@
         "symfony/lock": "^4.1",
         "guzzlehttp/guzzle": "^6.3",
         "symfony/yaml": "^4.1",
-        "symfony/serializer": "^4.1"
+        "symfony/serializer": "^4.1",
+        "symfony/property-access": "^4.1"
     },
     "require-dev": {
     	"phpunit/phpunit": "^6.2"
