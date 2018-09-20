@@ -4,14 +4,24 @@ namespace controllers;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use models\Cache;
+use models\ImageResponse;
+
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class ApiControllerGateway extends ApiController
 {
     private $cache;
     private $minutes = 2 * 7 * 24 * 60; // cache for 2 weeks!
+    private $serializer;
 
     public function __construct()
     {
+        $encoders = [new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer()];
+        $this->serializer = new Serializer($normalizers, $encoders);
+
         $this->cache = new Cache();
 
         if ($_SERVER['SERVER_NAME'] !== 'dog.ceo') {
@@ -47,6 +57,27 @@ class ApiControllerGateway extends ApiController
 
     private function addAltsToResponse($endpointResponse)
     {
+        $imageResponse = $this->serializer->deserialize($endpointResponse['body'], ImageResponse::class, 'json');
+
+        $message = $imageResponse->message;
+
+        // single image response
+        if (!is_array($message) && is_string($message)) {
+            $imageResponse->message = [
+                'image' => $message,
+                'alt'   =>  $this->niceBreedAltFromFolder($this->breedFolderFromUrl($message)),
+            ];
+        } else {
+            foreach ($imageResponse->message as $key => $image) {
+                $imageResponse->message[$key] = [
+                    'image' => $image,
+                    'alt'   => $this->niceBreedAltFromFolder($this->breedFolderFromUrl($image)),
+                ];
+            }
+        }
+
+        $endpointResponse['body'] = $this->serializer->serialize($imageResponse, 'json');
+
         return $endpointResponse;
     }
 
@@ -182,7 +213,7 @@ class ApiControllerGateway extends ApiController
         return $this->respond($response);
     }
 
-    public function breedImage($breed = null, $breed2 = null, $all = false, int $amount = 0, $alt = false)
+    public function breedImage($breed = null, $breed2 = null, $all = false, bool $alt = false, int $amount = 0)
     {
         $this->alt = $alt;
 
