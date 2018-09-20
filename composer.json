@@ -23,7 +23,8 @@
         "psr-0": {
             "commands": "",
             "controllers": "",
-            "models": ""
+            "models": "",
+            "config": ""
         }
     }
 }
