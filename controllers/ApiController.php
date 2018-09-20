@@ -333,8 +333,8 @@ class ApiController
                         $images[$key] = $this->imageUrl.$directory.'/'.basename($image);
                     } else {
                         $images[$key] = [
-                            'image' => $this->imageUrl.$directory.'/'.basename($image),
-                            'alt'   => $this->niceBreedAltFromFolder($directory),
+                            'url' => $this->imageUrl.$directory.'/'.basename($image),
+                            'altText'   => $this->niceBreedAltFromFolder($directory),
                         ];
                     }
                 }
@@ -350,8 +350,8 @@ class ApiController
                             $images[$key] = $this->imageUrl.$directory.'/'.basename($image);
                         } else {
                             $images[$key] = [
-                                'image' => $this->imageUrl.$directory.'/'.basename($image),
-                                'alt'   => $this->niceBreedAltFromFolder($directory),
+                                'url' => $this->imageUrl.$directory.'/'.basename($image),
+                                'altText'   => $this->niceBreedAltFromFolder($directory),
                             ];
                         }
                     }
@@ -372,8 +372,8 @@ class ApiController
                             $responseArray = (object) [
                                 'status' => 'success',
                                 'message' => [
-                                    'image' => $this->imageUrl.$directory.'/'.basename($image),
-                                    'alt' => $this->niceBreedAltFromFolder($directory)
+                                    'url' => $this->imageUrl.$directory.'/'.basename($image),
+                                    'altText' => $this->niceBreedAltFromFolder($directory)
                                 ]
                             ];
                         }
@@ -414,8 +414,8 @@ class ApiController
                 $images[] = $this->imageUrl.$directory.'/'.basename($image);
             } else {
                 $images[] = [
-                    'image' => $this->imageUrl.$directory.'/'.basename($image),
-                    'alt'   => $this->niceBreedAltFromFolder($directory),
+                    'url' => $this->imageUrl.$directory.'/'.basename($image),
+                    'altText'   => $this->niceBreedAltFromFolder($directory),
                 ];
             }
         }
@@ -446,8 +446,8 @@ class ApiController
             $responseArray = (object) [
                 'status' => 'success',
                 'message' => [
-                    'image' => $this->imageUrl.$directory.'/'.basename($image),
-                    'alt' => $this->niceBreedAltFromFolder($directory)
+                    'url' => $this->imageUrl.$directory.'/'.basename($image),
+                    'altText' => $this->niceBreedAltFromFolder($directory)
                 ]
             ];
         }

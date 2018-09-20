@@ -63,6 +63,20 @@ Get random image from a sub breed.
 #### /breed/{breed}/{breed2}/images/random/5
 Get 5 random images from a sub breed.
 
+## Alt tags (beta)
+These endpoints might change in the future...
+```
+https://dog.ceo/api/breeds/image/random/alt
+https://dog.ceo/api/breeds/image/random/3/alt
+
+https://dog.ceo/api/breed/hound/images/alt
+https://dog.ceo/api/breed/hound/images/random/alt
+https://dog.ceo/api/breed/hound/images/random/3/alt
+
+https://dog.ceo/api/breed/hound/afghan/images/alt
+https://dog.ceo/api/breed/hound/afghan/images/random/alt
+```
+
 ## Stats (optional)
 ```
 cp .env.example .env

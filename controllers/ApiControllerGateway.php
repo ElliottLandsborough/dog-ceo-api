@@ -64,14 +64,14 @@ class ApiControllerGateway extends ApiController
         // single image response
         if (!is_array($message) && is_string($message)) {
             $imageResponse->message = [
-                'image' => $message,
-                'alt'   =>  $this->niceBreedAltFromFolder($this->breedFolderFromUrl($message)),
+                'url' => $message,
+                'altText'   =>  $this->niceBreedAltFromFolder($this->breedFolderFromUrl($message)),
             ];
         } else {
             foreach ($imageResponse->message as $key => $image) {
                 $imageResponse->message[$key] = [
-                    'image' => $image,
-                    'alt'   => $this->niceBreedAltFromFolder($this->breedFolderFromUrl($image)),
+                    'url' => $image,
+                    'altText'   => $this->niceBreedAltFromFolder($this->breedFolderFromUrl($image)),
                 ];
             }
         }
