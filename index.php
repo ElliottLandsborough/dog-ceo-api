@@ -58,6 +58,7 @@ try {
     if (getenv('DOG_CEO_DEBUG') && getenv('DOG_CEO_DEBUG') == 'true') {
         $error = $e->getMessage();
     }
+
     $response = new Response($error, 500);
 }
 
