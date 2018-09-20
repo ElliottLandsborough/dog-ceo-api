@@ -102,6 +102,23 @@ ALTER TABLE `daily` ADD INDEX( `route`, `date`);
 ALTER TABLE `visits` ADD INDEX(`ip`);
 ```
 
+Put this at the bottom of index.php
+```
+use models\Statistic;
+
+// keep some stats after the response is sent
+// only do stats if db exists in .env
+if (isset($request) && getenv('DOG_CEO_DB_HOST')) {
+    //$routeName = $request->get('_route');
+    $uri = $request->getRequestUri();
+    // only save stats if successful request
+    if ($uri !== '/stats' && $response->getStatusCode() == '200') {
+        $stats = new Statistic();
+        $stats->save($uri);
+    }
+}
+```
+
 ## MIT License
 
 Copyright (c) 2018 Dog CEO
