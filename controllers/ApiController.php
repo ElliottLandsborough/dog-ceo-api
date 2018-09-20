@@ -37,18 +37,17 @@ class ApiController
         $this->setimageUrl();
     }
 
-    protected function formatDataForXmlOutput($data) {
+    protected function formatDataForXmlOutput($data)
+    {
         // error
-        if(isset($data->status) && $data->status == 'error') {
+        if (isset($data->status) && $data->status == 'error') {
             return $data;
-        }
-        // single image
+        } // single image
         else if (is_string($data->message) || (isset($data->message['url']) && isset($data->message['altText']))) {
             $data->message = [$data->message];
             unset($data->message);
             unset($data->status);
-        }
-        // multiple images
+        } // multiple images
         else {
             $array = [];
             foreach ($data->message as $image) {
@@ -66,7 +65,8 @@ class ApiController
         return $data;
     }
 
-    protected function response($data, $status = 200) {
+    protected function response($data, $status = 200)
+    {
         if (!$this->xml) {
             $response = new JsonResponse($data, $status);
         }
@@ -239,7 +239,7 @@ class ApiController
 
         $responseArray = (object) ['status' => 'success', 'message' => $this->getMasterBreeds()];
 
-        return $this->response($responseArray);;
+        return $this->response($responseArray);
     }
 
     // json response of sub breeds
@@ -426,7 +426,7 @@ class ApiController
     }
 
     // get multiple random images of any breed
-    public function breedAllRandomImages(int $amount = 0, bool $alt = false, bool $xml = false)
+    public function breedAllRandomImages($amount = 0, bool $alt = false, bool $xml = false)
     {
         $this->alt = $alt;
         $this->xml = $xml;
@@ -456,6 +456,8 @@ class ApiController
                 ];
             }
         }
+
+        $responseArray = (object) ['status' => 'success', 'message' => $images];
 
         return $this->response($responseArray);
     }
