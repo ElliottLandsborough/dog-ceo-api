@@ -45,9 +45,19 @@ class ApiControllerGateway extends ApiController
         });
     }
 
+    private function addAltsToResponse($endpointResponse)
+    {
+        return $endpointResponse;
+    }
+
     private function respond($endpointResponse)
     {
         $response = new JsonResponse();
+
+        if ($this->alt) {
+            $endpointResponse = $this->addAltsToResponse($endpointResponse);
+        }
+
         $response = $response->fromJsonString($endpointResponse['body'], $endpointResponse['status']);
         $response->headers->set('Access-Control-Allow-Origin', '*');
         if (isset($endpointResponse['headers']['cache-control'][0])) {
@@ -107,11 +117,15 @@ class ApiControllerGateway extends ApiController
 
     public function breedAllRandomImage(bool $alt = false)
     {
-        return $this->breedAllRandomImages(1, true, $alt);
+        $this->alt = $alt;
+
+        return $this->breedAllRandomImages(1, true, $this->alt);
     }
 
     public function breedAllRandomImages($amount = 0, $single = false, bool $alt = false)
     {
+        $this->alt = $alt;
+
         // make sure its always an int
         $amount = (int) $amount;
 
@@ -143,7 +157,7 @@ class ApiControllerGateway extends ApiController
             $randomBreed = json_decode($randomImageResponse['body']);
             $image = $randomBreed->message;
 
-            if (!$alt) {
+            if (!$this->alt) {
                 $randomImages[] = $image;
             } else {
                 $explodedPath = explode('/', $image);
@@ -170,6 +184,8 @@ class ApiControllerGateway extends ApiController
 
     public function breedImage($breed = null, $breed2 = null, $all = false, int $amount = 0, $alt = false)
     {
+        $this->alt = $alt;
+
         if (strlen($breed) && $breed2 === null) {
             $allImages = $this->cacheEndPoint("breed/$breed/images");
 
