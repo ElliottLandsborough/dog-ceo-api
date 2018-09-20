@@ -198,6 +198,21 @@ $routes->add('breedSubAllImages', new Route(
     ]
 ));
 
+// get all images from sub breed
+$routes->add('breedSubAllImagesAlt', new Route(
+    '/breed/{breed}/{breed2}/images/alt',
+    [
+        'breed'  => null,
+        'breed2' => null,
+        'all'    => true,
+        'alt'    => true,
+        '_controller' => [
+            new $classToUse(),
+            'breedImage'
+        ]
+    ]
+));
+
 // get random image from sub breed
 $routes->add('breedSubRandomImage', new Route(
     '/breed/{breed}/{breed2}/images/random',
