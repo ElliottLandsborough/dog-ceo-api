@@ -131,29 +131,29 @@ class ApiControllerGateway extends ApiController
         return false;
     }
 
-    public function breedList()
+    public function breedList(bool $xml = false)
     {
         return $this->respond($this->cacheEndPoint('breeds/list'));
     }
 
-    public function breedListAll()
+    public function breedListAll(bool $xml = false)
     {
         return $this->respond($this->cacheEndPoint('breeds/list/all'));
     }
 
-    public function breedListSub($breed = 'hound')
+    public function breedListSub($breed = 'hound', bool $xml = false)
     {
         return $this->respond($this->cacheEndPoint("breed/$breed/list"));
     }
 
-    public function breedAllRandomImage(bool $alt = false)
+    public function breedAllRandomImage(bool $alt = false, bool $xml = false)
     {
         $this->alt = $alt;
 
         return $this->breedAllRandomImages(1, true, $this->alt);
     }
 
-    public function breedAllRandomImages($amount = 0, $single = false, bool $alt = false)
+    public function breedAllRandomImages($amount = 0, $single = false, bool $alt = false, bool $xml = false)
     {
         $this->alt = $alt;
 
@@ -204,7 +204,7 @@ class ApiControllerGateway extends ApiController
         return $this->respond($response);
     }
 
-    public function breedImage($breed = null, $breed2 = null, $all = false, bool $alt = false, int $amount = 0)
+    public function breedImage($breed = null, $breed2 = null, bool $all = false, bool $alt = false, int $amount = 0, bool $xml = false)
     {
         $this->alt = $alt;
 
@@ -249,7 +249,7 @@ class ApiControllerGateway extends ApiController
         }
     }
 
-    public function breedText($breed = null, $breed2 = null)
+    public function breedText($breed = null, $breed2 = null, bool $xml = false)
     {
         if ($breed2 === null) {
             // breed/{breed}
