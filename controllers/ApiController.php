@@ -165,6 +165,12 @@ class ApiController
         return $alt;
     }
 
+    protected function breedFolderFromUrl($url)
+    {
+        $explodedPath = explode('/', $url);
+        return $explodedPath[count($explodedPath) - 2];
+    }
+
     // json response of 2d breeds array
     public function breedListAll()
     {
@@ -321,8 +327,7 @@ class ApiController
             if ($all) {
                 $images = $this->getAllImages($match);
                 foreach ($images as $key => $image) {
-                    $explodedPath = explode('/', $image);
-                    $directory = $explodedPath[count($explodedPath) - 2];
+                    $directory = $this->breedFolderFromUrl($image);
 
                     if (!$this->alt) {
                         $images[$key] = $this->imageUrl.$directory.'/'.basename($image);
@@ -340,8 +345,7 @@ class ApiController
                     $images = $this->getRandomImage($match, $amount);
 
                     foreach ($images as $key => $image) {
-                        $explodedPath = explode('/', $image);
-                        $directory = $explodedPath[count($explodedPath) - 2];
+                        $directory = $this->breedFolderFromUrl($image);
                         if (!$this->alt) {
                             $images[$key] = $this->imageUrl.$directory.'/'.basename($image);
                         } else {
@@ -357,8 +361,7 @@ class ApiController
                 } else {
                     // otherwise, we just want one image
                     $image = $this->getRandomImage($match, $amount);
-                    $explodedPath = explode('/', $image);
-                    $directory = $explodedPath[count($explodedPath) - 2];
+                    $directory = $this->breedFolderFromUrl($image);
                     // json response with url to image
                     if ($image !== false) {
                         $status = 200;
@@ -406,14 +409,13 @@ class ApiController
 
         for ($i = 0; $i < $amount; $i++) {
             $image = $this->getRandomImage($breedDirectories[mt_rand(0, count($breedDirectories) - 1)]);
-            $exp = explode('/', $image);
-            $breedDir = $exp[count($exp) - 2];
+            $directory = $this->breedFolderFromUrl($image);
             if (!$this->alt) {
-                $images[] = $this->imageUrl.$breedDir.'/'.basename($image);
+                $images[] = $this->imageUrl.$directory.'/'.basename($image);
             } else {
                 $images[] = [
-                    'image' => $this->imageUrl.$breedDir.'/'.basename($image),
-                    'alt'   => $this->niceBreedAltFromFolder($breedDir),
+                    'image' => $this->imageUrl.$directory.'/'.basename($image),
+                    'alt'   => $this->niceBreedAltFromFolder($directory),
                 ];
             }
         }
@@ -426,7 +428,7 @@ class ApiController
     }
 
     // return a random image of any breed
-    public function breedAllRandomImage($alt = false)
+    public function breedAllRandomImage(bool $alt = false)
     {
         $this->alt = $alt;
 
@@ -436,18 +438,16 @@ class ApiController
         // pick a random image from that dir
         $file = $this->getRandomImage($randomBreedDir);
 
-        $exp = explode('/', $file);
-
-        $breedDir = $exp[count($exp) - 2];
+        $directory = $this->breedFolderFromUrl($image);
 
         if (!$this->alt) {
-            $responseArray = (object) ['status' => 'success', 'message' => $this->imageUrl.$breedDir.'/'.basename($file)];
+            $responseArray = (object) ['status' => 'success', 'message' => $this->imageUrl.$directory.'/'.basename($file)];
         } else {
             $responseArray = (object) [
                 'status' => 'success',
                 'message' => [
-                    'image' => $this->imageUrl.$breedDir.'/'.basename($file),
-                    'alt' => $this->niceBreedAltFromFolder($breedDir)
+                    'image' => $this->imageUrl.$directory.'/'.basename($file),
+                    'alt' => $this->niceBreedAltFromFolder($directory)
                 ]
             ];
         }
