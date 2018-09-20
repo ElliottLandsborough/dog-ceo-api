@@ -95,6 +95,10 @@ function generateRoute($route) {
     $params['_controller'] = [new $classToUse(), $route['function']];
 
     $routes->add($slug, new Route($route['path'], $params));
+
+    // add an xml route (won't work in php development server)
+    $params['xml'] = true;
+    $routes->add($slug . 'Xml', new Route($route['path'] . '.xml', $params));
 }
 
 foreach ($routesArray as $route) {
