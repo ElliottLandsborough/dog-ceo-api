@@ -77,6 +77,12 @@ https://dog.ceo/api/breed/hound/afghan/images/alt
 https://dog.ceo/api/breed/hound/afghan/images/random/alt
 ```
 
+## XML Responses (beta, unfinished)
+Add /xml to any endpoint
+```
+...
+```
+
 ## Stats (optional)
 ```
 cp .env.example .env
