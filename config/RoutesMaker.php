@@ -1,6 +1,7 @@
 <?php
 namespace config;
 
+use Symfony\Component\HttpFoundation\Request;
 //use controllers\StatsController;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
@@ -8,11 +9,13 @@ use controllers\CacheController;
 
 class routesMaker
 {
+    private $request;
     private $routes;
     private $routesArray = [];
 
-    public function __construct()
+    public function __construct(Request $request)
     {
+        $this->request = $request;
         $this->routes = new RouteCollection();
     }
 
@@ -58,7 +61,8 @@ class routesMaker
             $params = array_merge($params, $route['params']);
         }
 
-        $params['_controller'] = [new $classToUse(), $route['function']];
+        // just use blank classes here, the object will be called again when the route is resolved
+        $params['_controller'] = [new $classToUse($this), $route['function']];
 
         $this->routes->add($slug, new Route($route['path'], $params));
 

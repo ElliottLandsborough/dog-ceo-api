@@ -22,8 +22,9 @@ try {
     echo 'The .env file does not exist.';
 }
 
-// build the routes
-$routesMaker = new RoutesMaker();
+$request = Request::createFromGlobals();
+
+$routesMaker = new RoutesMaker($request);
 
 $routesMaker->addRoute('/breeds/list', 'breedList');
 $routesMaker->addRoute('/breeds/list/all', 'breedListAll');
@@ -39,21 +40,21 @@ $routesMaker->addRoute('/breed/{breed}/{breed2}/images/random/{amount}', 'breedI
 $routesMaker->addRoute('/breed/{breed}', 'breedText', ['breed'  => null, 'breed2' => null]);
 $routesMaker->addRoute('/breed/{breed}/{breed2}', 'breedText', ['breed'  => null, 'breed2' => null]);
 
-$routes = $routesMaker->generateRoutesFromArray()->clearCacheRoute()->getRoutes();
+$routesMaker->generateRoutesFromArray()->clearCacheRoute();
 
-// basic routing logic, taken from symfony/routing documentation
-$request = Request::createFromGlobals();
+$routes = $routesMaker->getRoutes();
 
 $context = new RequestContext();
 $context->fromRequest($request);
 $matcher = new UrlMatcher($routes, $context);
-$controllerResolver = new HttpKernel\Controller\ControllerResolver();
+$controllerResolver = new config\ControllerResolver($routesMaker);
 $argumentResolver = new HttpKernel\Controller\ArgumentResolver();
 
 try {
     $request->attributes->add($matcher->match($request->getPathInfo()));
 
     $controller = $controllerResolver->getController($request);
+
     $arguments = $argumentResolver->getArguments($request, $controller);
 
     $response = call_user_func_array($controller, $arguments);

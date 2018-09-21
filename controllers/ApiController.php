@@ -8,22 +8,25 @@ use Spatie\ArrayToXml\ArrayToXml;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 use models\Cache;
+use config\RoutesMaker;
 
 class ApiController
 {
     private $imageUrl = false;
     private $breedDirs = [];
     private $cache;
-
     private $imagePath = false;
 
+    protected $routesMaker;
     // are alts enabled?
     protected $alt = false;
     // is xml enabled (hacky, need to find a way to send request to contructor...)
     protected $xml = false;
 
-    public function __construct()
+    public function __construct(RoutesMaker $routesMaker)
     {
+        $this->routesMaker = $routesMaker;
+
         $this->imagePath = $this->imagePath();
 
         $this->cache = new Cache();
@@ -35,6 +38,15 @@ class ApiController
             $this->breedDirs = $this->returnBreedDirs();
         }
         $this->setimageUrl();
+        $this->setRoutes();
+    }
+
+    protected function setRoutes()
+    {
+        global $routes;
+        $this->routes = $routes;
+
+        return $this;
     }
 
     protected function formatDataForXmlOutput($data)
