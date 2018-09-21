@@ -18,9 +18,7 @@ class ApiController
     private $imagePath = false;
 
     protected $routesMaker;
-    // are alts enabled?
     protected $alt = false;
-    // is xml enabled (hacky, need to find a way to send request to contructor...)
     protected $xml = false;
 
     public function __construct(RoutesMaker $routesMaker)
