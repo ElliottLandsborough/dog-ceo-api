@@ -108,4 +108,10 @@ class routesMaker
     {
         return $this->routes;
     }
+
+    public function detectXml()
+    {
+        echo $this->request->getRequestUri();
+        print_r($this->routesArray);
+    }
 }

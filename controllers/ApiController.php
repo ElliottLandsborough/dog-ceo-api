@@ -25,6 +25,8 @@ class ApiController
     {
         $this->routesMaker = $routesMaker;
 
+        $this->xml = $this->routesMaker->detectXml();
+
         $this->imagePath = $this->imagePath();
 
         $this->cache = new Cache();

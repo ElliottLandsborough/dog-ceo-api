@@ -47,6 +47,10 @@ $routes = $routesMaker->getRoutes();
 $context = new RequestContext();
 $context->fromRequest($request);
 $matcher = new UrlMatcher($routes, $context);
+
+var_dump($matcher->match($request->getPathInfo()));
+die;
+
 $controllerResolver = new config\ControllerResolver($routesMaker);
 $argumentResolver = new HttpKernel\Controller\ArgumentResolver();
 
