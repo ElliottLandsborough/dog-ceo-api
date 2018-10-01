@@ -10,7 +10,7 @@ use Dotenv\Exception\InvalidPathException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\Matcher\UrlMatcher;
+use config\UrlMatcher;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpKernel;
 use config\RoutesMaker;
@@ -48,9 +48,6 @@ $context = new RequestContext();
 $context->fromRequest($request);
 $matcher = new UrlMatcher($routes, $context);
 
-var_dump($matcher->match($request->getPathInfo()));
-die;
-
 $controllerResolver = new config\ControllerResolver($routesMaker);
 $argumentResolver = new HttpKernel\Controller\ArgumentResolver();
 
@@ -58,6 +55,11 @@ try {
     $request->attributes->add($matcher->match($request->getPathInfo()));
 
     $controller = $controllerResolver->getController($request);
+
+    $match = (object) $matcher->runMatchCollection($request->getPathInfo());
+
+    $controller[0]->setXml((isset($match->xml) && $match->xml === true));
+    $controller[0]->setAlt((isset($match->alt) && $match->alt === true));
 
     $arguments = $argumentResolver->getArguments($request, $controller);
 

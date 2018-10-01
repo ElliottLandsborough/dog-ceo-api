@@ -13,15 +13,13 @@ use config\RoutesMaker;
  */
 class ControllerResolver extends cResolver
 {
-    private $routes;
-    private $request;
+    private $routesMaker;
 
     public function __construct(RoutesMaker $routesMaker)
     {
         parent::__construct();
 
-        $this->routes = $routes;
-        $this->request = $request;
+        $this->routesMaker = $routesMaker;
     }
 
     /**
@@ -33,6 +31,6 @@ class ControllerResolver extends cResolver
      */
     protected function instantiateController($class)
     {
-        return new $class($this->request, $this->routes);
+        return new $class($this->routesMaker);
     }
 }

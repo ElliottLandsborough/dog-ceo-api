@@ -25,8 +25,6 @@ class ApiController
     {
         $this->routesMaker = $routesMaker;
 
-        $this->xml = $this->routesMaker->detectXml();
-
         $this->imagePath = $this->imagePath();
 
         $this->cache = new Cache();
@@ -39,6 +37,16 @@ class ApiController
         }
         $this->setimageUrl();
         $this->setRoutes();
+    }
+
+    public function setAlt(bool $alt = false)
+    {
+        $this->alt = $alt;
+    }
+
+    public function setXml(bool $xml = false)
+    {
+        $this->xml = $xml;
     }
 
     protected function setRoutes()
@@ -229,10 +237,8 @@ class ApiController
     }
 
     // json response of 2d breeds array
-    public function breedListAll(bool $xml = false)
+    public function breedListAll()
     {
-        $this->xml = $xml;
-
         $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'No breeds found'];
 
         $allBreeds = $this->getAllBreeds();
@@ -245,20 +251,16 @@ class ApiController
     }
 
     // json response of master breeds
-    public function breedList(bool $xml = false)
+    public function breedList()
     {
-        $this->xml = $xml;
-
         $responseArray = (object) ['status' => 'success', 'message' => $this->getMasterBreeds()];
 
         return $this->response($responseArray);
     }
 
     // json response of sub breeds
-    public function breedListSub($breed = null, bool $xml = false)
+    public function breedListSub($breed = null)
     {
-        $this->xml = $xml;
-
         $status = 404;
         $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'Breed not found'];
 
@@ -364,11 +366,8 @@ class ApiController
     }
 
     // return an image based on the $breed string passed
-    public function breedImage($breed = null, $breed2 = null, bool $all = false, bool $alt = false, int $amount = 0, bool $xml = false)
+    public function breedImage($breed = null, $breed2 = null, bool $all = false, int $amount = 0)
     {
-        $this->alt = $alt;
-        $this->xml = $xml;
-
         // default response, 404
         $status = 404;
         $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'Breed not found'];
@@ -438,11 +437,8 @@ class ApiController
     }
 
     // get multiple random images of any breed
-    public function breedAllRandomImages($amount = 0, bool $alt = false, bool $xml = false)
+    public function breedAllRandomImages($amount = 0)
     {
-        $this->alt = $alt;
-        $this->xml = $xml;
-
         // convert to int
         $amount = (int) $amount;
 
@@ -475,11 +471,8 @@ class ApiController
     }
 
     // return a random image of any breed
-    public function breedAllRandomImage(bool $alt = false, bool $xml = false)
+    public function breedAllRandomImage()
     {
-        $this->alt = $alt;
-        $this->xml = $xml;
-
         // pick a random dir
         $randomBreedDir = $this->getBreedDirs()[array_rand($this->getBreedDirs())];
 
@@ -568,10 +561,8 @@ class ApiController
     // add yaml files to /content/breed-info
     // e.g spaniel.yaml
     //     spaniel-cocker.yaml
-    public function breedText($breed = null, $breed2 = null, bool $xml = false)
+    public function breedText($breed = null, $breed2 = null)
     {
-        $this->xml = $xml;
-
         // default response, 404
         $status = 404;
         $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'Breed not found'];
