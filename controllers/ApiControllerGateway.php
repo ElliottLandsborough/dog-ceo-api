@@ -141,37 +141,28 @@ class ApiControllerGateway extends ApiController
         return false;
     }
 
-    public function breedList(bool $xml = false)
+    public function breedList()
     {
-        $this->xml = $xml;
         return $this->respond($this->cacheEndPoint('breeds/list'));
     }
 
-    public function breedListAll(bool $xml = false)
+    public function breedListAll()
     {
-        $this->xml = $xml;
         return $this->respond($this->cacheEndPoint('breeds/list/all'));
     }
 
-    public function breedListSub($breed = 'hound', bool $xml = false)
+    public function breedListSub($breed = 'hound')
     {
-        $this->xml = $xml;
         return $this->respond($this->cacheEndPoint("breed/$breed/list"));
     }
 
-    public function breedAllRandomImage(bool $alt = false, bool $xml = false)
+    public function breedAllRandomImage()
     {
-        $this->alt = $alt;
-        $this->xml = $xml;
-
         return $this->breedAllRandomImages(1, true, $this->alt);
     }
 
-    public function breedAllRandomImages($amount = 0, $single = false, bool $alt = false, bool $xml = false)
+    public function breedAllRandomImages($amount = 0, $single = false)
     {
-        $this->alt = $alt;
-        $this->xml = $xml;
-
         // make sure its always an int
         $amount = (int) $amount;
 
@@ -219,11 +210,8 @@ class ApiControllerGateway extends ApiController
         return $this->respond($response);
     }
 
-    public function breedImage($breed = null, $breed2 = null, bool $all = false, bool $alt = false, int $amount = 0, bool $xml = false)
+    public function breedImage($breed = null, $breed2 = null, bool $all = false, int $amount = 0)
     {
-        $this->alt = $alt;
-        $this->xml = $xml;
-
         if (strlen($breed) && $breed2 === null) {
             $allImages = $this->cacheEndPoint("breed/$breed/images");
 
@@ -265,10 +253,8 @@ class ApiControllerGateway extends ApiController
         }
     }
 
-    public function breedText($breed = null, $breed2 = null, bool $xml = false)
+    public function breedText($breed = null, $breed2 = null)
     {
-        $this->xml = $xml;
-
         if ($breed2 === null) {
             // breed/{breed}
             return $this->respond($this->cacheEndPoint("breed/$breed"));
