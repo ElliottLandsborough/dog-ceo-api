@@ -3,6 +3,7 @@ root: ~/
 
 windows:
   - dog_ceo_servers:
+      layout: main-vertical
       panes:
         - php:
           - cd ~/projects/dog-ceo-api
