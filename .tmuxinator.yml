@@ -1,0 +1,12 @@
+name: dogceo
+root: ~/
+
+windows:
+  - dog_ceo_servers:
+      panes:
+        - php:
+          - cd ~/projects/dog-ceo-api
+          - php -S localhost:8000
+        - node:
+          - cd ~/projects/dog-ceo-api-node
+          - serverless offline start
