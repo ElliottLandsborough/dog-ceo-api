@@ -65,32 +65,29 @@ class ApiController
 
     protected function formatDataForXmlOutput($data)
     {
-        // error occured, no need to switch
-        if (isset($data->status) && $data->status == 'error') {
-            return $data;
-        }
-
         switch ($this->type) {
-            case 'breedOneDimensional':
-                $data->breed = [$data->message];
+            case 'breedOneDimensional': // /breeds/list/xml
+                $data->breeds['breed'] = $data->message;
                 unset($data->message);
                 break;
-            case 'breedTwoDimensional':
-                // something
+            case 'breedTwoDimensional': // /breeds/list/all/xml
+                $data->breeds['breed'] = array_keys($data->message);
+                $subBreeds = array_filter(array_map('array_filter', $data->message));
+                $data->{'breedcategories'} = $subBreeds;
+                unset($data->message);
                 break;
             case 'imageSingle': // /breeds/image/random/xml
-                $data->image = [$data->message];
+                $data->images['image'] = [$data->message];
                 unset($data->message);
                 break;
             case 'imageMulti': // /breed/bulldog/french/images/xml
-                $data->image = [$data->message];
+                $data->images['image'] = $data->message;
                 unset($data->message);
                 break;
-            case 'breedInfo': //
-                // no need to modify
+            case 'breedInfo': // /breed/spaniel/cocker/xml
+                $data->breed = $data->message;
+                unset($data->message);
                 break;
-            //default:
-                // new type detected, output something clever
         }
 
         return $data;
