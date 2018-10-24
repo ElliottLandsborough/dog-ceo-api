@@ -20,6 +20,7 @@ class ApiController
     protected $routesMaker;
     protected $alt = false;
     protected $xml = false;
+    protected $type = '';
 
     public function __construct(RoutesMaker $routesMaker)
     {
@@ -49,6 +50,11 @@ class ApiController
         $this->xml = $xml;
     }
 
+    public function setType(string $type = '')
+    {
+        $this->type = $type;
+    }
+
     protected function setRoutes()
     {
         global $routes;
@@ -59,27 +65,32 @@ class ApiController
 
     protected function formatDataForXmlOutput($data)
     {
-        // error
+        // error occured, no need to switch
         if (isset($data->status) && $data->status == 'error') {
             return $data;
-        } // single image
-        else if (is_string($data->message) || (isset($data->message['url']) && isset($data->message['altText']))) {
-            $data->message = [$data->message];
-            unset($data->message);
-            unset($data->status);
-        } // multiple images
-        else {
-            $array = [];
-            foreach ($data->message as $image) {
-                if (is_string($image)) {
-                    $array[] = ['url' => $image];
-                } else {
-                    $array[] = $image;
-                }
+        }
+
+        switch ($this->type) {
+            case 'breedOneDimensional':
+                $data->breed = [$data->message];
                 unset($data->message);
-                unset($data->status);
-            }
-            $data->image = $array;
+                break;
+            case 'breedTwoDimensional':
+                // something
+                break;
+            case 'imageSingle': // /breeds/image/random/xml
+                $data->image = [$data->message];
+                unset($data->message);
+                break;
+            case 'imageMulti': // /breed/bulldog/french/images/xml
+                $data->image = [$data->message];
+                unset($data->message);
+                break;
+            case 'breedInfo': //
+                // no need to modify
+                break;
+            //default:
+                // new type detected, output something clever
         }
 
         return $data;
