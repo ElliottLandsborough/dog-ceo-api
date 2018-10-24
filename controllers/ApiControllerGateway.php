@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use models\Cache;
 use models\ImageResponse;
@@ -9,6 +10,8 @@ use models\ImageResponse;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
+use Spatie\ArrayToXml\ArrayToXml;
 
 class ApiControllerGateway extends ApiController
 {
@@ -89,11 +92,18 @@ class ApiControllerGateway extends ApiController
             $endpointResponse = $this->addAltsToResponse($endpointResponse);
         }
 
-        $response = $response->fromJsonString($endpointResponse['body'], $endpointResponse['status']);
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-        if (isset($endpointResponse['headers']['cache-control'][0])) {
-            $response->headers->set('Cache-Control', $endpointResponse['headers']['cache-control'][0]);
+        if ($this->xml) {
+            $data = $this->serializer->deserialize($endpointResponse['body'], ImageResponse::class, 'json');
+            $response = new Response(ArrayToXml::convert((array) $this->formatDataForXmlOutput($data)), $endpointResponse['status']);
+            $response->headers->set('Content-Type', 'xml');
+        } else {
+            $response = $response->fromJsonString($endpointResponse['body'], $endpointResponse['status']);
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            if (isset($endpointResponse['headers']['cache-control'][0])) {
+                $response->headers->set('Cache-Control', $endpointResponse['headers']['cache-control'][0]);
+            }
         }
+
         return $response;
     }
 
@@ -146,17 +156,13 @@ class ApiControllerGateway extends ApiController
         return $this->respond($this->cacheEndPoint("breed/$breed/list"));
     }
 
-    public function breedAllRandomImage(bool $alt = false)
+    public function breedAllRandomImage()
     {
-        $this->alt = $alt;
-
         return $this->breedAllRandomImages(1, true, $this->alt);
     }
 
-    public function breedAllRandomImages($amount = 0, $single = false, bool $alt = false)
+    public function breedAllRandomImages($amount = 0, $single = false)
     {
-        $this->alt = $alt;
-
         // make sure its always an int
         $amount = (int) $amount;
 
@@ -204,10 +210,8 @@ class ApiControllerGateway extends ApiController
         return $this->respond($response);
     }
 
-    public function breedImage($breed = null, $breed2 = null, $all = false, bool $alt = false, int $amount = 0)
+    public function breedImage($breed = null, $breed2 = null, bool $all = false, int $amount = 0)
     {
-        $this->alt = $alt;
-
         if (strlen($breed) && $breed2 === null) {
             $allImages = $this->cacheEndPoint("breed/$breed/images");
 

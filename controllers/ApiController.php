@@ -4,23 +4,28 @@ namespace controllers;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Spatie\ArrayToXml\ArrayToXml;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Yaml\Exception\ParseException;
 use models\Cache;
+use config\RoutesMaker;
 
 class ApiController
 {
     private $imageUrl = false;
     private $breedDirs = [];
     private $cache;
-
     private $imagePath = false;
 
-    // is are alts enabled?
+    protected $routesMaker;
     protected $alt = false;
+    protected $xml = false;
+    protected $type = '';
 
-    public function __construct()
+    public function __construct(RoutesMaker $routesMaker)
     {
+        $this->routesMaker = $routesMaker;
+
         $this->imagePath = $this->imagePath();
 
         $this->cache = new Cache();
@@ -32,6 +37,75 @@ class ApiController
             $this->breedDirs = $this->returnBreedDirs();
         }
         $this->setimageUrl();
+        $this->setRoutes();
+    }
+
+    public function setAlt(bool $alt = false)
+    {
+        $this->alt = $alt;
+    }
+
+    public function setXml(bool $xml = false)
+    {
+        $this->xml = $xml;
+    }
+
+    public function setType(string $type = '')
+    {
+        $this->type = $type;
+    }
+
+    protected function setRoutes()
+    {
+        global $routes;
+        $this->routes = $routes;
+
+        return $this;
+    }
+
+    protected function formatDataForXmlOutput($data)
+    {
+        switch ($this->type) {
+            case 'breedOneDimensional': // /breeds/list/xml
+                $data->breeds['breed'] = $data->message;
+                unset($data->message);
+                break;
+            case 'breedTwoDimensional': // /breeds/list/all/xml
+                $data->breeds['breed'] = array_keys($data->message);
+                $subBreeds = array_filter(array_map('array_filter', $data->message));
+                $data->subbreeds = $subBreeds;
+                $data->allbreeds = $data->message;
+                unset($data->message);
+                break;
+            case 'imageSingle': // /breeds/image/random/xml
+                $data->images['image'] = [$data->message];
+                unset($data->message);
+                break;
+            case 'imageMulti': // /breed/bulldog/french/images/xml
+                $data->images['image'] = $data->message;
+                unset($data->message);
+                break;
+            case 'breedInfo': // /breed/spaniel/cocker/xml
+                $data->breed = $data->message;
+                unset($data->message);
+                break;
+        }
+
+        return $data;
+    }
+
+    protected function response($data, $status = 200)
+    {
+        if (!$this->xml) {
+            $response = new JsonResponse($data, $status);
+        }
+        if ($this->xml) {
+            $response = new Response(ArrayToXml::convert((array) $this->formatDataForXmlOutput($data)), $status);
+            $response->headers->set('Content-Type', 'xml');
+        }
+
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $response;
     }
 
     // the domain and port and protocol
@@ -182,11 +256,7 @@ class ApiController
             $responseArray = (object) ['status' => 'success', 'message' => $allBreeds];
         }
 
-        $response = new JsonResponse($responseArray);
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $this->response($responseArray);
     }
 
     // json response of master breeds
@@ -194,11 +264,7 @@ class ApiController
     {
         $responseArray = (object) ['status' => 'success', 'message' => $this->getMasterBreeds()];
 
-        $response = new JsonResponse($responseArray);
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $this->response($responseArray);
     }
 
     // json response of sub breeds
@@ -214,11 +280,7 @@ class ApiController
             $responseArray = (object) ['status' => 'success', 'message' => $breedSubList];
         }
 
-        $response = new JsonResponse($responseArray, $status);
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $this->response($responseArray, $status);
     }
 
     // clean up a breed subdirectory name
@@ -313,10 +375,8 @@ class ApiController
     }
 
     // return an image based on the $breed string passed
-    public function breedImage($breed = null, $breed2 = null, $all = false, bool $alt = false, int $amount = 0)
+    public function breedImage($breed = null, $breed2 = null, bool $all = false, int $amount = 0)
     {
-        $this->alt = $alt;
-
         // default response, 404
         $status = 404;
         $responseArray = (object) ['status' => 'error', 'code' => '404', 'message' => 'Breed not found'];
@@ -382,18 +442,12 @@ class ApiController
             }
         }
 
-        $response = new JsonResponse($responseArray, $status);
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $this->response($responseArray, $status);
     }
 
     // get multiple random images of any breed
-    public function breedAllRandomImages($amount = 0, $alt = false)
+    public function breedAllRandomImages($amount = 0)
     {
-        $this->alt = $alt;
-
         // convert to int
         $amount = (int) $amount;
 
@@ -421,17 +475,13 @@ class ApiController
         }
 
         $responseArray = (object) ['status' => 'success', 'message' => $images];
-        $response = new JsonResponse($responseArray);
-        $response->headers->set('Access-Control-Allow-Origin', '*');
 
-        return $response;
+        return $this->response($responseArray);
     }
 
     // return a random image of any breed
-    public function breedAllRandomImage(bool $alt = false)
+    public function breedAllRandomImage()
     {
-        $this->alt = $alt;
-
         // pick a random dir
         $randomBreedDir = $this->getBreedDirs()[array_rand($this->getBreedDirs())];
 
@@ -452,11 +502,7 @@ class ApiController
             ];
         }
 
-        $response = new JsonResponse($responseArray);
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $this->response($responseArray);
     }
 
     // make sure the yaml file exists
@@ -492,7 +538,7 @@ class ApiController
      *
      * @return array
      */
-    private function arrayWhitelist($array, $whitelist)
+    private function arrayWhitelist(array $array, $whitelist)
     {
         return array_intersect_key(
             $array,
@@ -537,10 +583,6 @@ class ApiController
             $responseArray = (object) ['status' => 'success', 'message' => $content];
         }
 
-        $response = new JsonResponse($responseArray, $status);
-
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $this->response($responseArray, $status);
     }
 }

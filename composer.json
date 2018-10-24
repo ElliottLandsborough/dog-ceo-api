@@ -4,16 +4,17 @@
     "minimum-stability": "stable",
     "require": {
         "symfony/class-loader": "^3.3",
-        "symfony/http-foundation": "^3.3",
-        "symfony/routing": "^3.3",
-        "symfony/http-kernel": "^3.3",
-        "vlucas/phpdotenv": "^2.4",
-        "symfony/console": "^4.0",
-        "symfony/lock": "^4.0",
+        "symfony/http-foundation": "^4.1",
+        "symfony/routing": "^4.1",
+        "symfony/http-kernel": "^4.1",
+        "vlucas/phpdotenv": "^2.5.1",
+        "symfony/console": "^4.1",
+        "symfony/lock": "^4.1",
         "guzzlehttp/guzzle": "^6.3",
-        "symfony/yaml": "^4.0",
+        "symfony/yaml": "^4.1",
         "symfony/serializer": "^4.1",
-        "symfony/property-access": "^4.1"
+        "symfony/property-access": "^4.1",
+        "spatie/array-to-xml": "^2.7"
     },
     "require-dev": {
     	"phpunit/phpunit": "^6.2"
@@ -22,7 +23,8 @@
         "psr-0": {
             "commands": "",
             "controllers": "",
-            "models": ""
+            "models": "",
+            "config": ""
         }
     }
 }

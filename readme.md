@@ -77,6 +77,12 @@ https://dog.ceo/api/breed/hound/afghan/images/alt
 https://dog.ceo/api/breed/hound/afghan/images/random/alt
 ```
 
+## XML Responses (beta, unfinished)
+Add /xml to any endpoint
+```
+...
+```
+
 ## Stats (optional)
 ```
 cp .env.example .env
@@ -100,6 +106,23 @@ CREATE TABLE `visits` (
 ALTER TABLE `visits` ADD INDEX(`country`);
 ALTER TABLE `daily` ADD INDEX( `route`, `date`);
 ALTER TABLE `visits` ADD INDEX(`ip`);
+```
+
+Put this at the bottom of index.php
+```
+use models\Statistic;
+
+// keep some stats after the response is sent
+// only do stats if db exists in .env
+if (isset($request) && getenv('DOG_CEO_DB_HOST')) {
+    //$routeName = $request->get('_route');
+    $uri = $request->getRequestUri();
+    // only save stats if successful request
+    if ($uri !== '/stats' && $response->getStatusCode() == '200') {
+        $stats = new Statistic();
+        $stats->save($uri);
+    }
+}
 ```
 
 ## MIT License

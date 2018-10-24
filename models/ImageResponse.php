@@ -4,13 +4,21 @@ namespace models;
 
 class ImageResponse
 {
-    private $status;
-    private $data;
+    public $status;
+    public $message;
+    //public $image;
 
     public function getMessage()
     {
         return $this->message;
     }
+
+    /*
+    public function getImage()
+    {
+        return $this->image;
+    }
+    */
 
     public function getStatus()
     {
@@ -22,8 +30,15 @@ class ImageResponse
     	$this->message = $message;
     }
 
+    /*
+    public function setImage($image)
+    {
+        $this->image = $image;
+    }
+    */
+
     public function setStatus($status)
     {
-    	$this->status = $status;
+        $this->status = $status;
     }
 }
