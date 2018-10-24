@@ -4,6 +4,8 @@ namespace controllers\tests;
 
 use PHPUnit\Framework\TestCase;
 use controllers\tests\overrides\ApiControllerOverride;
+use config\RoutesMaker;
+use Symfony\Component\HttpFoundation\Request;
 
 class ApiTest extends TestCase
 {
@@ -11,7 +13,9 @@ class ApiTest extends TestCase
 
     protected function SetUp()
     {
-        $this->api = new ApiControllerOverride();
+        $request = new Request();
+        $routesMaker = new RoutesMaker($request);
+        $this->api = new ApiControllerOverride($routesMaker);
     }
 
     protected function tearDown()

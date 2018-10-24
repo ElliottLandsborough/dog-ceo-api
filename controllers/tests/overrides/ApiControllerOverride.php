@@ -3,6 +3,7 @@
 namespace controllers\tests\overrides;
 
 use controllers\ApiController;
+use config\RoutesMaker;
 
 /**
  * Some overrides to make the tests work
@@ -10,9 +11,9 @@ use controllers\ApiController;
  **/
 class ApiControllerOverride extends ApiController
 {
-    public function __construct()
+    public function __construct(RoutesMaker $routesMaker)
     {
-        parent::__construct();
+        parent::__construct($routesMaker);
     }
 
     public function getBreedsDirectory()
