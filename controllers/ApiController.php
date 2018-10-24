@@ -73,7 +73,8 @@ class ApiController
             case 'breedTwoDimensional': // /breeds/list/all/xml
                 $data->breeds['breed'] = array_keys($data->message);
                 $subBreeds = array_filter(array_map('array_filter', $data->message));
-                $data->{'breedcategories'} = $subBreeds;
+                $data->subbreeds = $subBreeds;
+                $data->allbreeds = $data->message;
                 unset($data->message);
                 break;
             case 'imageSingle': // /breeds/image/random/xml
