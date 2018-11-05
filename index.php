@@ -58,7 +58,7 @@ try {
 
     $match = (object) $matcher->runMatchCollection($request->getPathInfo());
 
-    $controller[0]->setXml((isset($match->xml) && $match->xml === true));
+    $controller[0]->setXml(((isset($match->xml) && $match->xml === true)) or (isset($_SERVER["CONTENT_TYPE"]) && $_SERVER["CONTENT_TYPE"] == 'application/xml'));
     $controller[0]->setAlt((isset($match->alt) && $match->alt === true));
     $controller[0]->setType($match->type);
 
