@@ -65,6 +65,23 @@ class ApiController
 
     protected function formatDataForXmlOutput($data)
     {
+        // rename 'altText' to 'alt' in xml
+        if ($this->alt) {
+            switch ($this->type) {
+                case 'imageSingle': // /breeds/image/random/alt/xml
+                    $data->message['alt'] = $data->message['altText'];
+                    unset($data->message['altText']);
+                    break;
+                case 'imageMulti': // /breed/bulldog/french/images/alt/xml
+                    foreach ($data->message as $key => $value) {
+                        $data->message[$key]['alt'] = $data->message[$key]['altText'];
+                        unset($data->message[$key]['altText']);
+                    }
+                    break;
+            }
+        }
+
+        // restructure data a bit so that xml outputs correctly
         switch ($this->type) {
             case 'breedOneDimensional': // /breeds/list/xml
                 $data->breeds['breed'] = $data->message;
