@@ -7,7 +7,7 @@ use controllers\tests\overrides\ApiControllerOverride;
 use config\RoutesMaker;
 use Symfony\Component\HttpFoundation\Request;
 
-class ApiTest extends TestCase
+class ApiControllerTest extends TestCase
 {
     private $api;
 

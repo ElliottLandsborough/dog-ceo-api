@@ -7,7 +7,7 @@ use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use controllers\CacheController;
 
-class routesMaker
+class RoutesMaker
 {
     private $request;
     private $routes;
