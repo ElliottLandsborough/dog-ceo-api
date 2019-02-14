@@ -1,6 +1,7 @@
 # Dog CEO API
 
 [![Build Status](https://travis-ci.org/ElliottLandsborough/dog-ceo-api.svg?branch=master)](https://travis-ci.org/ElliottLandsborough/dog-ceo-api)
+[![Code Style](https://github.styleci.io/repos/97956282/shield?branch=master)](https://github.styleci.io/repos/97956282)
 
 ## Info
 
