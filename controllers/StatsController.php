@@ -13,6 +13,7 @@ class StatsController
     private $stats;
     private $conn;
     private $statsObject;
+    private $cache;
 
     public function __construct()
     {

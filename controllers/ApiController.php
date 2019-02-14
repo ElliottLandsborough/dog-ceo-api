@@ -16,6 +16,7 @@ class ApiController
     private $breedDirs = [];
     private $cache;
     private $imagePath = false;
+    private $routes = [];
 
     protected $routesMaker;
     protected $alt = false;

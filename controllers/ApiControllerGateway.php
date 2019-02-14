@@ -156,7 +156,7 @@ class ApiControllerGateway extends ApiController
 
     public function breedAllRandomImage()
     {
-        return $this->breedAllRandomImages(1, true, $this->alt);
+        return $this->breedAllRandomImages(1, true);
     }
 
     public function breedAllRandomImages($amount = 0, $single = false)

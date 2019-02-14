@@ -23,7 +23,7 @@ class ApiControllerOverride extends ApiController
 
     public function returnBreedDirs()
     {
-        return [
+        $array = [
             '/directory/that/exists/or/not/spaniel-cocker',
             '/directory/that/exists/or/not/spaniel-irish',
         ];
@@ -33,12 +33,12 @@ class ApiControllerOverride extends ApiController
 
     public function getAllImages($imagesDir)
     {
-        $images = [
+        $array = [
             '/directory/that/exists/or/not/spaniel-cocker/n02102973_1037.jpg',
             '/directory/that/exists/or/not/spaniel-cocker/n02102973_1066.jpg',
             '/directory/that/exists/or/not/spaniel-irish/n02102973_1066.jpg',
         ];
 
-        return $images;
+        return $array;
     }
 }
