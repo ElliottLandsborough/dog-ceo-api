@@ -2,6 +2,7 @@
 
 namespace controllers;
 
+use config\RoutesMaker;
 use models\Cache;
 use models\ImageResponse;
 use Spatie\ArrayToXml\ArrayToXml;
@@ -17,8 +18,10 @@ class ApiControllerGateway extends ApiController
     private $minutes = 2 * 7 * 24 * 60; // cache for 2 weeks!
     private $serializer;
 
-    public function __construct()
+    public function __construct(RoutesMaker $routesMaker)
     {
+        parent::__construct($routesMaker);
+
         $encoders = [new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
         $this->serializer = new Serializer($normalizers, $encoders);
