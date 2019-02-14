@@ -2,12 +2,12 @@
 
 namespace controllers\tests\overrides;
 
-use controllers\ApiController;
 use config\RoutesMaker;
+use controllers\ApiController;
 
 /**
  * Some overrides to make the tests work
- * See controllers\ApiController for function definitions
+ * See controllers\ApiController for function definitions.
  **/
 class ApiControllerOverride extends ApiController
 {
@@ -25,7 +25,7 @@ class ApiControllerOverride extends ApiController
     {
         return [
             '/directory/that/exists/or/not/spaniel-cocker',
-            '/directory/that/exists/or/not/spaniel-irish'
+            '/directory/that/exists/or/not/spaniel-irish',
         ];
 
         return $array;

@@ -36,7 +36,7 @@ class Statistic
         // if in debug mode, show when cant connect to db
         if ($conn->connect_error) {
             if (getenv('DOG_CEO_DEBUG') && getenv('DOG_CEO_DEBUG') == 'true') {
-                error_log('Connection failed: ' . $conn->connect_error);
+                error_log('Connection failed: '.$conn->connect_error);
             }
             die();
         }
@@ -53,7 +53,7 @@ class Statistic
 
         // remove all apart from alphanum/underscore, forward/backslash, dash (regexr.com/3l88o)
         $string = preg_replace('/[^\w\/\\-]/', '', $string);
-        
+
         return $string;
     }
 
@@ -91,10 +91,10 @@ class Statistic
         $sql = "UPDATE daily SET hits = hits + 1 WHERE date = '$dateString' AND route = '$routeName'";
         $this->query($sql);
 
-        $ip = ((isset($_SERVER['REMOTE_ADDR']) && strlen($_SERVER['REMOTE_ADDR'])) ? "'" . $this->conn->real_escape_string($_SERVER['REMOTE_ADDR']) . "'" : 'NULL');
-        $date = "'" . date('Y-m-d h:i:s') . "'";
-        $userAgent = ((isset($_SERVER['HTTP_USER_AGENT']) && strlen($_SERVER['HTTP_USER_AGENT'])) ? "'" . $this->conn->real_escape_string($_SERVER['HTTP_USER_AGENT']) . "'" : 'NULL');
-        $referrer = ((isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER'])) ? "'" . $this->conn->real_escape_string($_SERVER['HTTP_REFERER']) . "'" : 'NULL');
+        $ip = ((isset($_SERVER['REMOTE_ADDR']) && strlen($_SERVER['REMOTE_ADDR'])) ? "'".$this->conn->real_escape_string($_SERVER['REMOTE_ADDR'])."'" : 'NULL');
+        $date = "'".date('Y-m-d h:i:s')."'";
+        $userAgent = ((isset($_SERVER['HTTP_USER_AGENT']) && strlen($_SERVER['HTTP_USER_AGENT'])) ? "'".$this->conn->real_escape_string($_SERVER['HTTP_USER_AGENT'])."'" : 'NULL');
+        $referrer = ((isset($_SERVER['HTTP_REFERER']) && strlen($_SERVER['HTTP_REFERER'])) ? "'".$this->conn->real_escape_string($_SERVER['HTTP_REFERER'])."'" : 'NULL');
 
         $sql = "INSERT INTO `visits` (`ip`, `date`, `endpoint`, `user-agent`, `referrer`) VALUES ($ip, $date, '$routeName', $userAgent, $referrer);";
         $this->query($sql);
@@ -103,7 +103,8 @@ class Statistic
     // get all stats
     public function getAllVisitsWithNoCountry()
     {
-        $sql = "SELECT id, ip, country FROM `visits` where `country` IS NULL;";
+        $sql = 'SELECT id, ip, country FROM `visits` where `country` IS NULL;';
+
         return $this->query($sql);
     }
 
@@ -112,6 +113,7 @@ class Statistic
     {
         $sql = 'select country, count(*) as count from visits group by country;';
         $result = $this->query($sql);
+
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
@@ -120,6 +122,7 @@ class Statistic
     {
         $sql = 'select `user-agent`, count(*) as count from visits group by `user-agent`;';
         $result = $this->query($sql);
+
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
@@ -128,6 +131,7 @@ class Statistic
     {
         $sql = 'select `referrer`, count(*) as count from visits group by `referrer`;';
         $result = $this->query($sql);
+
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 }

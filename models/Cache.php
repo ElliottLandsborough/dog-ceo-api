@@ -3,9 +3,8 @@
 namespace models;
 
 /**
- * Ridiculously simple caching class
+ * Ridiculously simple caching class.
  */
-
 class Cache
 {
     // cache something, cache name, how many minutes to cache, function to use
@@ -34,9 +33,9 @@ class Cache
     public function clearAll()
     {
         $path = realpath(__DIR__.'/../cache');
-        $files = glob($path . '/*');
-        foreach($files as $file) { // iterate files
-            if(is_file($file)) {
+        $files = glob($path.'/*');
+        foreach ($files as $file) { // iterate files
+            if (is_file($file)) {
                 unlink($file); // delete file
             }
         }

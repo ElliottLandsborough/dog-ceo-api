@@ -2,12 +2,11 @@
 
 namespace controllers;
 
-use \stdClass;
-use \Locale;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use models\Statistic;
+use Locale;
 use models\Cache;
+use models\Statistic;
+use stdClass;
+use Symfony\Component\HttpFoundation\Response;
 
 class StatsController
 {
@@ -22,7 +21,7 @@ class StatsController
     // recursively convert array to object
     private function array_to_object($array)
     {
-        $obj = new stdClass;
+        $obj = new stdClass();
         foreach ($array as $k => $v) {
             if (strlen($k)) {
                 if (is_array($v)) {
@@ -32,6 +31,7 @@ class StatsController
                 }
             }
         }
+
         return $obj;
     }
 
@@ -141,7 +141,7 @@ class StatsController
 
                     // today won't have a full set of stats yet, so lets compensate
                     if (date('Y-m-d') == $day) {
-                        $dateTimeStart = $day . ' 00:00:00';
+                        $dateTimeStart = $day.' 00:00:00';
                         //$dateTimeFinish = $day . ' 23:59:59';
                         $dateTime = date('Y-m-d H:i:s');
                         $secondsInDay = 24 * 60 * 60;
@@ -183,7 +183,7 @@ class StatsController
         $projectedMonthly = $projectedYearly / 12;
         $projectedPerMinute = $averagePerDay / 24 / 60;
         $projectedPerSecond = $projectedPerMinute / 60;
-         
+
         $stats['global']['totalHits'] = round($totalHits);
         //$stats['global']['firstDay'] = $this->getFirstDate();
         //$stats['global']['lastDay'] = $this->getLastDate();
@@ -207,9 +207,9 @@ class StatsController
     public function statsPage()
     {
         // don't do this in construct!
-        $stats = new Statistic;
+        $stats = new Statistic();
         $this->stats = $stats;
-        $this->cache = new Cache;
+        $this->cache = new Cache();
         if ($_SERVER['SERVER_NAME'] == 'dog.ceo') {
             // only get the stats every i minutes (keep this high on production e.g 6 hours)
             $this->statsObject = $this->cache->storeAndReturn('generateStats', 360, function () {
@@ -236,44 +236,44 @@ class StatsController
 
         $string .= '<ul>'.PHP_EOL;
         $string .= '<li>'.PHP_EOL;
-        $string .= 'Total Hits: ' . $object->totalHits .PHP_EOL;
+        $string .= 'Total Hits: '.$object->totalHits.PHP_EOL;
         $string .= '</li>'.PHP_EOL;
         $string .= '<li>'.PHP_EOL;
-        $string .= 'Daily Average: ' . $object->averagePerDay .PHP_EOL;
+        $string .= 'Daily Average: '.$object->averagePerDay.PHP_EOL;
         $string .= '</li>'.PHP_EOL;
         $string .= '<li>'.PHP_EOL;
-        $string .= 'Projected Monthly: ' . $object->projectedMonthly .PHP_EOL;
+        $string .= 'Projected Monthly: '.$object->projectedMonthly.PHP_EOL;
         $string .= '</li>'.PHP_EOL;
         $string .= '<li>'.PHP_EOL;
-        $string .= 'Projected Yearly: ' . $object->projectedYearly .PHP_EOL;
+        $string .= 'Projected Yearly: '.$object->projectedYearly.PHP_EOL;
         $string .= '</li>'.PHP_EOL;
         $string .= '</ul>'.PHP_EOL;
 
         if ($_SERVER['SERVER_NAME'] !== 'dog.ceo') {
-            $string .= '<h2>Countries</h2>' . PHP_EOL;
+            $string .= '<h2>Countries</h2>'.PHP_EOL;
 
             $string .= '<ul>'.PHP_EOL;
             foreach ($object->countryCount as $countryName => $percentage) {
                 $string .= '<li>'.PHP_EOL;
-                $string .=  '<span style="display:inline-block;min-width:50px;">' . $percentage . '%</span> ' . $countryName . PHP_EOL;
+                $string .= '<span style="display:inline-block;min-width:50px;">'.$percentage.'%</span> '.$countryName.PHP_EOL;
                 $string .= '</li>'.PHP_EOL;
             }
             $string .= '</ul>'.PHP_EOL;
 
-            $string .= '<h2>User Agents</h2>' . PHP_EOL;
+            $string .= '<h2>User Agents</h2>'.PHP_EOL;
             $string .= '<ul>'.PHP_EOL;
             foreach ($object->userAgentCount as $userAgent => $percentage) {
                 $string .= '<li>'.PHP_EOL;
-                $string .= '<span style="display:inline-block;min-width:50px;">' . $percentage . '%</span> ' . $userAgent . PHP_EOL;
+                $string .= '<span style="display:inline-block;min-width:50px;">'.$percentage.'%</span> '.$userAgent.PHP_EOL;
                 $string .= '</li>'.PHP_EOL;
             }
             $string .= '</ul>'.PHP_EOL;
 
-            $string .= '<h2>Referrers</h2>' . PHP_EOL;
+            $string .= '<h2>Referrers</h2>'.PHP_EOL;
             $string .= '<ul>'.PHP_EOL;
             foreach ($object->referrerCount as $referrer => $percentage) {
                 $string .= '<li>'.PHP_EOL;
-                $string .= '<span style="display:inline-block;min-width:50px;">' . $percentage . '%</span> <a href="' . $referrer . '">' . $referrer . '</a>' . PHP_EOL;
+                $string .= '<span style="display:inline-block;min-width:50px;">'.$percentage.'%</span> <a href="'.$referrer.'">'.$referrer.'</a>'.PHP_EOL;
                 $string .= '</li>'.PHP_EOL;
             }
             $string .= '</ul>'.PHP_EOL;
@@ -301,7 +301,7 @@ class StatsController
     // get a list of all endpoints in the db
     private function getUniqueEndpoints()
     {
-        $sql = "SELECT DISTINCT route FROM daily;";
+        $sql = 'SELECT DISTINCT route FROM daily;';
 
         $result = $this->stats->query($sql);
 
@@ -315,8 +315,8 @@ class StatsController
         //$dateString = date('Y-m-d');
         //$sql = "SELECT DISTINCT date FROM daily WHERE date !== '$dateString' ORDER BY date ASC;";
         //$result = $this->stats->query($sql);
-        
-        $sql = "SELECT DISTINCT date FROM daily ORDER BY date ASC;";
+
+        $sql = 'SELECT DISTINCT date FROM daily ORDER BY date ASC;';
 
         $result = $this->stats->query($sql);
 
@@ -327,6 +327,7 @@ class StatsController
     private function getFirstDate()
     {
         $days = $this->getUniqueDays()->{0}->date;
+
         return $days;
     }
 
@@ -335,6 +336,7 @@ class StatsController
         $days = $this->getUniqueDays();
         $dayCount = count((array) $days);
         $day = $days->{$dayCount - 1}->date;
+
         return $days;
     }
 

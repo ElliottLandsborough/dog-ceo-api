@@ -4,8 +4,8 @@
 
 require __DIR__.'/vendor/autoload.php';
 
-use Symfony\Component\Console\Application;
 use Dotenv\Dotenv;
+use Symfony\Component\Console\Application;
 
 // load .env file
 $dotenv = new Dotenv(__DIR__);

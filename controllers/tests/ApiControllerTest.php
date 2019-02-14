@@ -2,12 +2,12 @@
 
 namespace controllers\tests;
 
-use PHPUnit\Framework\TestCase;
-use controllers\tests\overrides\ApiControllerOverride;
 use config\RoutesMaker;
+use controllers\tests\overrides\ApiControllerOverride;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class ApiTest extends TestCase
+class ApiControllerTest extends TestCase
 {
     private $api;
 

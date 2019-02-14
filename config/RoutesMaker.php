@@ -1,13 +1,14 @@
 <?php
+
 namespace config;
 
-use Symfony\Component\HttpFoundation\Request;
+use controllers\CacheController;
 //use controllers\StatsController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
-use controllers\CacheController;
 
-class routesMaker
+class RoutesMaker
 {
     private $request;
     private $routes;
@@ -46,6 +47,7 @@ class routesMaker
         $slug = trim($slug);
         $slug = ucwords($slug);
         $slug = str_replace(' ', '', $slug);
+
         return $slug;
     }
 
@@ -68,7 +70,7 @@ class routesMaker
 
         // add an xml route (won't work in php development server)
         $params['xml'] = true;
-        $this->routes->add($slug . 'Xml', new Route($route['path'] . '/xml', $params));
+        $this->routes->add($slug.'Xml', new Route($route['path'].'/xml', $params));
 
         return $this;
     }
@@ -96,8 +98,8 @@ class routesMaker
             [
                 '_controller' => [
                     new CacheController(),
-                    'clearAllCacheFiles'
-                ]
+                    'clearAllCacheFiles',
+                ],
             ]
         ));
 

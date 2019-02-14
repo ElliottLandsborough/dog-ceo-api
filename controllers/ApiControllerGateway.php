@@ -2,16 +2,14 @@
 
 namespace controllers;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use models\Cache;
 use models\ImageResponse;
-
-use Symfony\Component\Serializer\Serializer;
+use Spatie\ArrayToXml\ArrayToXml;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-
-use Spatie\ArrayToXml\ArrayToXml;
+use Symfony\Component\Serializer\Serializer;
 
 class ApiControllerGateway extends ApiController
 {
@@ -45,9 +43,9 @@ class ApiControllerGateway extends ApiController
         }
 
         return [
-            'status' => $res->getStatusCode(),
-            'body' => $res->getBody()->getContents(),
-            'headers' => $res->getHeaders()
+            'status'  => $res->getStatusCode(),
+            'body'    => $res->getBody()->getContents(),
+            'headers' => $res->getHeaders(),
         ];
     }
 
@@ -67,13 +65,13 @@ class ApiControllerGateway extends ApiController
         // single image response
         if (!is_array($message) && is_string($message)) {
             $imageResponse->message = [
-                'url' => $message,
-                'altText'   =>  $this->niceBreedAltFromFolder($this->breedFolderFromUrl($message)),
+                'url'       => $message,
+                'altText'   => $this->niceBreedAltFromFolder($this->breedFolderFromUrl($message)),
             ];
         } else {
             foreach ($imageResponse->message as $key => $image) {
                 $imageResponse->message[$key] = [
-                    'url' => $image,
+                    'url'       => $image,
                     'altText'   => $this->niceBreedAltFromFolder($this->breedFolderFromUrl($image)),
                 ];
             }
@@ -183,7 +181,7 @@ class ApiControllerGateway extends ApiController
             $randomBreedResponse = $this->selectRandomItemFromResponse($allBreeds);
             $randomBreed = json_decode($randomBreedResponse['body']);
             $breed = $randomBreed->message;
-            
+
             if (!isset($allBreedsImages[$breed])) {
                 $allBreedsImages[$breed] = $this->cacheEndPoint("breed/$breed/images");
             }
@@ -203,7 +201,7 @@ class ApiControllerGateway extends ApiController
 
         $response['status'] = 200;
         $response['body'] = json_encode([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => $randomImages,
         ]);
 

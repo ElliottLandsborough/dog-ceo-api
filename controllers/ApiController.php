@@ -2,13 +2,13 @@
 
 namespace controllers;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Spatie\ArrayToXml\ArrayToXml;
-use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Yaml\Exception\ParseException;
-use models\Cache;
 use config\RoutesMaker;
+use models\Cache;
+use Spatie\ArrayToXml\ArrayToXml;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 
 class ApiController
 {
@@ -122,6 +122,7 @@ class ApiController
         }
 
         $response->headers->set('Access-Control-Allow-Origin', '*');
+
         return $response;
     }
 
@@ -247,18 +248,21 @@ class ApiController
         $strings = explode('-', $folder);
         $strings = array_reverse($strings);
         $strings = implode(' ', $strings);
+
         return ucfirst($strings);
     }
 
     protected function niceBreedAltFromFolder($folder = false)
     {
-        $alt = $this->niceBreedNameFromFolder($folder) . ' dog';
+        $alt = $this->niceBreedNameFromFolder($folder).' dog';
+
         return $alt;
     }
 
     protected function breedFolderFromUrl($url)
     {
         $explodedPath = explode('/', $url);
+
         return $explodedPath[count($explodedPath) - 2];
     }
 
@@ -410,7 +414,7 @@ class ApiController
                         $images[$key] = $this->imageUrl.$directory.'/'.basename($image);
                     } else {
                         $images[$key] = [
-                            'url' => $this->imageUrl.$directory.'/'.basename($image),
+                            'url'       => $this->imageUrl.$directory.'/'.basename($image),
                             'altText'   => $this->niceBreedAltFromFolder($directory),
                         ];
                     }
@@ -427,7 +431,7 @@ class ApiController
                             $images[$key] = $this->imageUrl.$directory.'/'.basename($image);
                         } else {
                             $images[$key] = [
-                                'url' => $this->imageUrl.$directory.'/'.basename($image),
+                                'url'       => $this->imageUrl.$directory.'/'.basename($image),
                                 'altText'   => $this->niceBreedAltFromFolder($directory),
                             ];
                         }
@@ -447,11 +451,11 @@ class ApiController
                             $responseArray = (object) ['status' => 'success', 'message' => $this->imageUrl.$directory.'/'.basename($image)];
                         } else {
                             $responseArray = (object) [
-                                'status' => 'success',
+                                'status'  => 'success',
                                 'message' => [
-                                    'url' => $this->imageUrl.$directory.'/'.basename($image),
-                                    'altText' => $this->niceBreedAltFromFolder($directory)
-                                ]
+                                    'url'     => $this->imageUrl.$directory.'/'.basename($image),
+                                    'altText' => $this->niceBreedAltFromFolder($directory),
+                                ],
                             ];
                         }
                     }
@@ -485,7 +489,7 @@ class ApiController
                 $images[] = $this->imageUrl.$directory.'/'.basename($image);
             } else {
                 $images[] = [
-                    'url' => $this->imageUrl.$directory.'/'.basename($image),
+                    'url'       => $this->imageUrl.$directory.'/'.basename($image),
                     'altText'   => $this->niceBreedAltFromFolder($directory),
                 ];
             }
@@ -511,11 +515,11 @@ class ApiController
             $responseArray = (object) ['status' => 'success', 'message' => $this->imageUrl.$directory.'/'.basename($image)];
         } else {
             $responseArray = (object) [
-                'status' => 'success',
+                'status'  => 'success',
                 'message' => [
-                    'url' => $this->imageUrl.$directory.'/'.basename($image),
-                    'altText' => $this->niceBreedAltFromFolder($directory)
-                ]
+                    'url'     => $this->imageUrl.$directory.'/'.basename($image),
+                    'altText' => $this->niceBreedAltFromFolder($directory),
+                ],
             ];
         }
 
@@ -574,7 +578,7 @@ class ApiController
             try {
                 $array = Yaml::parse(file_get_contents($path));
             } catch (ParseException $exception) {
-                die('Unable to parse the YAML string: '. $exception->getMessage());
+                die('Unable to parse the YAML string: '.$exception->getMessage());
             }
 
             return $this->arrayWhitelist($array, $whitelist);

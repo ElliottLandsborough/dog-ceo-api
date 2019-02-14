@@ -27,7 +27,7 @@ class ImageResponse
 
     public function setMessage($message)
     {
-    	$this->message = $message;
+        $this->message = $message;
     }
 
     /*

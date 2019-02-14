@@ -1,19 +1,20 @@
 <?php
+
 // Turn off all error reporting
 // See php console or error log to fix issues
 @ini_set('display_errors', 0);
 
 require_once realpath(__DIR__.'/vendor/autoload.php');
 
+use config\RoutesMaker;
+use config\UrlMatcher;
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidPathException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RequestContext;
-use config\UrlMatcher;
-use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Symfony\Component\HttpKernel;
-use config\RoutesMaker;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
+use Symfony\Component\Routing\RequestContext;
 
 try {
     $dotenv = new Dotenv(__DIR__);
@@ -58,7 +59,7 @@ try {
 
     $match = (object) $matcher->runMatchCollection($request->getPathInfo());
 
-    $controller[0]->setXml(((isset($match->xml) && $match->xml === true)) or (isset($_SERVER["CONTENT_TYPE"]) && $_SERVER["CONTENT_TYPE"] == 'application/xml'));
+    $controller[0]->setXml(((isset($match->xml) && $match->xml === true)) or (isset($_SERVER['CONTENT_TYPE']) && $_SERVER['CONTENT_TYPE'] == 'application/xml'));
     $controller[0]->setAlt((isset($match->alt) && $match->alt === true));
     $controller[0]->setType($match->type);
 

@@ -2,11 +2,11 @@
 
 namespace commands;
 
+use models\Statistic;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Command\LockableTrait;
-use models\Statistic;
 
 class GetCountriesCommand extends Command
 {
@@ -17,7 +17,7 @@ class GetCountriesCommand extends Command
     public function __construct()
     {
         parent::__construct();
-        $stats = new Statistic;
+        $stats = new Statistic();
         $this->stats = $stats;
     }
 
@@ -32,8 +32,7 @@ class GetCountriesCommand extends Command
 
         // the full command description shown when running the command with
         // the "--help" option
-        ->setHelp('Gets the countries...')
-        ;
+        ->setHelp('Gets the countries...');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

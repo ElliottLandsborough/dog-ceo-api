@@ -2,14 +2,11 @@
 
 namespace config;
 
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Controller\ControllerResolver as cResolver;
-
-use config\RoutesMaker;
 
 /**
  * Extenc the controller resolver so that we can provide the
- * constructor with (RouteCollection $routes, Request $request)
+ * constructor with (RouteCollection $routes, Request $request).
  */
 class ControllerResolver extends cResolver
 {
