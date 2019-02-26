@@ -11,6 +11,7 @@ class Cache
     public function storeAndReturn($name, $minutes, $closure)
     {
         $path = realpath(__DIR__.'/../cache');
+        $name = preg_replace("/[^a-z0-9_.-]+/i", "#", strtolower($name));
         $cacheFile = $path.'/'.$name;
         // if path is writeable
         if (is_writable($path)) {
