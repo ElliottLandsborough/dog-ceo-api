@@ -57,7 +57,6 @@ class ApiControllerGateway extends ApiController
         $cache = new Cache();
 
         $whitelist = $cache->storeAndReturn('ApiControllerGateway.array.endpointWhitelist', 60, function () use ($cache) {
-
             $getAllBreeds = $cache->storeAndReturn('ApiController.function.getAllBreeds', 60, function () {
                 return $this->getAllBreeds();
             });
@@ -89,9 +88,9 @@ class ApiControllerGateway extends ApiController
     private function notFoundResponse()
     {
         $body = [
-            'status' => 'error',
-            'code' => 404,
-            'message' => 'Breed not found' // the only time this will fire is when a bad breed is selected
+            'status'  => 'error',
+            'code'    => 404,
+            'message' => 'Breed not found', // the only time this will fire is when a bad breed is selected
         ];
 
         $responseArray = [
