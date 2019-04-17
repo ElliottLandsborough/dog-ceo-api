@@ -91,7 +91,7 @@ class ApiControllerGateway extends ApiController
         $body = [
             'status' => 'error',
             'code' => 404,
-            'message' => 'Route not found'
+            'message' => 'Breed not found' // the only time this will fire is when a bad breed is selected
         ];
 
         $responseArray = [
