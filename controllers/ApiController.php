@@ -185,7 +185,7 @@ class ApiController
     }
 
     // two dimensional array of all breeds
-    private function getAllBreeds()
+    protected function getAllBreeds()
     {
         $breeds = $this->getBreedDirs();
 

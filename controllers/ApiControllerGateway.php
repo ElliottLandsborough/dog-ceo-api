@@ -52,8 +52,62 @@ class ApiControllerGateway extends ApiController
         ];
     }
 
+    private function endpointIswhitelisted($endpoint)
+    {
+        $cache = new Cache();
+
+        $whitelist = $cache->storeAndReturn('ApiControllerGateway.array.endpointWhitelist', 60, function () use ($cache) {
+
+            $getAllBreeds = $cache->storeAndReturn('ApiController.function.getAllBreeds', 60, function () {
+                return $this->getAllBreeds();
+            });
+
+            $whitelist = [
+                'breeds/list',
+                'breeds/list/all',
+            ];
+
+            foreach ($getAllBreeds as $breed => $breed2array) {
+                $whitelist[] = "breed/$breed";
+                $whitelist[] = "breed/$breed/list";
+                $whitelist[] = "breed/$breed/images";
+
+                if (count($breed2array)) {
+                    foreach ($breed2array as $breed2) {
+                        $whitelist[] = "breed/$breed/$breed2";
+                        $whitelist[] = "breed/$breed/$breed2/images";
+                    }
+                }
+            }
+
+            return $whitelist;
+        });
+
+        return in_array($endpoint, $whitelist);
+    }
+
+    private function notFoundResponse()
+    {
+        $body = [
+            'status' => 'error',
+            'code' => 404,
+            'message' => 'Route not found'
+        ];
+
+        $responseArray = [
+            'status'  => 404,
+            'body'    => json_encode($body),
+        ];
+
+        return $responseArray;
+    }
+
     private function cacheEndPoint($endpoint)
     {
+        if (!$this->endpointIswhitelisted($endpoint)) {
+            return $this->notFoundResponse();
+        }
+
         return $this->cache->storeAndReturn(str_replace('/', '.', $endpoint), $this->minutes, function () use ($endpoint) {
             return $this->apiGet($endpoint);
         });
