@@ -46,7 +46,7 @@ class ApiControllerGateway extends ApiController
                 $dirs[] = $breed;
             } else {
                 foreach ($breed2array as $breed2) {
-                    $dirs[] = $breed . '-' . $breed2;
+                    $dirs[] = $breed.'-'.$breed2;
                 }
             }
         }
@@ -78,7 +78,6 @@ class ApiControllerGateway extends ApiController
         $allBreeds = $this->getAllBreeds();
 
         $whitelist = $this->cache->storeAndReturn('ApiControllerGateway.array.endpointWhitelist', 60, function () use ($allBreeds) {
-
             $whitelist = [
                 'breeds/list',
                 'breeds/list/all',
