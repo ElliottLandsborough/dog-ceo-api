@@ -16,7 +16,6 @@ class ApiController
     private $imagePath = false;
     private $routes = [];
 
-    protected $breedDirs = [];
     protected $cache;
     protected $routesMaker;
     protected $alt = false;
@@ -30,16 +29,6 @@ class ApiController
         $this->imagePath = $this->imagePath();
 
         $this->cache = new Cache();
-
-        if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'dog.ceo') {
-            $self = $this;
-
-            $this->breedDirs = $this->cache->storeAndReturn('returnBreedDirs', 60, function () use ($self) {
-                return $self->returnBreedDirs();
-            });
-        } else {
-            $this->breedDirs = $this->returnBreedDirs();
-        }
 
         $this->setimageUrl();
         $this->setRoutes();
@@ -185,7 +174,19 @@ class ApiController
 
     protected function getBreedDirs()
     {
-        return $this->breedDirs;
+        $breedDirs = [];
+
+        if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'dog.ceo') {
+            $self = $this;
+
+            $breedDirs = $this->cache->storeAndReturn('returnBreedDirs', 60, function () use ($self) {
+                return $self->returnBreedDirs();
+            });
+        } else {
+            $breedDirs = $this->returnBreedDirs();
+        }
+
+        return $breedDirs;
     }
 
     // two dimensional array of all breeds
@@ -508,8 +509,10 @@ class ApiController
     // return a random image of any breed
     public function breedAllRandomImage()
     {
+        $breedDirs = $this->getBreedDirs();
+
         // pick a random dir
-        $randomBreedDir = $this->getBreedDirs()[array_rand($this->getBreedDirs())];
+        $randomBreedDir = $breedDirs[array_rand($breedDirs)];
 
         // pick a random image from that dir
         $image = $this->getRandomImage($randomBreedDir);

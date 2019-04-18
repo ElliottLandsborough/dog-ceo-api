@@ -35,7 +35,7 @@ class ApiControllerGateway extends ApiController
 
     protected function returnBreedDirs()
     {
-        $allBreedsResponse = $this->cacheEndPoint('breeds/list/all');
+        $allBreedsResponse = $this->cacheEndPoint('breeds/list/all', false);
         $allBreedsBody = json_decode($allBreedsResponse['body']);
         $breeds = $allBreedsBody->message;
 
@@ -119,9 +119,9 @@ class ApiControllerGateway extends ApiController
         return $responseArray;
     }
 
-    private function cacheEndPoint($endpoint)
+    private function cacheEndPoint($endpoint, $checkWhiteList = true)
     {
-        if (!$this->endpointIswhitelisted($endpoint)) {
+        if ($checkWhiteList && !$this->endpointIswhitelisted($endpoint)) {
             return $this->notFoundResponse();
         }
 
