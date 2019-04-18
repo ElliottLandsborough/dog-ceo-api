@@ -35,6 +35,10 @@ class RoutesMaker
         if (getenv('DOG_CEO_GATEWAY_ENABLE') && getenv('DOG_CEO_GATEWAY_ENABLE') == 'true') {
             $classToUse = 'controllers\ApiControllerGateway';
         }
+        // debug controller in case live is havign issues
+        if (isset($_GET['debug'])) {
+            $classToUse = 'controllers\ApiControllerGatewayDebug';
+        }
 
         return $classToUse;
     }
