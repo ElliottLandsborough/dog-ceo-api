@@ -13,11 +13,11 @@ use Symfony\Component\Yaml\Yaml;
 class ApiController
 {
     private $imageUrl = false;
-    private $breedDirs = [];
-    private $cache;
     private $imagePath = false;
     private $routes = [];
 
+    protected $breedDirs = [];
+    protected $cache;
     protected $routesMaker;
     protected $alt = false;
     protected $xml = false;
@@ -30,13 +30,17 @@ class ApiController
         $this->imagePath = $this->imagePath();
 
         $this->cache = new Cache();
+
         if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] == 'dog.ceo') {
-            $this->breedDirs = $this->cache->storeAndReturn('returnBreedDirs', 60, function () {
-                return $this->returnBreedDirs();
+            $self = $this;
+
+            $this->breedDirs = $this->cache->storeAndReturn('returnBreedDirs', 60, function () use ($self) {
+                return $self->returnBreedDirs();
             });
         } else {
             $this->breedDirs = $this->returnBreedDirs();
         }
+
         $this->setimageUrl();
         $this->setRoutes();
     }
@@ -179,7 +183,7 @@ class ApiController
         return $dirs;
     }
 
-    private function getBreedDirs()
+    protected function getBreedDirs()
     {
         return $this->breedDirs;
     }

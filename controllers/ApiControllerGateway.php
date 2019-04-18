@@ -14,9 +14,9 @@ use Symfony\Component\Serializer\Serializer;
 
 class ApiControllerGateway extends ApiController
 {
-    private $cache;
     private $minutes = 2 * 7 * 24 * 60; // cache for 2 weeks!
     private $serializer;
+    protected $cache;
 
     public function __construct(RoutesMaker $routesMaker)
     {
@@ -31,6 +31,27 @@ class ApiControllerGateway extends ApiController
         if ($_SERVER['SERVER_NAME'] !== 'dog.ceo') {
             $this->minutes = 1;
         }
+    }
+
+    protected function returnBreedDirs()
+    {
+        $allBreedsResponse = $this->cacheEndPoint('breeds/list/all');
+        $allBreedsBody = json_decode($allBreedsResponse['body']);
+        $breeds = $allBreedsBody->message;
+
+        $dirs = [];
+
+        foreach ($breeds as $breed => $breed2array) {
+            if (count($breed2array) == 0) {
+                $dirs[] = $breed;
+            } else {
+                foreach ($breed2array as $breed2) {
+                    $dirs[] = $breed . '-' . $breed2;
+                }
+            }
+        }
+
+        return $dirs;
     }
 
     private function apiGet($endpoint)
@@ -54,19 +75,16 @@ class ApiControllerGateway extends ApiController
 
     private function endpointIswhitelisted($endpoint)
     {
-        $cache = new Cache();
+        $allBreeds = $this->getAllBreeds();
 
-        $whitelist = $cache->storeAndReturn('ApiControllerGateway.array.endpointWhitelist', 60, function () use ($cache) {
-            $getAllBreeds = $cache->storeAndReturn('ApiController.function.getAllBreeds', 60, function () {
-                return $this->getAllBreeds();
-            });
+        $whitelist = $this->cache->storeAndReturn('ApiControllerGateway.array.endpointWhitelist', 60, function () use ($allBreeds) {
 
             $whitelist = [
                 'breeds/list',
                 'breeds/list/all',
             ];
 
-            foreach ($getAllBreeds as $breed => $breed2array) {
+            foreach ($allBreeds as $breed => $breed2array) {
                 $whitelist[] = "breed/$breed";
                 $whitelist[] = "breed/$breed/list";
                 $whitelist[] = "breed/$breed/images";
