@@ -120,9 +120,11 @@ class ApiControllerGateway extends ApiController
 
     private function cacheEndPoint($endpoint, $checkWhiteList = true)
     {
+        /*
         if ($checkWhiteList && !$this->endpointIswhitelisted($endpoint)) {
             return $this->notFoundResponse();
         }
+        */
 
         return $this->cache->storeAndReturn(str_replace('/', '.', $endpoint), $this->minutes, function () use ($endpoint) {
             return $this->apiGet($endpoint);
