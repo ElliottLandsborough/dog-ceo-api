@@ -8,6 +8,10 @@
  - To add your own images submit a pull request to https://github.com/jigsawpieces/dog-api-images
  - API requests are cached from lambda https://github.com/ElliottLandsborough/dog-ceo-api-node
 
+## Stats
+
+![Screenshot of statistics page](https://dog.ceo/api/stats.png)
+
 ## Requirements
 
  - php
@@ -17,6 +21,7 @@
  - run 'vendor/bin/phpunit' for unit tests
 
 ## Setup
+
  - Clone repo
  - cd repo dir
  - composer install
