@@ -2,6 +2,9 @@
 // src/Util/BreedUtil.php
 namespace App\Util;
 
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Contracts\Cache\ItemInterface;
+
 class BreedUtil
 {
     protected $endpointUrl;
@@ -9,6 +12,22 @@ class BreedUtil
     public function __construct()
     {
         $this->endpointUrl = $_ENV['DOG_CEO_LAMBDA_URI'];
+    }
+
+    protected function cacheAndReturn($url, $seconds)
+    {
+        $self = $this;
+
+        $cache = new FilesystemAdapter();
+
+        // The callable will only be executed on a cache miss.
+        $value = $cache->get(md5($url), function (ItemInterface $item) use ($self, $url, $seconds) {
+            $item->expiresAfter($seconds);
+
+            return $self->getWithGuzzle($url);
+        });
+
+        return $value;
     }
 
     protected function getWithGuzzle(string $url): ?Object
@@ -38,6 +57,6 @@ class BreedUtil
 
         $url = $this->endpointUrl . $suffix;
 
-        return $this->getWithGuzzle($url);
+        return $this->cacheAndReturn($url, 3600);
     }
 }
