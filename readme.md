@@ -7,6 +7,7 @@
 
  - To add your own images submit a pull request to https://github.com/jigsawpieces/dog-api-images
  - API requests are cached from lambda https://github.com/ElliottLandsborough/dog-ceo-api-node
+ - Rewritten in Symfony4 recently. Check out the 'legacy' branch for the old version
 
 ## Stats
 
@@ -25,8 +26,7 @@
  - Clone repo
  - cd repo dir
  - composer install
- - Images go into /img (e.g /api/img/spaniel-irish and /api/img/spaniel-cocker or /api/img/spaniel)
- - php -S localhost:8000
+ - symfony server:start
 
 ## Endpoints
 
