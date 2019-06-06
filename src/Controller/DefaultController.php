@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Post;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class DefaultController extends AbstractController
 {
@@ -13,6 +14,6 @@ class DefaultController extends AbstractController
      */
     public function index()
     {
-        header('Location: https://dog.ceo/dog-api');
+        return $this->redirect('https://dog.ceo/dog-api');
     }
 }
