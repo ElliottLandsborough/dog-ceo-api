@@ -17,6 +17,7 @@
 
  - php
  - php-yaml
+ - php-xml
  - composer
  - http://vision.stanford.edu/aditya86/ImageNetDogs/images.tar
  - run 'vendor/bin/phpunit' for unit tests
@@ -87,48 +88,6 @@ https://dog.ceo/api/breed/hound/afghan/images/random/alt
 Add 'Content-Type' request header containing 'application/xml'. Alternatively, add '/xml' to any endpoint:
 ```
 https://dog.ceo/api/breeds/image/random/3/alt/xml
-```
-
-## Stats (optional)
-```
-cp .env.example .env
-```
-
-```
-CREATE DATABASE `dogstats`;
-
-CREATE TABLE `dogstats`.`daily` ( `id` INT NOT NULL AUTO_INCREMENT , `route` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL , `date` DATE NOT NULL , `hits` INT NOT NULL DEFAULT '0' , PRIMARY KEY (`id`), INDEX (`route`), INDEX (`date`)) ENGINE = InnoDB;
-
-CREATE TABLE `visits` (
-  `id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `ip` varchar(39) COLLATE 'utf8_unicode_ci' NULL,
-  `date` datetime NOT NULL,
-  `country` varchar(2) COLLATE 'utf8_unicode_ci' NULL,
-  `endpoint` text COLLATE 'utf8_unicode_ci' NULL,
-  `user-agent` varchar(255) COLLATE 'utf8_unicode_ci' NULL,
-  `referrer` text COLLATE 'utf8_unicode_ci' NULL
-);
-
-ALTER TABLE `visits` ADD INDEX(`country`);
-ALTER TABLE `daily` ADD INDEX( `route`, `date`);
-ALTER TABLE `visits` ADD INDEX(`ip`);
-```
-
-Put this at the bottom of index.php
-```
-use models\Statistic;
-
-// keep some stats after the response is sent
-// only do stats if db exists in .env
-if (isset($request) && getenv('DOG_CEO_DB_HOST')) {
-    //$routeName = $request->get('_route');
-    $uri = $request->getRequestUri();
-    // only save stats if successful request
-    if ($uri !== '/stats' && $response->getStatusCode() == '200') {
-        $stats = new Statistic();
-        $stats->save($uri);
-    }
-}
 ```
 
 ## MIT License
