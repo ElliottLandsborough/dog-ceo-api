@@ -12,7 +12,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/", name="homepage")
      */
-    public function index()
+    public function index(): ?RedirectResponse
     {
         return $this->redirect('https://dog.ceo/dog-api');
     }
