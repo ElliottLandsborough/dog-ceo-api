@@ -11,6 +11,9 @@ class BreedUtil
     protected $endpointUrl;
     protected $response;
 
+    // error messages
+    protected $masterBreedNotFoundMessage = 'Breed not found (master breed does not exist).';
+
     public function __construct()
     {
         $this->endpointUrl = $_ENV['DOG_CEO_LAMBDA_URI'];
@@ -84,7 +87,22 @@ class BreedUtil
 
             $this->response = $this->cacheAndReturn($url, 3600);
         } else {
-            $this->setNotFoundResponse('Breed not found (master breed does not exist).');
+            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+        }
+
+        return $this;
+    }
+
+    public function getTopLevelImages(string $breed)
+    {
+        if ($this->masterBreedExists($breed)) {
+            $suffix = "breed/$breed/images";
+
+            $url = $this->endpointUrl . $suffix;
+
+            $this->response = $this->cacheAndReturn($url, 3600);
+        } else {
+            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
         }
 
         return $this;

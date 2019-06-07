@@ -28,7 +28,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/breeds/list/all")
      */
-    public function listAllBreeds(): ?JsonResponse
+    public function getAllBreeds(): ?JsonResponse
     {
         return $this->breedUtil->getAllBreeds()->jsonResponse();
     }
@@ -36,7 +36,7 @@ class DefaultController extends AbstractController
     /**
      * @Route("/breeds/list")
      */
-    public function listAllTopLevelBreeds(): ?JsonResponse
+    public function getAllTopLevelBreeds(): ?JsonResponse
     {
         return $this->breedUtil->getAllTopLevelBreeds()->jsonResponse();
     }
@@ -44,8 +44,16 @@ class DefaultController extends AbstractController
     /**
      * @route("/breed/{breed}/list")
      */
-    public function listAllSubBreeds(string $breed): ?JsonResponse
+    public function getAllSubBreeds(string $breed): ?JsonResponse
     {
         return $this->breedUtil->getAllSubBreeds($breed)->jsonResponse();
+    }
+
+    /**
+     * @route("/breed/{breed}/images")
+     */
+    public function getTopLevelImages(string $breed): ?JsonResponse
+    {
+        return $this->breedUtil->getTopLevelImages($breed)->jsonResponse();
     }
 }
