@@ -9,6 +9,7 @@
         "doctrine/cache": "^1.8",
         "guzzlehttp/guzzle": "~6.0",
         "sensio/framework-extra-bundle": "^5.3",
+        "spatie/array-to-xml": "^2.9",
         "symfony/cache": "4.3.*",
         "symfony/console": "4.3.*",
         "symfony/dotenv": "4.3.*",

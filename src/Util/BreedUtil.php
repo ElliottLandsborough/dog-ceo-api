@@ -7,6 +7,7 @@ use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Spatie\ArrayToXml\ArrayToXml;
 
 class BreedUtil
 {
@@ -307,6 +308,11 @@ class BreedUtil
         $response->headers->set('Content-Type', 'xml');
 
         return $response;
+    }
+
+    private function formatDataForXmlOutput()
+    {
+        return $this->response;
     }
 
     private function arrayResponse(): ?object

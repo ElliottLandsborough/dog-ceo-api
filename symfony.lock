@@ -65,6 +65,9 @@
             "config/packages/sensio_framework_extra.yaml"
         ]
     },
+    "spatie/array-to-xml": {
+        "version": "2.9.0"
+    },
     "symfony/cache": {
         "version": "v4.3.0"
     },
