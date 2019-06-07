@@ -51,9 +51,18 @@ class BreedUtil
         }
     }
 
-    public function getBreeds()
+    public function getAllBreeds()
     {
         $suffix = 'breeds/list/all';
+
+        $url = $this->endpointUrl . $suffix;
+
+        return $this->cacheAndReturn($url, 3600);
+    }
+
+    public function getTopLevelBreeds()
+    {
+        $suffix = 'breeds/list';
 
         $url = $this->endpointUrl . $suffix;
 

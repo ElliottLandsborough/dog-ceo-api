@@ -30,7 +30,18 @@ class DefaultController extends AbstractController
      */
     public function listAllBreeds()
     {
-        $response = new JsonResponse($this->breedUtil->getBreeds());
+        $response = new JsonResponse($this->breedUtil->getAllBreeds());
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response;
+    }
+
+    /**
+     * @Route("/breeds/list")
+     */
+    public function listAllTopLevelBreeds()
+    {
+        $response = new JsonResponse($this->breedUtil->getTopLevelBreeds());
         $response->headers->set('Access-Control-Allow-Origin', '*');
 
         return $response;
