@@ -112,4 +112,20 @@ class DefaultController extends AbstractController
     {
         return $this->breedUtil->getRandomImages($amount)->jsonResponse();
     }
+
+    /**
+     * @route("/breed/{breed}")
+     */
+    public function masterText(string $breed): ?JsonResponse
+    {
+        return $this->breedUtil->masterText($breed)->jsonResponse();
+    }
+
+    /**
+     * @route("/breed/{breed1}/{breed2}")
+     */
+    public function subText(string $breed1, string $breed2): ?JsonResponse
+    {
+        return $this->breedUtil->subText($breed1, $breed2)->jsonResponse();
+    }
 }

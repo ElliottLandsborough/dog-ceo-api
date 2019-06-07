@@ -13,6 +13,7 @@ class BreedUtil
     protected $response;
     protected $responseCode;
     protected $breedDelimiter = '-';
+    protected $cacheSeconds = 2 * 24 * 60 * 60; // 2 weeks in seconds
 
     // error messages
     protected $masterBreedNotFoundMessage = 'Breed not found (master breed does not exist).';
@@ -36,6 +37,9 @@ class BreedUtil
             return $self->getWithGuzzle($url);
         });
 
+        // set 200 here, request was successful
+        $this->responseCode = Response::HTTP_OK;
+
         return $value;
     }
 
@@ -45,7 +49,6 @@ class BreedUtil
 
         try {
             $res = $client->request('GET', $url);
-            $this->responseCode = Response::HTTP_OK;
 
             return json_decode($res->getBody()->getContents());
         } catch (\GuzzleHttp\Exception\ClientException $e) {
@@ -61,7 +64,7 @@ class BreedUtil
 
         $url = $this->endpointUrl . $suffix;
 
-        $this->response = $this->cacheAndReturn($url, 3600);
+        $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
         return $this;
     }
@@ -72,7 +75,7 @@ class BreedUtil
 
         $url = $this->endpointUrl . $suffix;
 
-        $this->response = $this->cacheAndReturn($url, 3600);
+        $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
         return $this;
     }
@@ -84,7 +87,7 @@ class BreedUtil
 
             $url = $this->endpointUrl . $suffix;
 
-            $this->response = $this->cacheAndReturn($url, 3600);
+            $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
         } else {
             $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
         }
@@ -99,7 +102,7 @@ class BreedUtil
 
             $url = $this->endpointUrl . $suffix;
 
-            $this->response = $this->cacheAndReturn($url, 3600);
+            $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
         } else {
             $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
         }
@@ -133,7 +136,7 @@ class BreedUtil
 
                 $url = $this->endpointUrl . $suffix;
 
-                $this->response = $this->cacheAndReturn($url, 3600);
+                $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
             } else {
                 $this->setNotFoundResponse($this->subBreedNotFoundMessage);
             }
@@ -287,5 +290,42 @@ class BreedUtil
     private function arrayResponse(): ?object
     {
         return $this->response;
+    }
+
+    public function masterText(string $breed): ?self
+    {
+        if ($this->masterBreedExists($breed)) {
+            $suffix = "breed/$breed";
+
+            $url = $this->endpointUrl . $suffix;
+
+            $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
+        } else {
+            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @route("/breed/{breed1}/{breed2}")
+     */
+    public function subText(string $breed1, string $breed2): ?self
+    {
+        if ($this->masterBreedExists($breed1)) {
+            if ($this->subBreedExists($breed1, $breed2)) {
+                $suffix = "breed/$breed1/$breed2";
+
+                $url = $this->endpointUrl . $suffix;
+
+                $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
+            } else {
+                $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+            }
+        } else {
+            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+        }
+
+        return $this;
     }
 }
