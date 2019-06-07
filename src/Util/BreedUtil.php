@@ -342,4 +342,80 @@ class BreedUtil
 
         return $this;
     }
+
+    private function addAltTags(): ?self
+    {
+        if (!is_array($this->response->message) && is_string($this->response->message)) {
+            // single image response - this is never called at the moment
+            $this->response->message = [
+                'url'       => $this->response->message,
+                'altText'   => $this->niceBreedAltFromFolder($this->breedFolderFromUrl($this->response->message)),
+            ];
+        } else {
+            // multi image response
+            foreach ($this->response->message as $key => $image) {
+                $this->response->message[$key] = [
+                    'url'       => $image,
+                    'altText'   => $this->niceBreedAltFromFolder($this->breedFolderFromUrl($image)),
+                ];
+            }
+        }
+
+        return $this;
+    }
+
+    private function niceBreedNameFromFolder($folder = false)
+    {
+        $strings = explode('-', $folder);
+        $strings = array_reverse($strings);
+        $strings = implode(' ', $strings);
+        return ucfirst($strings);
+    }
+
+    private function niceBreedAltFromFolder($folder = false)
+    {
+        $alt = $this->niceBreedNameFromFolder($folder).' dog';
+        return $alt;
+    }
+
+    private function breedFolderFromUrl($url)
+    {
+        $explodedPath = explode('/', $url);
+        return $explodedPath[count($explodedPath) - 2];
+    }
+
+    public function getTopLevelImagesWithAltTags(string $breed): ?self
+    {
+        $this->getTopLevelImages($breed)->addAltTags();
+
+        return $this;
+    }
+
+    public function getRandomTopLevelImagesWithAltTags(string $breed, int $amount): ?self
+    {
+        $this->getRandomTopLevelImages($breed, $amount)->addAltTags();
+
+        return $this;
+    }
+
+    public function getSubLevelImagesWithAltTags(string $breed1, string $breed2): ?self
+    {
+        $this->getSubLevelImages($breed1, $breed2)->addAltTags();
+
+        return $this;
+    }
+
+    public function getRandomSubLevelImagesWithAltTags(string $breed1, string $breed2, int $amount): ?self
+    {
+        $this->getRandomSubLevelImages($breed1, $breed2, $amount)->addAltTags();
+
+        return $this;
+    }
+    
+    public function getRandomImagesWithAltTags(int $amount): ?self
+    {
+        $this->getRandomImages($amount)->addAltTags();
+
+        return $this;
+    }
 }

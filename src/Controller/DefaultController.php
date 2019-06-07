@@ -128,4 +128,44 @@ class DefaultController extends AbstractController
     {
         return $this->breedUtil->subText($breed1, $breed2)->jsonResponse();
     }
+
+    /**
+     * @route("/breed/{breed}/images/alt")
+     */
+    public function getTopLevelImagesWithAltTags(string $breed): ?JsonResponse
+    {
+        return $this->breedUtil->getTopLevelImagesWithAltTags($breed)->jsonResponse();
+    }
+
+    /**
+     * @route("/breed/{breed}/images/random/{amount}/alt")
+     */
+    public function getRandomTopLevelImagesWithAltTags(string $breed, int $amount): ?JsonResponse
+    {
+        return $this->breedUtil->getRandomTopLevelImagesWithAltTags($breed, $amount)->jsonResponse();
+    }
+
+    /**
+     * @route("/breed/{breed1}/{breed2}/images/alt")
+     */
+    public function getSubLevelImagesWithAltTags(string $breed1, string $breed2): ?JsonResponse
+    {
+        return $this->breedUtil->getSubLevelImagesWithAltTags($breed1, $breed2)->jsonResponse();
+    }
+
+    /**
+     * @route("/breed/{breed1}/{breed2}/images/random/{amount}/alt")
+     */
+    public function getRandomSubLevelImagesWithAltTags(string $breed1, string $breed2, int $amount): ?JsonResponse
+    {
+        return $this->breedUtil->getRandomSubLevelImagesWithAltTags($breed1, $breed2, $amount)->jsonResponse();
+    }
+
+    /**
+     * @route("/breeds/image/random/{amount}/alt")
+     */
+    public function getRandomImagesWithAltTags(int $amount): ?JsonResponse
+    {
+        return $this->breedUtil->getRandomImagesWithAltTags($amount)->jsonResponse();
+    }
 }

@@ -74,11 +74,12 @@ Get 5 random images from a sub breed.
 These endpoints might change in the future...
 ```
 https://dog.ceo/api/breeds/image/random/alt
-https://dog.ceo/api/breeds/image/random/3/alt
+https://dog.ceo/api/breeds/image/random/1/alt
+https://dog.ceo/api/breeds/image/random/9/alt
 
 https://dog.ceo/api/breed/hound/images/alt
-https://dog.ceo/api/breed/hound/images/random/alt
-https://dog.ceo/api/breed/hound/images/random/3/alt
+https://dog.ceo/api/breed/hound/images/random/1/alt
+https://dog.ceo/api/breed/hound/images/random/9/alt
 
 https://dog.ceo/api/breed/hound/afghan/images/alt
 https://dog.ceo/api/breed/hound/afghan/images/random/alt
