@@ -10,6 +10,7 @@ class BreedUtil
 {
     protected $endpointUrl;
     protected $response;
+    protected $breedDelimiter = '-';
 
     // error messages
     protected $masterBreedNotFoundMessage = 'Breed not found (master breed does not exist).';
@@ -162,6 +163,65 @@ class BreedUtil
         $this->response->message = $this->randomItemsFromArray($images, $amount);
 
         return $this;
+    }
+
+    public function getRandomImage(): ?self
+    {
+        $breeds = $this->collapseArrayWithString($this->getAllBreeds()->arrayResponse()->message, $this->breedDelimiter);
+
+        $randomBreed = $this->randomItemFromArray($breeds);
+
+        $this->response->message = $this->getRandomImageWithCollapsedBreed($randomBreed);
+
+        return $this;
+    }
+    
+    public function getRandomImages(int $amount): ?self
+    {
+        // maximum of 50 random images
+        if ($amount > 50) {
+            $amount = 50;
+        }
+
+        $breeds = $this->collapseArrayWithString($this->getAllBreeds()->arrayResponse()->message, $this->breedDelimiter);
+
+        $randomImages = [];
+
+        for ($i = 0; $i < $amount; $i++) {
+            $randomBreed = $this->randomItemFromArray($breeds);
+            $randomImages[] = $this->getRandomImageWithCollapsedBreed($randomBreed);
+        }
+
+        $this->response->message = $randomImages;
+
+        return $this;
+    }
+
+    private function getRandomImageWithCollapsedBreed(string $collapsedBreed)
+    {
+        $exploded = explode($this->breedDelimiter, $collapsedBreed);
+        if (!isset($exploded[1])) {
+            return $this->getRandomTopLevelImage($exploded[0])->arrayResponse()->message;
+        } else {
+            return $this->getRandomSubLevelImage($exploded[0], $exploded[1])->arrayResponse()->message;
+        }
+    }
+
+    private function collapseArrayWithString(object $object, string $delimiter): ?array
+    {
+        $result = [];
+
+        foreach ($object as $master => $subs) {
+            if (!count($subs)) {
+                $result[] = $master;
+            } else {
+                foreach ($subs as $sub) {
+                    $result[] = $master . $delimiter . $sub;
+                }
+            }
+        }
+
+        return $result;
     }
 
     private function randomItemFromArray(array $array): ?string
