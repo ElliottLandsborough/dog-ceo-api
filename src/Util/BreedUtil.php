@@ -13,6 +13,7 @@ class BreedUtil
 
     // error messages
     protected $masterBreedNotFoundMessage = 'Breed not found (master breed does not exist).';
+    protected $subBreedNotFoundMessage = 'Breed not found (sub breed does not exist).';
 
     public function __construct()
     {
@@ -126,6 +127,43 @@ class BreedUtil
         return $this;
     }
 
+    public function getSubLevelImages(string $breed1, string $breed2): ?self
+    {
+        if ($this->masterBreedExists($breed1)) {
+            if ($this->subBreedExists($breed1, $breed2)) {
+                $suffix = "breed/$breed1/$breed2/images";
+
+                $url = $this->endpointUrl . $suffix;
+
+                $this->response = $this->cacheAndReturn($url, 3600);
+            } else {
+                $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+            }
+        } else {
+            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+        }
+
+        return $this;
+    }
+
+    public function getRandomSubLevelImage(string $breed1, string $breed2): ?self
+    {
+        $images = $this->getSubLevelImages($breed1, $breed2)->arrayResponse()->message;
+
+        $this->response->message = $this->randomItemFromArray($images);
+
+        return $this;
+    }
+
+    public function getRandomSubLevelImages(string $breed1, string $breed2, int $amount): ?self
+    {
+        $images = $this->getSubLevelImages($breed1, $breed2, $amount)->arrayResponse()->message;
+
+        $this->response->message = $this->randomItemsFromArray($images, $amount);
+
+        return $this;
+    }
+
     private function randomItemFromArray(array $array): ?string
     {
         return $array[array_rand($array)];
@@ -163,9 +201,9 @@ class BreedUtil
         return in_array($breed, $this->getAllTopLevelBreeds()->arrayResponse()->message);
     }
 
-    private function subBreedExists(string $breed): ?bool
+    private function subBreedExists(string $breed1, string $breed2): ?bool
     {
-        return in_array($breed, $this->getAllSubBreeds()->arrayResponse()->message);
+        return in_array($breed2, $this->getAllSubBreeds($breed1)->arrayResponse()->message);
     }
 
     private function setNotFoundResponse(string $message): ?self

@@ -72,4 +72,28 @@ class DefaultController extends AbstractController
     {
         return $this->breedUtil->getRandomTopLevelImages($breed, $amount)->jsonResponse();
     }
+
+    /**
+     * @route("/breed/{breed1}/{breed2}/images")
+     */
+    public function getSubLevelImages(string $breed1, string $breed2): ?JsonResponse
+    {
+        return $this->breedUtil->getSubLevelImages($breed1, $breed2)->jsonResponse();
+    }
+
+    /**
+     * @route("/breed/{breed1}/{breed2}/images/random")
+     */
+    public function getRandomSubLevelImage(string $breed1, string $breed2): ?JsonResponse
+    {
+        return $this->breedUtil->getRandomSubLevelImage($breed1, $breed2)->jsonResponse();
+    }
+
+    /**
+     * @route("/breed/{breed1}/{breed2}/images/random/{amount}")
+     */
+    public function getRandomSubLevelImages(string $breed1, string $breed2, int $amount): ?JsonResponse
+    {
+        return $this->breedUtil->getRandomSubLevelImages($breed1, $breed2, $amount)->jsonResponse();
+    }
 }
