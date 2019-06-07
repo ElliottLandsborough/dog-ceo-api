@@ -43,13 +43,7 @@ class BreedUtil
 
         try {
             $res = $client->request('GET', $url);
-            /*
-            return [
-                'status'  => $res->getStatusCode(),
-                'body'    => $res->getBody()->getContents(),
-                'headers' => $res->getHeaders(),
-            ];
-            */
+
             return json_decode($res->getBody()->getContents());
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             // was some sort of 404 or similar?
