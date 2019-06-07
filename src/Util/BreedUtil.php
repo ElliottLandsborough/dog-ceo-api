@@ -29,7 +29,7 @@ class BreedUtil
         $this->xmlEnable = (Request::createFromGlobals()->headers->get('content-type') !== 'application/xml');
     }
 
-    protected function cacheAndReturn($url, $seconds)
+    protected function cacheAndReturn($url, $seconds): ?object
     {
         $self = $this;
 
@@ -304,15 +304,99 @@ class BreedUtil
 
     private function xmlResponse(): ?Response
     {
-        $response = new Response(ArrayToXml::convert((array) $this->formatDataForXmlOutput($this->response)), $this->responseCode);
+        $response = new Response(ArrayToXml::convert($this->formatDataForXmlOutput()), $this->responseCode);
         $response->headers->set('Content-Type', 'xml');
 
         return $response;
     }
 
-    private function formatDataForXmlOutput()
+    private function formatDataForXmlOutput(): ?array
     {
-        return $this->response;
+        $responseType = $this->detectResponseType();
+
+        /*
+        // rename 'altText' to 'alt' in xml
+        if ($this->alt) {
+            switch ($this->type) {
+                case 'imageSingle': // /breeds/image/random/alt/xml
+                    $data->message['alt'] = $data->message['altText'];
+                    unset($data->message['altText']);
+                    break;
+                case 'imageMulti': // /breed/bulldog/french/images/alt/xml
+                    foreach ($data->message as $key => $value) {
+                        $data->message[$key]['alt'] = $data->message[$key]['altText'];
+                        unset($data->message[$key]['altText']);
+                    }
+                    break;
+            }
+        }
+        // restructure data a bit so that xml outputs correctly
+        switch ($this->type) {
+            case 'breedOneDimensional': // /breeds/list/xml
+                $data->breeds['breed'] = $data->message;
+                unset($data->message);
+                break;
+            case 'breedTwoDimensional': // /breeds/list/all/xml
+                $data->breeds['breed'] = array_keys($data->message);
+                $subBreeds = array_filter(array_map('array_filter', $data->message));
+                $data->subbreeds = $subBreeds;
+                $data->allbreeds = $data->message;
+                unset($data->message);
+                break;
+            case 'imageSingle': // /breeds/image/random/xml
+                $data->images['image'] = [$data->message];
+                unset($data->message);
+                break;
+            case 'imageMulti': // /breed/bulldog/french/images/xml
+                $data->images['image'] = $data->message;
+                unset($data->message);
+                break;
+            case 'breedInfo': // /breed/spaniel/cocker/xml
+                $data->breed = $data->message;
+                unset($data->message);
+                break;
+        }
+        */
+       
+
+
+        return (array) $this->response;
+    }
+
+    /**
+     * @todo This is maybe not thebest solution
+     */
+    private function detectResponseType()
+    {
+        print_r($this->response);
+
+        if (isset($this->response->message->info) && isset($this->response->message->name)) {
+            return 'breedInfo';
+        }
+
+        // if there's an alt tag in an array
+        if (is_array($this->response->message) && isset($this->response->message[0]['altText'])) {
+            return 'imageMulti';
+        }
+
+        // if there's an alt tag on a single item
+        if (is_array($this->response->message) && isset($this->response->message['altText'])) {
+            return 'imageSingle';
+        }
+
+        // first item of array starts with 'http' and is a string
+        if (is_array($this->response->message) && isset($this->response->message[0]) && is_string($this->response->message[0]) && substr($this->response->message[0], 0, 4) === 'http') {
+            return 'imageMulti';
+        }
+
+        // response starts with 'http' and is a string
+        if (is_string($this->response->message) && substr($this->response->message, 0, 4) === 'http') {
+            return 'imageSingle';
+        }
+
+        echo $type;
+
+        die;
     }
 
     private function arrayResponse(): ?object
@@ -390,7 +474,7 @@ class BreedUtil
         return $this;
     }
 
-    private function niceBreedNameFromFolder($folder = false)
+    private function niceBreedNameFromFolder($folder = false): ?string
     {
         $strings = explode('-', $folder);
         $strings = array_reverse($strings);
@@ -398,13 +482,13 @@ class BreedUtil
         return ucfirst($strings);
     }
 
-    private function niceBreedAltFromFolder($folder = false)
+    private function niceBreedAltFromFolder($folder = false): ?string
     {
         $alt = $this->niceBreedNameFromFolder($folder).' dog';
         return $alt;
     }
 
-    private function breedFolderFromUrl($url)
+    private function breedFolderFromUrl($url): ?string
     {
         $explodedPath = explode('/', $url);
         return $explodedPath[count($explodedPath) - 2];
