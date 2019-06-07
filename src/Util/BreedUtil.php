@@ -292,8 +292,12 @@ class BreedUtil
         return $this->response;
     }
 
+    /**
+     * @todo: handle when no file exists at server side
+     */
     public function masterText(string $breed): ?self
     {
+
         if ($this->masterBreedExists($breed)) {
             $suffix = "breed/$breed";
 
@@ -308,7 +312,7 @@ class BreedUtil
     }
 
     /**
-     * @route("/breed/{breed1}/{breed2}")
+     * @todo: handle when no file exists at server side
      */
     public function subText(string $breed1, string $breed2): ?self
     {
