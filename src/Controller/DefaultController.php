@@ -5,7 +5,6 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Util\BreedUtil;
 
 class DefaultController extends AbstractController
@@ -18,7 +17,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/")
+     * @Route("/", methods={"GET"})
      */
     public function index(): ?RedirectResponse
     {
@@ -26,146 +25,146 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/breeds/list/all")
+     * @Route("/breeds/list/all", methods={"GET","HEAD"})
      */
-    public function getAllBreeds(): ?JsonResponse
+    public function getAllBreeds(): ?object
     {
-        return $this->breedUtil->getAllBreeds()->jsonResponse();
+        return $this->breedUtil->getAllBreeds()->getResponse();
     }
 
     /**
-     * @Route("/breeds/list")
+     * @Route("/breeds/list", methods={"GET","HEAD"})
      */
-    public function getAllTopLevelBreeds(): ?JsonResponse
+    public function getAllTopLevelBreeds(): ?object
     {
-        return $this->breedUtil->getAllTopLevelBreeds()->jsonResponse();
+        return $this->breedUtil->getAllTopLevelBreeds()->getResponse();
     }
 
     /**
-     * @route("/breed/{breed}/list")
+     * @route("/breed/{breed}/list", methods={"GET","HEAD"})
      */
-    public function getAllSubBreeds(string $breed): ?JsonResponse
+    public function getAllSubBreeds(string $breed): ?object
     {
-        return $this->breedUtil->getAllSubBreeds($breed)->jsonResponse();
+        return $this->breedUtil->getAllSubBreeds($breed)->getResponse();
     }
 
     /**
-     * @route("/breed/{breed}/images")
+     * @route("/breed/{breed}/images", methods={"GET","HEAD"})
      */
-    public function getTopLevelImages(string $breed): ?JsonResponse
+    public function getTopLevelImages(string $breed): ?object
     {
-        return $this->breedUtil->getTopLevelImages($breed)->jsonResponse();
+        return $this->breedUtil->getTopLevelImages($breed)->getResponse();
     }
 
     /**
-     * @route("/breed/{breed}/images/random")
+     * @route("/breed/{breed}/images/random", methods={"GET","HEAD"})
      */
-    public function getRandomTopLevelImage(string $breed): ?JsonResponse
+    public function getRandomTopLevelImage(string $breed): ?object
     {
-        return $this->breedUtil->getRandomTopLevelImage($breed)->jsonResponse();
+        return $this->breedUtil->getRandomTopLevelImage($breed)->getResponse();
     }
 
     /**
-     * @route("/breed/{breed}/images/random/{amount}")
+     * @route("/breed/{breed}/images/random/{amount}", methods={"GET","HEAD"})
      */
-    public function getRandomTopLevelImages(string $breed, int $amount): ?JsonResponse
+    public function getRandomTopLevelImages(string $breed, int $amount): ?object
     {
-        return $this->breedUtil->getRandomTopLevelImages($breed, $amount)->jsonResponse();
+        return $this->breedUtil->getRandomTopLevelImages($breed, $amount)->getResponse();
     }
 
     /**
-     * @route("/breed/{breed1}/{breed2}/images")
+     * @route("/breed/{breed1}/{breed2}/images", methods={"GET","HEAD"})
      */
-    public function getSubLevelImages(string $breed1, string $breed2): ?JsonResponse
+    public function getSubLevelImages(string $breed1, string $breed2): ?object
     {
-        return $this->breedUtil->getSubLevelImages($breed1, $breed2)->jsonResponse();
+        return $this->breedUtil->getSubLevelImages($breed1, $breed2)->getResponse();
     }
 
     /**
-     * @route("/breed/{breed1}/{breed2}/images/random")
+     * @route("/breed/{breed1}/{breed2}/images/random", methods={"GET","HEAD"})
      */
-    public function getRandomSubLevelImage(string $breed1, string $breed2): ?JsonResponse
+    public function getRandomSubLevelImage(string $breed1, string $breed2): ?object
     {
-        return $this->breedUtil->getRandomSubLevelImage($breed1, $breed2)->jsonResponse();
+        return $this->breedUtil->getRandomSubLevelImage($breed1, $breed2)->getResponse();
     }
 
     /**
-     * @route("/breed/{breed1}/{breed2}/images/random/{amount}")
+     * @route("/breed/{breed1}/{breed2}/images/random/{amount}", methods={"GET","HEAD"})
      */
-    public function getRandomSubLevelImages(string $breed1, string $breed2, int $amount): ?JsonResponse
+    public function getRandomSubLevelImages(string $breed1, string $breed2, int $amount): ?object
     {
-        return $this->breedUtil->getRandomSubLevelImages($breed1, $breed2, $amount)->jsonResponse();
+        return $this->breedUtil->getRandomSubLevelImages($breed1, $breed2, $amount)->getResponse();
     }
 
     /**
-     * @route("/breeds/image/random")
+     * @route("/breeds/image/random", methods={"GET","HEAD"})
      */
-    public function getRandomImage(): ?JsonResponse
+    public function getRandomImage(): ?object
     {
-        return $this->breedUtil->getRandomImage()->jsonResponse();
+        return $this->breedUtil->getRandomImage()->getResponse();
     }
     
     /**
-     * @route("/breeds/image/random/{amount}")
+     * @route("/breeds/image/random/{amount}", methods={"GET","HEAD"})
      */
-    public function getRandomImages(int $amount): ?JsonResponse
+    public function getRandomImages(int $amount): ?object
     {
-        return $this->breedUtil->getRandomImages($amount)->jsonResponse();
+        return $this->breedUtil->getRandomImages($amount)->getResponse();
     }
 
     /**
-     * @route("/breed/{breed}")
+     * @route("/breed/{breed}", methods={"GET","HEAD"})
      */
-    public function masterText(string $breed): ?JsonResponse
+    public function masterText(string $breed): ?object
     {
-        return $this->breedUtil->masterText($breed)->jsonResponse();
+        return $this->breedUtil->masterText($breed)->getResponse();
     }
 
     /**
-     * @route("/breed/{breed1}/{breed2}")
+     * @route("/breed/{breed1}/{breed2}", methods={"GET","HEAD"})
      */
-    public function subText(string $breed1, string $breed2): ?JsonResponse
+    public function subText(string $breed1, string $breed2): ?object
     {
-        return $this->breedUtil->subText($breed1, $breed2)->jsonResponse();
+        return $this->breedUtil->subText($breed1, $breed2)->getResponse();
     }
 
     /**
-     * @route("/breed/{breed}/images/alt")
+     * @route("/breed/{breed}/images/alt", methods={"GET","HEAD"})
      */
-    public function getTopLevelImagesWithAltTags(string $breed): ?JsonResponse
+    public function getTopLevelImagesWithAltTags(string $breed): ?object
     {
-        return $this->breedUtil->getTopLevelImagesWithAltTags($breed)->jsonResponse();
+        return $this->breedUtil->getTopLevelImagesWithAltTags($breed)->getResponse();
     }
 
     /**
-     * @route("/breed/{breed}/images/random/{amount}/alt")
+     * @route("/breed/{breed}/images/random/{amount}/alt", methods={"GET","HEAD"})
      */
-    public function getRandomTopLevelImagesWithAltTags(string $breed, int $amount): ?JsonResponse
+    public function getRandomTopLevelImagesWithAltTags(string $breed, int $amount): ?object
     {
-        return $this->breedUtil->getRandomTopLevelImagesWithAltTags($breed, $amount)->jsonResponse();
+        return $this->breedUtil->getRandomTopLevelImagesWithAltTags($breed, $amount)->getResponse();
     }
 
     /**
-     * @route("/breed/{breed1}/{breed2}/images/alt")
+     * @route("/breed/{breed1}/{breed2}/images/alt", methods={"GET","HEAD"})
      */
-    public function getSubLevelImagesWithAltTags(string $breed1, string $breed2): ?JsonResponse
+    public function getSubLevelImagesWithAltTags(string $breed1, string $breed2): ?object
     {
-        return $this->breedUtil->getSubLevelImagesWithAltTags($breed1, $breed2)->jsonResponse();
+        return $this->breedUtil->getSubLevelImagesWithAltTags($breed1, $breed2)->getResponse();
     }
 
     /**
-     * @route("/breed/{breed1}/{breed2}/images/random/{amount}/alt")
+     * @route("/breed/{breed1}/{breed2}/images/random/{amount}/alt", methods={"GET","HEAD"})
      */
-    public function getRandomSubLevelImagesWithAltTags(string $breed1, string $breed2, int $amount): ?JsonResponse
+    public function getRandomSubLevelImagesWithAltTags(string $breed1, string $breed2, int $amount): ?object
     {
-        return $this->breedUtil->getRandomSubLevelImagesWithAltTags($breed1, $breed2, $amount)->jsonResponse();
+        return $this->breedUtil->getRandomSubLevelImagesWithAltTags($breed1, $breed2, $amount)->getResponse();
     }
 
     /**
-     * @route("/breeds/image/random/{amount}/alt")
+     * @route("/breeds/image/random/{amount}/alt", methods={"GET","HEAD"})
      */
-    public function getRandomImagesWithAltTags(int $amount): ?JsonResponse
+    public function getRandomImagesWithAltTags(int $amount): ?object
     {
-        return $this->breedUtil->getRandomImagesWithAltTags($amount)->jsonResponse();
+        return $this->breedUtil->getRandomImagesWithAltTags($amount)->getResponse();
     }
 }

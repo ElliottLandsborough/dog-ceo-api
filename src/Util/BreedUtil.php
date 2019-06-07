@@ -4,6 +4,7 @@ namespace App\Util;
 
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -14,6 +15,7 @@ class BreedUtil
     protected $responseCode;
     protected $breedDelimiter = '-';
     protected $cacheSeconds = 2 * 24 * 60 * 60; // 2 weeks in seconds
+    protected $xmlEnable = false;
 
     // error messages
     protected $masterBreedNotFoundMessage = 'Breed not found (master breed does not exist)';
@@ -23,6 +25,7 @@ class BreedUtil
     public function __construct()
     {
         $this->endpointUrl = $_ENV['DOG_CEO_LAMBDA_URI'];
+        $this->xmlEnable = (Request::createFromGlobals()->headers->get('content-type') !== 'application/xml');
     }
 
     protected function cacheAndReturn($url, $seconds)
@@ -280,11 +283,28 @@ class BreedUtil
         return $this;
     }
 
-    public function jsonResponse(): ?JsonResponse
+    public function getResponse(): ?object
+    {
+        if ($this->xmlEnable) {
+            return $this->xmlResponse();
+        }
+
+        return $this->jsonResponse();
+    }
+
+    private function jsonResponse(): ?JsonResponse
     {
         $response = new JsonResponse($this->response);
         $response->setStatusCode($this->responseCode);
         $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response;
+    }
+
+    private function xmlResponse(): ?Response
+    {
+        $response = new Response(ArrayToXml::convert((array) $this->formatDataForXmlOutput($this->response)), $this->responseCode);
+        $response->headers->set('Content-Type', 'xml');
 
         return $response;
     }

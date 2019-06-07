@@ -86,10 +86,7 @@ https://dog.ceo/api/breed/hound/afghan/images/random/alt
 ```
 
 ## XML Responses (beta, unfinished)
-Add 'Content-Type' request header containing 'application/xml'. Alternatively, add '/xml' to any endpoint:
-```
-https://dog.ceo/api/breeds/image/random/3/alt/xml
-```
+Add 'Content-Type' request header containing 'application/xml' to any endpoint.
 
 ## MIT License
 
