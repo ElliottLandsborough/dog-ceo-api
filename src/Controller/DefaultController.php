@@ -18,7 +18,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/", name="homepage")
+     * @Route("/")
      */
     public function index(): ?RedirectResponse
     {
@@ -28,22 +28,24 @@ class DefaultController extends AbstractController
     /**
      * @Route("/breeds/list/all")
      */
-    public function listAllBreeds()
+    public function listAllBreeds(): ?JsonResponse
     {
-        $response = new JsonResponse($this->breedUtil->getAllBreeds());
-        $response->headers->set('Access-Control-Allow-Origin', '*');
-
-        return $response;
+        return $this->breedUtil->getAllBreeds()->jsonResponse();
     }
 
     /**
      * @Route("/breeds/list")
      */
-    public function listAllTopLevelBreeds()
+    public function listAllTopLevelBreeds(): ?JsonResponse
     {
-        $response = new JsonResponse($this->breedUtil->getTopLevelBreeds());
-        $response->headers->set('Access-Control-Allow-Origin', '*');
+        return $this->breedUtil->getAllTopLevelBreeds()->jsonResponse();
+    }
 
-        return $response;
+    /**
+     * @route("/breed/{breed}/list")
+     */
+    public function listAllSubBreeds(string $breed): ?JsonResponse
+    {
+        return $this->breedUtil->getAllSubBreeds($breed)->jsonResponse();
     }
 }

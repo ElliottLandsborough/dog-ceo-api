@@ -4,10 +4,12 @@ namespace App\Util;
 
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class BreedUtil
 {
     protected $endpointUrl;
+    protected $response;
 
     public function __construct()
     {
@@ -51,21 +53,73 @@ class BreedUtil
         }
     }
 
-    public function getAllBreeds()
+    public function getAllBreeds(): ?self
     {
         $suffix = 'breeds/list/all';
 
         $url = $this->endpointUrl . $suffix;
 
-        return $this->cacheAndReturn($url, 3600);
+        $this->response = $this->cacheAndReturn($url, 3600);
+
+        return $this;
     }
 
-    public function getTopLevelBreeds()
+    public function getAllTopLevelBreeds(): ?self
     {
         $suffix = 'breeds/list';
 
         $url = $this->endpointUrl . $suffix;
 
-        return $this->cacheAndReturn($url, 3600);
+        $this->response = $this->cacheAndReturn($url, 3600);
+
+        return $this;
+    }
+
+    public function getAllSubBreeds(string $breed)
+    {
+        if ($this->masterBreedExists($breed)) {
+            $suffix = "breed/$breed/list";
+
+            $url = $this->endpointUrl . $suffix;
+
+            $this->response = $this->cacheAndReturn($url, 3600);
+        } else {
+            $this->setNotFoundResponse('Breed not found (master breed does not exist).');
+        }
+
+        return $this;
+    }
+
+    public function masterBreedExists(string $breed): ?bool
+    {
+        return in_array($breed, $this->getAllTopLevelBreeds()->arrayResponse()->message);
+    }
+
+    public function subBreedExists(string $breed): ?bool
+    {
+        return in_array($breed, $this->getAllSubBreeds()->arrayResponse()->message);
+    }
+
+    public function setNotFoundResponse(string $message): ?self
+    {
+        $this->response = [
+            'status' => 'error',
+            'body'   => $message,
+        ];
+
+        return $this;
+    }
+
+    public function jsonResponse(): ?JsonResponse
+    {
+        $response = new JsonResponse($this->response);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response;
+    }
+
+    public function arrayResponse(): ?object
+    {
+        return $this->response;
     }
 }
