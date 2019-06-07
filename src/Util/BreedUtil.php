@@ -78,7 +78,7 @@ class BreedUtil
         return $this;
     }
 
-    public function getAllSubBreeds(string $breed)
+    public function getAllSubBreeds(string $breed): ?self
     {
         if ($this->masterBreedExists($breed)) {
             $suffix = "breed/$breed/list";
@@ -93,7 +93,7 @@ class BreedUtil
         return $this;
     }
 
-    public function getTopLevelImages(string $breed)
+    public function getTopLevelImages(string $breed): ?self
     {
         if ($this->masterBreedExists($breed)) {
             $suffix = "breed/$breed/images";
@@ -108,17 +108,67 @@ class BreedUtil
         return $this;
     }
 
-    public function masterBreedExists(string $breed): ?bool
+    public function getRandomTopLevelImage(string $breed): ?self
+    {
+        $images = $this->getTopLevelImages($breed)->arrayResponse()->message;
+
+        $this->response->message = $this->randomItemFromArray($images);
+
+        return $this;
+    }
+
+    public function getRandomTopLevelImages(string $breed, int $amount): ?self
+    {
+        $images = $this->getTopLevelImages($breed)->arrayResponse()->message;
+
+        $this->response->message = $this->randomItemsFromArray($images, $amount);
+
+        return $this;
+    }
+
+    private function randomItemFromArray(array $array): ?string
+    {
+        return $array[array_rand($array)];
+    }
+
+    private function randomItemsFromArray(array $array, int $amount): ?array
+    {
+        // array_rand arg2 has to be larger than 1
+        if ($amount < 1) {
+            $amount = 10;
+        }
+
+        // count total items in array
+        $total = count($array);
+
+        // reset $amount if its higher than the total
+        if ($amount > $total) {
+            $amount = $total;
+        }
+
+        // get the keys
+        $randomKeys = array_rand($array, $amount);
+
+        // lolphp, for some reason array_rand returns mixed types...
+        if ($amount === 1) {
+            $randomKeys = [$randomKeys];
+        }
+
+        // get the values
+        return array_values(array_intersect_key($array, array_flip($randomKeys)));
+    }
+
+    private function masterBreedExists(string $breed): ?bool
     {
         return in_array($breed, $this->getAllTopLevelBreeds()->arrayResponse()->message);
     }
 
-    public function subBreedExists(string $breed): ?bool
+    private function subBreedExists(string $breed): ?bool
     {
         return in_array($breed, $this->getAllSubBreeds()->arrayResponse()->message);
     }
 
-    public function setNotFoundResponse(string $message): ?self
+    private function setNotFoundResponse(string $message): ?self
     {
         $this->response = [
             'status' => 'error',
@@ -136,7 +186,7 @@ class BreedUtil
         return $response;
     }
 
-    public function arrayResponse(): ?object
+    private function arrayResponse(): ?object
     {
         return $this->response;
     }
