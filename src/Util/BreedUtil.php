@@ -16,8 +16,9 @@ class BreedUtil
     protected $cacheSeconds = 2 * 24 * 60 * 60; // 2 weeks in seconds
 
     // error messages
-    protected $masterBreedNotFoundMessage = 'Breed not found (master breed does not exist).';
-    protected $subBreedNotFoundMessage = 'Breed not found (sub breed does not exist).';
+    protected $masterBreedNotFoundMessage = 'Breed not found (master breed does not exist)';
+    protected $subBreedNotFoundMessage = 'Breed not found (sub breed does not exist)';
+    protected $breedFileNotFound = 'Breed not found (No info file for this breed exists)';
 
     public function __construct()
     {
@@ -52,9 +53,10 @@ class BreedUtil
 
             return json_decode($res->getBody()->getContents());
         } catch (\GuzzleHttp\Exception\ClientException $e) {
-            // was some sort of 404 or similar?
-            echo $e->getMessage();
-            die;
+            return (object) [
+                'status' => 'error',
+                'message' => $e->getMessage(),
+            ];
         }
     }
 
@@ -293,7 +295,7 @@ class BreedUtil
     }
 
     /**
-     * @todo: handle when no file exists at server side
+     *
      */
     public function masterText(string $breed): ?self
     {
@@ -304,6 +306,10 @@ class BreedUtil
             $url = $this->endpointUrl . $suffix;
 
             $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
+
+            if ($this->response->status === 'error') {
+                $this->setNotFoundResponse($this->breedFileNotFound);
+            }
         } else {
             $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
         }
@@ -312,7 +318,7 @@ class BreedUtil
     }
 
     /**
-     * @todo: handle when no file exists at server side
+     *
      */
     public function subText(string $breed1, string $breed2): ?self
     {
@@ -323,6 +329,10 @@ class BreedUtil
                 $url = $this->endpointUrl . $suffix;
 
                 $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
+
+                if ($this->response->status === 'error') {
+                    $this->setNotFoundResponse($this->breedFileNotFound);
+                }
             } else {
                 $this->setNotFoundResponse($this->subBreedNotFoundMessage);
             }
