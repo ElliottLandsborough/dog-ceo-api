@@ -4,12 +4,14 @@ namespace App\Util;
 
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class BreedUtil
 {
     protected $endpointUrl;
     protected $response;
+    protected $responseCode;
     protected $breedDelimiter = '-';
 
     // error messages
@@ -43,6 +45,7 @@ class BreedUtil
 
         try {
             $res = $client->request('GET', $url);
+            $this->responseCode = Response::HTTP_OK;
 
             return json_decode($res->getBody()->getContents());
         } catch (\GuzzleHttp\Exception\ClientException $e) {
@@ -262,6 +265,8 @@ class BreedUtil
 
     private function setNotFoundResponse(string $message): ?self
     {
+        $this->responseCode = Response::HTTP_NOT_FOUND;
+
         $this->response = [
             'status' => 'error',
             'body'   => $message,
@@ -273,6 +278,7 @@ class BreedUtil
     public function jsonResponse(): ?JsonResponse
     {
         $response = new JsonResponse($this->response);
+        $response->setStatusCode($this->responseCode);
         $response->headers->set('Access-Control-Allow-Origin', '*');
 
         return $response;
