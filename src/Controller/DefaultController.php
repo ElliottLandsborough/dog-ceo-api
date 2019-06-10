@@ -59,6 +59,24 @@ class DefaultController extends AbstractController
     }
 
     /**
+     * @Route("/breeds/list/random", methods={"GET","HEAD"})
+     */
+    public function getAllTopLevelBreedsRandomSingle(): ?object
+    {
+        return $this->breedUtil->getAllTopLevelBreedsRandomSingle()->getResponse();
+    }
+
+    /**
+     * @Route("/breeds/list/random/{amount}", methods={"GET","HEAD"})
+     */
+    public function getAllTopLevelBreedsRandomMultiple(string $amount): ?object
+    {
+        $amount = intval($amount) ?: 1;
+
+        return $this->breedUtil->getAllTopLevelBreedsRandomMultiple($amount)->getResponse();
+    }
+
+    /**
      * @route("/breed/{breed}/list", methods={"GET","HEAD"})
      */
     public function getAllSubBreeds(string $breed): ?object

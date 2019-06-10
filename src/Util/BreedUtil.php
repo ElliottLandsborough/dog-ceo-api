@@ -124,6 +124,20 @@ class BreedUtil
         return $this;
     }
 
+    public function getAllTopLevelBreedsRandomSingle(): ?self
+    {
+        $this->response->message = $this->randomItemFromArray((array) $this->getAllTopLevelBreeds()->arrayResponse()->message);
+
+        return $this;
+    }
+
+    public function getAllTopLevelBreedsRandomMultiple(int $amount): ?self
+    {
+        $this->response->message = $this->randomItemsFromArray((array) $this->getAllTopLevelBreeds()->arrayResponse()->message, $amount);
+
+        return $this;
+    }
+
     public function getAllSubBreeds(string $breed): ?self
     {
         if ($this->masterBreedExists($breed)) {
