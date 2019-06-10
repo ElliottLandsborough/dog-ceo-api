@@ -6,8 +6,8 @@
 ## Info
 
  - To add your own images submit a pull request to https://github.com/jigsawpieces/dog-api-images
+ - Rewritten in Symfony 4 recently. Check out the 'legacy' branch for the old version
  - API requests are cached from lambda https://github.com/ElliottLandsborough/dog-ceo-api-node
- - Rewritten in Symfony4 recently. Check out the 'legacy' branch for the old version
 
 ## Stats
 
@@ -16,11 +16,10 @@
 ## Requirements
 
  - php
- - php-yaml
  - php-xml
+ - php-mbstring
  - composer
- - http://vision.stanford.edu/aditya86/ImageNetDogs/images.tar
- - run 'vendor/bin/phpunit' for unit tests
+ - run './bin/phpunit' for unit tests
 
 ## Setup
 
@@ -70,22 +69,26 @@ Get random image from a sub breed.
 #### /breed/{breed}/{breed2}/images/random/5
 Get 5 random images from a sub breed.
 
-## Alt tags (beta)
+## Beta/Unfinished Endpoints
 These endpoints might change in the future...
+
+### Alt tags (beta)
 ```
 https://dog.ceo/api/breeds/image/random/alt
 https://dog.ceo/api/breeds/image/random/1/alt
 https://dog.ceo/api/breeds/image/random/9/alt
-
+```
+```
 https://dog.ceo/api/breed/hound/images/alt
 https://dog.ceo/api/breed/hound/images/random/1/alt
 https://dog.ceo/api/breed/hound/images/random/9/alt
-
+```
+```
 https://dog.ceo/api/breed/hound/afghan/images/alt
 https://dog.ceo/api/breed/hound/afghan/images/random/alt
 ```
 
-## XML Responses (beta, unfinished)
+### XML Responses (beta, unfinished)
 Add 'Content-Type' request header containing 'application/xml' to any endpoint.
 
 ## MIT License
