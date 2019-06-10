@@ -253,7 +253,7 @@ class BreedUtil
         // get the keys
         $randomKeys = array_rand($array, $amount);
 
-        // lolphp, for some reason array_rand returns mixed types...
+        // lolphp, array_rand returns mixed types...
         if ($amount === 1) {
             $randomKeys = [$randomKeys];
         }
@@ -316,24 +316,6 @@ class BreedUtil
         $data = $this->response;
         $data->message = (array) $data->message;
 
-        // rename 'altText' to 'alt' in xml
-        switch ($responseType) {
-            // /breeds/image/random/alt/xml
-            case 'imageSingle':
-                if (isset($data->message['alt'])) {
-                    $data->message['alt'] = $data->message['altText'];
-                    unset($data->message['altText']);
-                }
-                break;
-            // /breed/bulldog/french/images/alt/xml
-            case 'imageMulti':
-                foreach ($data->message as $key => $value) {
-                    $data->message[$key]['alt'] = $data->message[$key]['altText'];
-                    unset($data->message[$key]['altText']);
-                }
-                break;
-        }
-
         // restructure data a bit so that xml outputs correctly
         switch ($responseType) {
             case 'breedOneDimensional': // /breeds/list/xml
@@ -348,10 +330,20 @@ class BreedUtil
                 unset($data->message);
                 break;
             case 'imageSingle': // /breeds/image/random/xml
+                // deal with alts
+                if (isset($data->message['alt'])) {
+                    $data->message['alt'] = $data->message['altText'];
+                    unset($data->message['altText']);
+                }
                 $data->images['image'] = [$data->message];
                 unset($data->message);
                 break;
             case 'imageMulti': // /breed/bulldog/french/images/xml
+                // deal with alts
+                foreach ($data->message as $key => $value) {
+                    $data->message[$key]['alt'] = $data->message[$key]['altText'];
+                    unset($data->message[$key]['altText']);
+                }
                 $data->images['image'] = $data->message;
                 unset($data->message);
                 break;
