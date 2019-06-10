@@ -26,7 +26,7 @@ class BreedUtil
     public function __construct()
     {
         $this->endpointUrl = $_ENV['DOG_CEO_LAMBDA_URI'];
-        $this->xmlEnable = (Request::createFromGlobals()->headers->get('content-type') !== 'application/xml');
+        $this->xmlEnable = (Request::createFromGlobals()->headers->get('content-type') === 'application/xml');
     }
 
     protected function cacheAndReturn($url, $seconds): ?object
@@ -313,25 +313,29 @@ class BreedUtil
     private function formatDataForXmlOutput(): ?array
     {
         $responseType = $this->detectResponseType();
+        $data = $this->response;
+        $data->message = (array) $data->message;
 
-        /*
         // rename 'altText' to 'alt' in xml
-        if ($this->alt) {
-            switch ($this->type) {
-                case 'imageSingle': // /breeds/image/random/alt/xml
+        switch ($responseType) {
+            // /breeds/image/random/alt/xml
+            case 'imageSingle':
+                if (isset($data->message['alt'])) {
                     $data->message['alt'] = $data->message['altText'];
                     unset($data->message['altText']);
-                    break;
-                case 'imageMulti': // /breed/bulldog/french/images/alt/xml
-                    foreach ($data->message as $key => $value) {
-                        $data->message[$key]['alt'] = $data->message[$key]['altText'];
-                        unset($data->message[$key]['altText']);
-                    }
-                    break;
-            }
+                }
+                break;
+            // /breed/bulldog/french/images/alt/xml
+            case 'imageMulti':
+                foreach ($data->message as $key => $value) {
+                    $data->message[$key]['alt'] = $data->message[$key]['altText'];
+                    unset($data->message[$key]['altText']);
+                }
+                break;
         }
+
         // restructure data a bit so that xml outputs correctly
-        switch ($this->type) {
+        switch ($responseType) {
             case 'breedOneDimensional': // /breeds/list/xml
                 $data->breeds['breed'] = $data->message;
                 unset($data->message);
@@ -356,20 +360,15 @@ class BreedUtil
                 unset($data->message);
                 break;
         }
-        */
-       
 
-
-        return (array) $this->response;
+        return (array) $data;
     }
 
     /**
-     * @todo This is maybe not thebest solution
+     * @todo This is maybe not the best solution
      */
     private function detectResponseType()
     {
-        print_r($this->response);
-
         if (isset($this->response->message->info) && isset($this->response->message->name)) {
             return 'breedInfo';
         }
@@ -394,9 +393,22 @@ class BreedUtil
             return 'imageSingle';
         }
 
-        echo $type;
+        if ($this->arrayIsMultiDimensional($this->response->message)) {
+            return 'breedTwoDimensional';
+        }
 
-        die;
+        return 'breedOneDimensional';
+    }
+
+    private function arrayIsMultiDimensional($array): ?bool
+    {
+        //return count($array) == count($array, COUNT_RECURSIVE);
+        foreach ($array as $v) {
+            if (is_array($v)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private function arrayResponse(): ?object
