@@ -62,5 +62,8 @@
             "allow-contrib": false,
             "require": "4.3.*"
         }
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "4.3.*"
     }
 }
