@@ -13,7 +13,7 @@ class DefaultController extends AbstractController
 
     public function __construct(BreedUtil $breedUtil)
     {
-        $this->breedUtil = $breedUtil;
+        $this->breedUtil = $breedUtil->setEndpointUrl($_ENV['DOG_CEO_LAMBDA_URI']);
     }
 
     /**

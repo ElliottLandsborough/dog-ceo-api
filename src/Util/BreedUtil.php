@@ -11,7 +11,7 @@ use Spatie\ArrayToXml\ArrayToXml;
 
 class BreedUtil
 {
-    protected $endpointUrl;
+    protected $endpointUrl = '';
     protected $response;
     protected $responseCode;
     protected $breedDelimiter = '-';
@@ -25,11 +25,24 @@ class BreedUtil
 
     public function __construct()
     {
-        $this->endpointUrl = $_ENV['DOG_CEO_LAMBDA_URI'];
         $this->xmlEnable = (Request::createFromGlobals()->headers->get('content-type') === 'application/xml');
     }
 
-    protected function cacheAndReturn($url, $seconds): ?object
+    public function setEndpointUrl(string $url): ?self
+    {
+        $this->endpointUrl = $url;
+
+        return $this;
+    }
+
+    public function disableCache()
+    {
+        $this->cacheSeconds = 0;
+
+        return $this;
+    }
+
+    private function cacheAndReturn($url, $seconds): ?object
     {
         $self = $this;
 
@@ -48,7 +61,7 @@ class BreedUtil
         return $value;
     }
 
-    protected function getWithGuzzle(string $url): ?Object
+    private function getWithGuzzle(string $url): ?Object
     {
         $client = new \GuzzleHttp\Client();
 
