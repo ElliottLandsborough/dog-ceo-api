@@ -11,6 +11,8 @@ use Spatie\ArrayToXml\ArrayToXml;
 
 class BreedUtil
 {
+    protected $cache;
+    protected $client;
     protected $endpointUrl = '';
     protected $response;
     protected $responseCode;
@@ -26,6 +28,12 @@ class BreedUtil
     public function __construct()
     {
         $this->xmlEnable = (Request::createFromGlobals()->headers->get('content-type') === 'application/xml');
+        $this->setClient(new \GuzzleHttp\Client());
+        $this->cache = new FilesystemAdapter();
+
+        // uncomment to emulate unit test behaviour:
+        //$this->disableCache();
+        //$this->setClient(new \App\Util\MockApi());
     }
 
     public function setEndpointUrl(string $url): ?self
@@ -35,9 +43,16 @@ class BreedUtil
         return $this;
     }
 
+    public function setClient($client): ?self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
     public function disableCache()
     {
-        $this->cacheSeconds = 0;
+        $this->cache->clear();
 
         return $this;
     }
@@ -46,10 +61,8 @@ class BreedUtil
     {
         $self = $this;
 
-        $cache = new FilesystemAdapter();
-
         // The callable will only be executed on a cache miss.
-        $value = $cache->get(md5($url), function (ItemInterface $item) use ($self, $url, $seconds) {
+        $value = $this->cache->get(md5($url), function (ItemInterface $item) use ($self, $url, $seconds) {
             $item->expiresAfter($seconds);
 
             return $self->getWithGuzzle($url);
@@ -63,10 +76,8 @@ class BreedUtil
 
     private function getWithGuzzle(string $url): ?Object
     {
-        $client = new \GuzzleHttp\Client();
-
         try {
-            $res = $client->request('GET', $url);
+            $res = $this->client->request('GET', $url);
 
             return json_decode($res->getBody()->getContents());
         } catch (\GuzzleHttp\Exception\ClientException $e) {

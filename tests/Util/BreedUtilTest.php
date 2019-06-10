@@ -5,27 +5,29 @@ namespace App\Tests\Util;
 use App\Util\BreedUtil;
 use PHPUnit\Framework\TestCase;
 
-class CalculatorTest extends TestCase
+class BreedUtilTest extends TestCase
 {
-    public function __construct()
+    protected $util;
+
+    public function setUp()
     {
         $this->util = new BreedUtil();
+
+        // disable the cache
         $this->util->disableCache();
+
+        // set the client as the mock api one
+        $this->util->setClient(new \App\Util\MockApi());
     }
 
-    /*
-    public function testCollapseArrayWithString()
+    public function testGetAllBreeds()
     {
-        $twoDimensionArray = [
-            'item1' => [],
-            'item2' => [],
-            'item3' => [
-                'item4',
-                'item5',
-            ],
-            'item6' => [],
-        ];
-        $collapsedArray = $this->util->collapseArrayWithString($array);
+        $response = $this->util->getAllBreeds()->getResponse();
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+
+        $this->assertArrayHasKey('hound', (array) json_decode($response->getContent())->message);
     }
-    */
 }
