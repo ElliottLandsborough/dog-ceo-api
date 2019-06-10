@@ -202,4 +202,8 @@ class BreedUtilTest extends TestCase
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('error', json_decode($response->getContent())->status);
     }
+
+    // todo:
+    // getAllBreedsRandomSingle
+    // getAllBreedsRandomMultiple
 }

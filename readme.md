@@ -33,6 +33,12 @@
 #### /breeds/list/all
 List all breed names including sub breeds.
 
+#### /breeds/list/all/random
+Get random breed including any sub breeds.
+
+#### /breeds/list/all/random/10
+Get 10 random breeds including any sub breeds.
+
 #### /breeds/list
 List all master breed names.
 

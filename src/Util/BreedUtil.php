@@ -99,6 +99,20 @@ class BreedUtil
         return $this;
     }
 
+    public function getAllBreedsRandomSingle(): ?self
+    {
+        $this->response->message = $this->randomItemFromAssociativeArray((array) $this->getAllBreeds()->arrayResponse()->message);
+
+        return $this;
+    }
+
+    public function getAllBreedsRandomMultiple(int $amount): ?self
+    {
+        $this->response->message = $this->randomItemsFromArray((array) $this->getAllBreeds()->arrayResponse()->message, $amount, true);
+
+        return $this;
+    }
+
     public function getAllTopLevelBreeds(): ?self
     {
         $suffix = 'breeds/list';
@@ -267,7 +281,15 @@ class BreedUtil
         return $array[array_rand($array)];
     }
 
-    private function randomItemsFromArray(array $array, int $amount): ?array
+    private function randomItemFromAssociativeArray(array $array): ?array
+    {
+        $key = array_rand($array);
+        $value = $array[$key];
+
+        return [$key => $value];
+    }
+
+    private function randomItemsFromArray(array $array, int $amount, bool $retainKeys = false): ?array
     {
         // array_rand arg2 has to be larger than 1
         if ($amount < 1) {
@@ -288,6 +310,14 @@ class BreedUtil
         // lolphp, array_rand returns mixed types...
         if ($amount === 1) {
             $randomKeys = [$randomKeys];
+        }
+
+        if ($retainKeys === true) {
+            $values = [];
+            foreach ($randomKeys as $key) {
+                $values[$key] = $array[$key];
+            }
+            return $values;
         }
 
         // get the values
