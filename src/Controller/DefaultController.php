@@ -67,8 +67,10 @@ class DefaultController extends AbstractController
     /**
      * @route("/breed/{breed}/images/random/{amount}", methods={"GET","HEAD"})
      */
-    public function getRandomTopLevelImages(string $breed, int $amount): ?object
+    public function getRandomTopLevelImages(string $breed, string $amount): ?object
     {
+        $amount = intval($amount) ?: 1;
+
         return $this->breedUtil->getRandomTopLevelImages($breed, $amount)->getResponse();
     }
 
@@ -91,8 +93,10 @@ class DefaultController extends AbstractController
     /**
      * @route("/breed/{breed1}/{breed2}/images/random/{amount}", methods={"GET","HEAD"})
      */
-    public function getRandomSubLevelImages(string $breed1, string $breed2, int $amount): ?object
+    public function getRandomSubLevelImages(string $breed1, string $breed2, string $amount): ?object
     {
+        $amount = intval($amount) ?: 1;
+
         return $this->breedUtil->getRandomSubLevelImages($breed1, $breed2, $amount)->getResponse();
     }
 
@@ -107,8 +111,10 @@ class DefaultController extends AbstractController
     /**
      * @route("/breeds/image/random/{amount}", methods={"GET","HEAD"})
      */
-    public function getRandomImages(int $amount): ?object
+    public function getRandomImages(string $amount): ?object
     {
+        $amount = intval($amount) ?: 1;
+
         return $this->breedUtil->getRandomImages($amount)->getResponse();
     }
 
@@ -139,8 +145,10 @@ class DefaultController extends AbstractController
     /**
      * @route("/breed/{breed}/images/random/{amount}/alt", methods={"GET","HEAD"})
      */
-    public function getRandomTopLevelImagesWithAltTags(string $breed, int $amount): ?object
+    public function getRandomTopLevelImagesWithAltTags(string $breed, string $amount): ?object
     {
+        $amount = intval($amount) ?: 1;
+
         return $this->breedUtil->getRandomTopLevelImagesWithAltTags($breed, $amount)->getResponse();
     }
 
@@ -155,16 +163,20 @@ class DefaultController extends AbstractController
     /**
      * @route("/breed/{breed1}/{breed2}/images/random/{amount}/alt", methods={"GET","HEAD"})
      */
-    public function getRandomSubLevelImagesWithAltTags(string $breed1, string $breed2, int $amount): ?object
+    public function getRandomSubLevelImagesWithAltTags(string $breed1, string $breed2, string $amount): ?object
     {
+        $amount = intval($amount) ?: 1;
+
         return $this->breedUtil->getRandomSubLevelImagesWithAltTags($breed1, $breed2, $amount)->getResponse();
     }
 
     /**
      * @route("/breeds/image/random/{amount}/alt", methods={"GET","HEAD"})
      */
-    public function getRandomImagesWithAltTags(int $amount): ?object
+    public function getRandomImagesWithAltTags(string $amount): ?object
     {
+        $amount = intval($amount) ?: 1;
+
         return $this->breedUtil->getRandomImagesWithAltTags($amount)->getResponse();
     }
 }
