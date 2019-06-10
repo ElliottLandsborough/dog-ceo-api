@@ -144,7 +144,9 @@ class BreedUtil
     {
         $images = $this->getTopLevelImages($breed)->arrayResponse()->message;
 
-        $this->response->message = $this->randomItemFromArray($images);
+        if ($this->response->status === 'success') {
+            $this->response->message = $this->randomItemFromArray($images);
+        }
 
         return $this;
     }
@@ -153,7 +155,9 @@ class BreedUtil
     {
         $images = $this->getTopLevelImages($breed)->arrayResponse()->message;
 
-        $this->response->message = $this->randomItemsFromArray($images, $amount);
+        if ($this->response->status === 'success') {
+            $this->response->message = $this->randomItemsFromArray($images, $amount);
+        }
 
         return $this;
     }
@@ -181,7 +185,9 @@ class BreedUtil
     {
         $images = $this->getSubLevelImages($breed1, $breed2)->arrayResponse()->message;
 
-        $this->response->message = $this->randomItemFromArray($images);
+        if ($this->response->status === 'success') {
+            $this->response->message = $this->randomItemFromArray($images);
+        }
 
         return $this;
     }
@@ -190,7 +196,9 @@ class BreedUtil
     {
         $images = $this->getSubLevelImages($breed1, $breed2, $amount)->arrayResponse()->message;
 
-        $this->response->message = $this->randomItemsFromArray($images, $amount);
+        if ($this->response->status === 'success') {
+            $this->response->message = $this->randomItemsFromArray($images, $amount);
+        }
 
         return $this;
     }
@@ -300,9 +308,9 @@ class BreedUtil
     {
         $this->responseCode = Response::HTTP_NOT_FOUND;
 
-        $this->response = [
+        $this->response = (object) [
             'status' => 'error',
-            'body'   => $message,
+            'message'   => $message,
         ];
 
         return $this;
