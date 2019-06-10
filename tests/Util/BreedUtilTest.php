@@ -30,4 +30,15 @@ class BreedUtilTest extends TestCase
 
         $this->assertArrayHasKey('hound', (array) json_decode($response->getContent())->message);
     }
+
+    public function testGetAllTopLevelBreeds()
+    {
+        $response = $this->util->getAllTopLevelBreeds()->getResponse();
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+
+        $this->assertContains('hound', (array) json_decode($response->getContent())->message);
+    }
 }
