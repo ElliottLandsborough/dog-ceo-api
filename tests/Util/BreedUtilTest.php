@@ -180,6 +180,10 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('success', json_decode($response->getContent())->status);
         $this->assertArrayHasKey('name', (array) json_decode($response->getContent())->message);
         $this->assertArrayHasKey('info', (array) json_decode($response->getContent())->message);
+
+        $response = $this->util->masterText('DOESNOTEXIST')->getResponse();
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals('error', json_decode($response->getContent())->status);
     }
 
     public function testGetSubText()
@@ -189,5 +193,13 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('success', json_decode($response->getContent())->status);
         $this->assertArrayHasKey('name', (array) json_decode($response->getContent())->message);
         $this->assertArrayHasKey('info', (array) json_decode($response->getContent())->message);
+
+        $response = $this->util->subText('DOESNOTEXIST', 'DOESNOTEXIST')->getResponse();
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals('error', json_decode($response->getContent())->status);
+
+        $response = $this->util->subText('bullterrier', 'DOESNOTEXIST')->getResponse();
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals('error', json_decode($response->getContent())->status);
     }
 }
