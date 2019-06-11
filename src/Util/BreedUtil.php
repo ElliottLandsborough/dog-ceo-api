@@ -4,30 +4,34 @@ namespace App\Util;
 
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Contracts\Cache\ItemInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Spatie\ArrayToXml\ArrayToXml;
 
 class BreedUtil
 {
+    // empty vars
     protected $cache;
     protected $client;
-    protected $endpointUrl = '';
     protected $response;
     protected $responseCode;
-    protected $breedDelimiter = '-';
-    protected $cacheSeconds = 2 * 24 * 60 * 60; // 2 weeks in seconds
+
+    // default vars
     protected $xmlEnable = false;
+    protected $endpointUrl = '';
+    protected $cacheSeconds = 2 * 24 * 60 * 60; // 2 weeks in seconds
+    protected $breedDelimiter = '-';
 
     // error messages
     protected $masterBreedNotFoundMessage = 'Breed not found (master breed does not exist)';
     protected $subBreedNotFoundMessage = 'Breed not found (sub breed does not exist)';
     protected $breedFileNotFound = 'Breed not found (No info file for this breed exists)';
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
-        $this->xmlEnable = (Request::createFromGlobals()->headers->get('content-type') === 'application/xml');
         $this->setClient(new \GuzzleHttp\Client());
         $this->cache = new FilesystemAdapter();
 
@@ -36,6 +40,25 @@ class BreedUtil
         //$this->setClient(new \App\Util\MockApi());
     }
 
+    /**
+     * Enable xml output by switching the class var to true
+     *
+     * @return BreedUtil $this
+     */
+    public function xmlOutputEnable(): ?self
+    {
+        $this->xmlEnable = true;
+
+        return $this;
+    }
+
+    /**
+     * Set the url to the lambda endpoint
+     * e.g http://dog-api.lambda.aws.com/dev/
+     *
+     * @param string $url
+     * @return BreedUtil $this
+     */
     public function setEndpointUrl(string $url): ?self
     {
         $this->endpointUrl = $url;
@@ -43,6 +66,12 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Set the guzzle client used to run gets on the endpoints
+     *
+     * @param \GuzzleHttp\Client $client
+     * @return BreedUtil $this
+     */
     public function setClient($client): ?self
     {
         $this->client = $client;
@@ -50,14 +79,26 @@ class BreedUtil
         return $this;
     }
 
-    public function disableCache()
+    /**
+     * Clear the entire cache, used in unit tests
+     *
+     * @return BreedUtil $this
+     */
+    public function clearCache()
     {
         $this->cache->clear();
 
         return $this;
     }
 
-    private function cacheAndReturn($url, $seconds): ?object
+    /**
+     * Get a url, query the cache first, run guzzle if no hit
+     *
+     * @param  string      $url     Full url to be got with guzzle
+     * @param  int|integer $seconds How many seconds to cache the response for
+     * @return Object               Either the json_decoded response or an object containing the error message
+     */
+    private function cacheAndReturn(string $url = '', int $seconds = 3600): ?object
     {
         $self = $this;
 
@@ -74,6 +115,12 @@ class BreedUtil
         return $value;
     }
 
+    /**
+     * Get a url using guzzle
+     *
+     * @param  string $url
+     * @return Object Either the json_decoded response or an object containing the error message
+     */
     private function getWithGuzzle(string $url): ?Object
     {
         try {
@@ -88,6 +135,11 @@ class BreedUtil
         }
     }
 
+    /**
+     * List all breed names including sub breeds
+     *
+     * @return BreedUtil $this
+     */
     public function getAllBreeds(): ?self
     {
         $suffix = 'breeds/list/all';
@@ -99,6 +151,11 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Get random breed including any sub breeds
+     *
+     * @return BreedUtil $this
+     */
     public function getAllBreedsRandomSingle(): ?self
     {
         $this->response->message = $this->randomItemFromAssociativeArray((array) $this->getAllBreeds()->arrayResponse()->message);
@@ -106,6 +163,12 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Get multiple random breeds including any sub breeds
+     *
+     * @param  int|integer $amount How many breeds to return
+     * @return BreedUtil   $this
+     */
     public function getAllBreedsRandomMultiple(int $amount): ?self
     {
         $this->response->message = $this->randomItemsFromArray((array) $this->getAllBreeds()->arrayResponse()->message, $amount, true);
@@ -113,6 +176,11 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * List all master breed names
+     *
+     * @return BreedUtil $this
+     */
     public function getAllTopLevelBreeds(): ?self
     {
         $suffix = 'breeds/list';
@@ -124,6 +192,11 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Get single random master breed
+     *
+     * @return BreedUtil $this
+     */
     public function getAllTopLevelBreedsRandomSingle(): ?self
     {
         $this->response->message = $this->randomItemFromArray((array) $this->getAllTopLevelBreeds()->arrayResponse()->message);
@@ -131,6 +204,12 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Get multiple random master breeds
+     *
+     * @param  int|integer $amount How many breeds to return
+     * @return BreedUtil $this
+     */
     public function getAllTopLevelBreedsRandomMultiple(int $amount): ?self
     {
         $this->response->message = $this->randomItemsFromArray((array) $this->getAllTopLevelBreeds()->arrayResponse()->message, $amount);
@@ -138,6 +217,12 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * List sub breeds of a master breed
+     *
+     * @param  string    $breed The master breed
+     * @return BreedUtil $this
+     */
     public function getAllSubBreeds(string $breed): ?self
     {
         if ($this->masterBreedExists($breed)) {
@@ -153,6 +238,12 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Get all master breed images
+     *
+     * @param  string    $breed The master breed
+     * @return BreedUtil $this
+     */
     public function getTopLevelImages(string $breed): ?self
     {
         if ($this->masterBreedExists($breed)) {
@@ -168,6 +259,12 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Get random image from a breed (and all its sub-breeds)
+     *
+     * @param  string    $breed The master breed
+     * @return BreedUtil $this
+     */
     public function getRandomTopLevelImage(string $breed): ?self
     {
         $images = $this->getTopLevelImages($breed)->arrayResponse()->message;
@@ -179,6 +276,13 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Get multiple random images from a breed (and all its sub-breeds)
+     *
+     * @param  string      $breed The master breed
+     * @param  int|integer $amount How many images to return
+     * @return BreedUtil   $this
+     */
     public function getRandomTopLevelImages(string $breed, int $amount): ?self
     {
         $images = $this->getTopLevelImages($breed)->arrayResponse()->message;
@@ -190,6 +294,13 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Get all images from a sub breed
+     *
+     * @param  string    $breed1 The master breed
+     * @param  string    $breed2 The sub breed
+     * @return BreedUtil $this
+     */
     public function getSubLevelImages(string $breed1, string $breed2): ?self
     {
         if ($this->masterBreedExists($breed1)) {
@@ -209,6 +320,13 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Get random image from a sub breed
+     *
+     * @param  string    $breed1 The master breed
+     * @param  string    $breed2 The sub breed
+     * @return BreedUtil $this
+     */
     public function getRandomSubLevelImage(string $breed1, string $breed2): ?self
     {
         $images = $this->getSubLevelImages($breed1, $breed2)->arrayResponse()->message;
@@ -220,6 +338,14 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Get multiple random images from a sub breed
+     *
+     * @param  string      $breed1 The master breed
+     * @param  string      $breed2 The sub breed
+     * @param  int|integer $amount How many images to return
+     * @return BreedUtil   $this
+     */
     public function getRandomSubLevelImages(string $breed1, string $breed2, int $amount): ?self
     {
         $images = $this->getSubLevelImages($breed1, $breed2, $amount)->arrayResponse()->message;
@@ -231,6 +357,11 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Random image from any breed
+     *
+     * @return BreedUtil $this
+     */
     public function getRandomImage(): ?self
     {
         $breeds = $this->collapseArrayWithString($this->getAllBreeds()->arrayResponse()->message, $this->breedDelimiter);
@@ -241,7 +372,13 @@ class BreedUtil
 
         return $this;
     }
-    
+
+    /**
+     * Get multiple random images from any breed (max. 50)
+     *
+     * @param  int|integer $amount How many images to return
+     * @return BreedUtil   $this
+     */
     public function getRandomImages(int $amount): ?self
     {
         // maximum of 50 random images
@@ -263,7 +400,13 @@ class BreedUtil
         return $this;
     }
 
-    private function getRandomImageWithCollapsedBreed(string $collapsedBreed)
+    /**
+     * Get a random image from either a master or master/sub based on a string
+     *
+     * @param  string Collapsed breed e.g affenpischer or collie-border
+     * @return string The image
+     */
+    private function getRandomImageWithCollapsedBreed(string $collapsedBreed): ?string
     {
         $exploded = explode($this->breedDelimiter, $collapsedBreed);
         if (!isset($exploded[1])) {
@@ -273,6 +416,13 @@ class BreedUtil
         }
     }
 
+    /**
+     * Collapse a 2d array or object of strings into a 1d array with a string delimeter
+     *
+     * @param  object $object    2d array or object
+     * @param  string $delimiter What string to use when joining the strings
+     * @return array  $result    The 1d array
+     */
     private function collapseArrayWithString(object $object, string $delimiter): ?array
     {
         $result = [];
@@ -290,11 +440,23 @@ class BreedUtil
         return $result;
     }
 
+    /**
+     * Get a single random item from a non associative array
+     *
+     * @param  array  $array
+     * @return string Whatever item gets picked
+     */
     private function randomItemFromArray(array $array): ?string
     {
         return $array[array_rand($array)];
     }
 
+    /**
+     * Get a single random item from an associative array
+     *
+     * @param  array The array to select the item from
+     * @return array Key/value
+     */
     private function randomItemFromAssociativeArray(array $array): ?array
     {
         $key = array_rand($array);
@@ -303,6 +465,14 @@ class BreedUtil
         return [$key => $value];
     }
 
+    /**
+     * Get multiple random items from the array
+     *
+     * @param  array        $array      The array to select the items from
+     * @param  int          $amount     The amount of items to return
+     * @param  bool|boolean $retainKeys If set to true keys will be returned as well
+     * @return array
+     */
     private function randomItemsFromArray(array $array, int $amount, bool $retainKeys = false): ?array
     {
         // array_rand arg2 has to be larger than 1
@@ -326,6 +496,7 @@ class BreedUtil
             $randomKeys = [$randomKeys];
         }
 
+        // get the values, keep the keys intact
         if ($retainKeys === true) {
             $values = [];
             foreach ($randomKeys as $key) {
@@ -338,16 +509,35 @@ class BreedUtil
         return array_values(array_intersect_key($array, array_flip($randomKeys)));
     }
 
+    /**
+     * Check if the master breed exists
+     *
+     * @param  string $breed The master breed
+     * @return bool
+     */
     private function masterBreedExists(string $breed): ?bool
     {
         return in_array($breed, $this->getAllTopLevelBreeds()->arrayResponse()->message);
     }
 
+    /**
+     * Check if the sub breed exists
+     *
+     * @param  string $breed1 The master breed
+     * @param  string $breed2 The sub breed
+     * @return bool
+     */
     private function subBreedExists(string $breed1, string $breed2): ?bool
     {
         return in_array($breed2, $this->getAllSubBreeds($breed1)->arrayResponse()->message);
     }
 
+    /**
+     * Sets a basic not found response and message
+     *
+     * @param  string $message The error message
+     * @return BreedUtil $this
+     */
     private function setNotFoundResponse(string $message): ?self
     {
         $this->responseCode = Response::HTTP_NOT_FOUND;
@@ -360,6 +550,11 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Gets a response object
+     *
+     * @return object
+     */
     public function getResponse(): ?object
     {
         if ($this->xmlEnable) {
@@ -369,6 +564,11 @@ class BreedUtil
         return $this->jsonResponse();
     }
 
+    /**
+     * Gets a response object (JSON)
+     *
+     * @return JsonResponse
+     */
     private function jsonResponse(): ?JsonResponse
     {
         $response = new JsonResponse($this->response);
@@ -378,6 +578,11 @@ class BreedUtil
         return $response;
     }
 
+    /**
+     * Gets a response object (XML)
+     *
+     * @return Response
+     */
     private function xmlResponse(): ?Response
     {
         $response = new Response(ArrayToXml::convert($this->formatDataForXmlOutput()), $this->responseCode);
@@ -386,6 +591,23 @@ class BreedUtil
         return $response;
     }
 
+    /**
+     * Gets a response object (raw object from guzzle json_decode)
+     *
+     * @return object
+     */
+    private function arrayResponse(): ?object
+    {
+        return $this->response;
+    }
+
+    /**
+     * Formats the response and returns it ready for XML output
+     *
+     * @todo It is probably possible to make this less dirty
+     *
+     * @return object Formatted response
+     */
     private function formatDataForXmlOutput(): ?array
     {
         $responseType = $this->detectResponseType();
@@ -433,7 +655,11 @@ class BreedUtil
     }
 
     /**
+     * Detects what typs of response we have based on its contents
+     *
      * @todo This is maybe not the best solution
+     *
+     * @return string Textual representation of the response type
      */
     private function detectResponseType()
     {
@@ -468,8 +694,15 @@ class BreedUtil
         return 'breedOneDimensional';
     }
 
+    /**
+     * Checks if an array is multi dimensional
+     *
+     * @param  array $array
+     * @return bool
+     */
     private function arrayIsMultiDimensional($array): ?bool
     {
+        // this line doesnt work for $array = ['item' => []]
         //return count($array) == count($array, COUNT_RECURSIVE);
         foreach ($array as $v) {
             if (is_array($v)) {
@@ -479,13 +712,11 @@ class BreedUtil
         return false;
     }
 
-    private function arrayResponse(): ?object
-    {
-        return $this->response;
-    }
-
     /**
+     * Get the info text for a master breed
      *
+     * @param  string    $breed The master breed
+     * @return BreedUtil $this
      */
     public function masterText(string $breed): ?self
     {
@@ -508,7 +739,11 @@ class BreedUtil
     }
 
     /**
+     * Get the info text for a sub breed
      *
+     * @param  string    $breed1 The master breed
+     * @param  string    $breed2 The sub breed
+     * @return BreedUtil $this
      */
     public function subText(string $breed1, string $breed2): ?self
     {
@@ -533,6 +768,11 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Adds the alt tags to a response containing images
+     *
+     * @return BreedUtil $this
+     */
     private function addAltTags(): ?self
     {
         if (!is_array($this->response->message) && is_string($this->response->message)) {
@@ -554,7 +794,14 @@ class BreedUtil
         return $this;
     }
 
-    private function niceBreedNameFromFolder($folder = false): ?string
+    /**
+     * Makes a nice looking breed name from a folder name
+     * e.g 'border-collie' becomes 'border collie'
+     *
+     * @param  string $folder Breed name
+     * @return string
+     */
+    private function niceBreedNameFromFolder($folder = 'unknown-breed'): ?string
     {
         $strings = explode('-', $folder);
         $strings = array_reverse($strings);
@@ -562,18 +809,39 @@ class BreedUtil
         return ucfirst($strings);
     }
 
-    private function niceBreedAltFromFolder($folder = false): ?string
+    /**
+     * Makes a nice looking breed text for an alt tag
+     * e.g 'border collie' becomes 'border collie dog'
+     *
+     * @param  string $folder Breed name
+     * @return string
+     */
+    private function niceBreedAltFromFolder(string $folder = 'unknown breed'): ?string
     {
         $alt = $this->niceBreedNameFromFolder($folder).' dog';
         return $alt;
     }
 
+    /**
+     * Gets the breed name from the url
+     * e.g '/api/border-collie/dog.jpg' becomes 'border-collie'
+     *
+     * @param  string $url The url
+     * @return string
+     */
     private function breedFolderFromUrl($url): ?string
     {
         $explodedPath = explode('/', $url);
+
         return $explodedPath[count($explodedPath) - 2];
     }
 
+    /**
+     * Get all master breed images (with alt tags)
+     *
+     * @param  string    $breed The master breed
+     * @return BreedUtil $this
+     */
     public function getTopLevelImagesWithAltTags(string $breed): ?self
     {
         $this->getTopLevelImages($breed)->addAltTags();
@@ -581,6 +849,13 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Get multiple random images from a breed (and all its sub-breeds) with alt tags
+     *
+     * @param  string      $breed The master breed
+     * @param  int|integer $amount How many images to return
+     * @return BreedUtil   $this
+     */
     public function getRandomTopLevelImagesWithAltTags(string $breed, int $amount): ?self
     {
         $this->getRandomTopLevelImages($breed, $amount)->addAltTags();
@@ -588,6 +863,13 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Get all images from a sub breed (with alt tags)
+     *
+     * @param  string    $breed1 The master breed
+     * @param  string    $breed2 The sub breed
+     * @return BreedUtil $this
+     */
     public function getSubLevelImagesWithAltTags(string $breed1, string $breed2): ?self
     {
         $this->getSubLevelImages($breed1, $breed2)->addAltTags();
@@ -595,13 +877,27 @@ class BreedUtil
         return $this;
     }
 
+    /**
+     * Get multiple random images from a sub breed (with alt tags)
+     *
+     * @param  string      $breed1 The master breed
+     * @param  string      $breed2 The sub breed
+     * @param  int|integer $amount How many images to return
+     * @return BreedUtil   $this
+     */
     public function getRandomSubLevelImagesWithAltTags(string $breed1, string $breed2, int $amount): ?self
     {
         $this->getRandomSubLevelImages($breed1, $breed2, $amount)->addAltTags();
 
         return $this;
     }
-    
+
+    /**
+     * Get multiple random images from any breed (max. 50) with alt tags
+     *
+     * @param  int|integer $amount How many images to return
+     * @return BreedUtil   $this
+     */
     public function getRandomImagesWithAltTags(int $amount): ?self
     {
         $this->getRandomImages($amount)->addAltTags();

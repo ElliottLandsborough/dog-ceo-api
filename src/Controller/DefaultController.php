@@ -5,18 +5,29 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use App\Util\BreedUtil;
 
 class DefaultController extends AbstractController
 {
     protected $breedUtil;
 
+    /**
+     * @param BreedUtil $breedUtil
+     */
     public function __construct(BreedUtil $breedUtil)
     {
         $this->breedUtil = $breedUtil->setEndpointUrl($_ENV['DOG_CEO_LAMBDA_URI']);
+
+        // enable XML output if the header is set
+        if (Request::createFromGlobals()->headers->get('content-type') === 'application/xml') {
+            $this->breedUtil->xmlOutputEnable();
+        }
     }
 
     /**
+     * Forward a user who tries to visit / to the api home page
+     *
      * @Route("/", methods={"GET"})
      */
     public function index(): ?RedirectResponse

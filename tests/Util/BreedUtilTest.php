@@ -15,9 +15,9 @@ class BreedUtilTest extends TestCase
         $this->util = new BreedUtil();
 
         // disable the cache
-        $this->util->disableCache();
+        $this->util->clearCache();
 
-        // set the client as the mock api one
+        // set the client to use the mock api
         $this->util->setClient(new \App\Util\MockApi());
     }
 
