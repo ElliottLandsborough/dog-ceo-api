@@ -238,6 +238,20 @@ class BreedUtil
         return $this;
     }
 
+    public function getAllSubBreedsRandomSingle(string $breed): ?object
+    {
+        $this->response->message = $this->randomItemFromArray((array) $this->getAllSubBreeds($breed)->arrayResponse()->message);
+
+        return $this;
+    }
+
+    public function getAllSubBreedsRandomMulti(string $breed, $amount): ?object
+    {
+        $this->response->message = $this->randomItemsFromArray((array) $this->getAllSubBreeds($breed)->arrayResponse()->message, $amount);
+
+        return $this;
+    }
+
     /**
      * Get all master breed images
      *

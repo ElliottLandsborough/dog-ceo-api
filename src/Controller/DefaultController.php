@@ -96,6 +96,24 @@ class DefaultController extends AbstractController
     }
 
     /**
+     * @route("/breed/{breed}/list/random", methods={"GET","HEAD"})
+     */
+    public function getAllSubBreedsRandomSingle(string $breed): ?object
+    {
+        return $this->breedUtil->getAllSubBreedsRandomSingle($breed)->getResponse();
+    }
+
+    /**
+     * @route("/breed/{breed}/list/random/{amount}", methods={"GET","HEAD"})
+     */
+    public function getAllSubBreedsRandomMulti(string $breed, string $amount): ?object
+    {
+        $amount = intval($amount) ?: 1;
+
+        return $this->breedUtil->getAllSubBreedsRandomMulti($breed, $amount)->getResponse();
+    }
+
+    /**
      * @route("/breed/{breed}/images", methods={"GET","HEAD"})
      */
     public function getTopLevelImages(string $breed): ?object

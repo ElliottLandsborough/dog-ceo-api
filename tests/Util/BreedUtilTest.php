@@ -203,9 +203,69 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('error', json_decode($response->getContent())->status);
     }
 
-    // todo:
-    // getAllBreedsRandomSingle
-    // getAllBreedsRandomMultiple
-    // getAllTopLevelBreedsRandomSingle
-    // getAllTopLevelBreedsRandomMultiple
+    public function testGetAllBreedsRandomSingle()
+    {
+        $response = $this->util->getAllBreedsRandomSingle()->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+        $content = json_decode($response->getContent())->message;
+        $first = reset($content);
+        $this->assertEquals(is_array($first), true);
+    }
+
+    public function testGetAllBreedsRandomMultiple()
+    {
+        $response = $this->util->getAllBreedsRandomMultiple(3)->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+        $content = json_decode($response->getContent())->message;
+        $this->assertGreaterThan(0, count((array) $content));
+        $first = reset($content);
+        $this->assertEquals(is_array($first), true);
+    }
+
+    public function testGetAllTopLevelBreedsRandomSingle()
+    {
+        $response = $this->util->getAllTopLevelBreedsRandomSingle()->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+        $content = json_decode($response->getContent())->message;
+        $this->assertNotEmpty($content);
+    }
+
+    public function testGetAllTopLevelBreedsRandomMultiple()
+    {
+        $response = $this->util->getAllTopLevelBreedsRandomMultiple(3)->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+        $content = json_decode($response->getContent())->message;
+        $this->assertGreaterThan(1, count($content));
+    }
+
+    public function testGetAllSubBreedsRandomSingle()
+    {
+        $response = $this->util->getAllSubBreedsRandomSingle('bullterrier')->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+        $content = json_decode($response->getContent())->message;
+        $this->assertEquals('staffordshire', $content);
+
+        $response = $this->util->getAllSubBreedsRandomSingle('DOESNOTEXIST')->getResponse();
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals('error', json_decode($response->getContent())->status);
+    }
+
+    public function testGetAllSubBreedsRandomMulti()
+    {
+        $response = $this->util->getAllSubBreedsRandomMulti('bullterrier', 3)->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+        $content = json_decode($response->getContent())->message;
+        $this->assertGreaterThan(0, count((array) $content));
+        $this->assertEquals('staffordshire', $content[0]);
+
+        $response = $this->util->getAllSubBreedsRandomMulti('DOESNOTEXIST', 3)->getResponse();
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals('error', json_decode($response->getContent())->status);
+    }
 }
