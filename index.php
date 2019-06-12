@@ -1,3 +1,4 @@
 <?php
-header("Location: https://dog.ceo/dog-api/");
+
+header('Location: https://dog.ceo/dog-api/');
 die();
