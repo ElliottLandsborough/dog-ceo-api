@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/ElliottLandsborough/dog-ceo-api.svg?branch=master)](https://travis-ci.org/ElliottLandsborough/dog-ceo-api)
 [![Code Style](https://github.styleci.io/repos/97956282/shield?branch=master)](https://github.styleci.io/repos/97956282)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+![PHP from Travis config](https://img.shields.io/travis/php-v/ElliottLandsborough/dog-ceo-api.svg)
 
 ## Info
 
