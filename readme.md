@@ -15,11 +15,21 @@
 
 ## Requirements
 
- - php
- - php-xml
- - php-mbstring
+ - php 7.3+
+ - a few php packages
  - composer
  - run './bin/phpunit' for unit tests
+
+```
+$ composer check-platform-reqs
+Restricting packages listed in "symfony/symfony" to "4.3.*"
+composer-plugin-api
+ext-ctype
+ext-iconv
+ext-tokenizer
+ext-xml
+php
+```
 
 ## Setup
 
