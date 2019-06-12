@@ -121,7 +121,7 @@ class BreedUtil
      * @param  string $url
      * @return Object Either the json_decoded response or an object containing the error message
      */
-    private function getWithGuzzle(string $url): ?Object
+    private function getWithGuzzle(string $url): ?object
     {
         try {
             $res = $this->client->request('GET', $url);
