@@ -605,7 +605,7 @@ class BreedUtil
     }
 
     /**
-     * Gets a response object and adds some cloudflare cache headers
+     * Gets a response object and adds some cloudflare cache headers.
      *
      * @return object
      */
