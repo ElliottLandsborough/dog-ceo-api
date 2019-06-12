@@ -2,9 +2,27 @@
     Options -MultiViews
     RewriteEngine On
 
-    RewriteRule ^$ https://dog.ceo/dog-api [R=301,L]
+    # Redirect users from / to a new place
+    #RewriteRule ^$ https://dog.ceo/dog-api [R=301,L]
 
+    # Block access to all dirs
+    RewriteRule ^bin/(.*)?$ / [R=301,L]
+    RewriteRule ^config/(.*)?$ / [R=301,L]
+    # Breaks stuff
+    #RewriteRule ^public/(.*)?$ / [R=301,L]
+    RewriteRule ^src/(.*)?$ / [R=301,L]
+    RewriteRule ^tests/(.*)?$ / [R=301,L]
+    RewriteRule ^var/(.*)?$ / [R=301,L]
+    RewriteRule ^vendor/(.*)?$ / [R=301,L]
+
+    # rewrite all requests to /api/public/index.php
     RewriteBase /api/public/
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
+
+# All files ending in these exts:
+<FilesMatch ".json|.lock|.dist|.md">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
