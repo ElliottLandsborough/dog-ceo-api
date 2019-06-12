@@ -559,6 +559,7 @@ class BreedUtil
         $this->response = (object) [
             'status' => 'error',
             'message'   => $message,
+            'code' => $this->responseCode
         ];
 
         return $this;
