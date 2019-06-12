@@ -10,7 +10,7 @@ class BreedUtilTest extends TestCase
     protected $util;
 
     // runs per test
-    public function setUp()
+    public function setUp(): void
     {
         $this->util = new BreedUtil();
 
