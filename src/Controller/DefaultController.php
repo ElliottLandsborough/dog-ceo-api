@@ -1,11 +1,13 @@
 <?php
+
 // src/Controller/DefaultController.php
+
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 use App\Util\BreedUtil;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
@@ -161,7 +163,7 @@ class DefaultController extends AbstractController
     {
         return $this->breedUtil->getRandomImage()->getResponse();
     }
-    
+
     /**
      * @route("/breeds/image/random/{amount}", methods={"GET","HEAD"})
      */

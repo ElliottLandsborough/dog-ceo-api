@@ -1,38 +1,41 @@
 <?php
+
 // src/Util/MockApi.php
+
 namespace App\Util;
 
 /**
- * A mock api - returns a small subset of what lambda does
+ * A mock api - returns a small subset of what lambda does.
  */
 class MockApi extends \GuzzleHttp\Client
 {
     protected $responses;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public function __construct()
     {
         // endpoints called by the unit tests
         $responses = [
-            'breeds/list/all' => '{"status":"success","message":{"affenpinscher":[],"bullterrier":["staffordshire"]}}',
-            'breeds/list' => '{"status":"success","message":["affenpinscher","bullterrier"]}',
-            'breed/affenpinscher/list' => '{"status":"success","message":[]}',
-            'breed/bullterrier/list' => '{"status":"success","message":["staffordshire"]}',
-            'breed/affenpinscher/images' => '{"status":"success","message":["https://images.dog.ceo/breeds/affenpinscher/image.jpg"]}',
+            'breeds/list/all'                        => '{"status":"success","message":{"affenpinscher":[],"bullterrier":["staffordshire"]}}',
+            'breeds/list'                            => '{"status":"success","message":["affenpinscher","bullterrier"]}',
+            'breed/affenpinscher/list'               => '{"status":"success","message":[]}',
+            'breed/bullterrier/list'                 => '{"status":"success","message":["staffordshire"]}',
+            'breed/affenpinscher/images'             => '{"status":"success","message":["https://images.dog.ceo/breeds/affenpinscher/image.jpg"]}',
             'breed/bullterrier/staffordshire/images' => '{"status":"success","message":["https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg"]}',
-            'breed/affenpinscher' => '{"status":"success","message":{"name":"Affenpinscher","info":"Info text."}}',
-            'breed/bullterrier/staffordshire' => '{"status":"success","message":{"name":"Staffordshire Bullterrier","info":"Info Text."}}',
+            'breed/affenpinscher'                    => '{"status":"success","message":{"name":"Affenpinscher","info":"Info text."}}',
+            'breed/bullterrier/staffordshire'        => '{"status":"success","message":{"name":"Staffordshire Bullterrier","info":"Info Text."}}',
         ];
 
         $this->setResponses($responses);
     }
 
     /**
-     * Sets the responses
+     * Sets the responses.
      *
-     * @param  array   $responses
+     * @param array $responses
+     *
      * @return MockApi $this
      */
     private function setResponses(array $responses): ?self
@@ -43,11 +46,12 @@ class MockApi extends \GuzzleHttp\Client
     }
 
     /**
-     * Override the guzzle request function
+     * Override the guzzle request function.
      *
-     * @param  string $method The method
-     * @param  string $uri    The url being requested
-     * @param  array $options Options
+     * @param string $method  The method
+     * @param string $uri     The url being requested
+     * @param array  $options Options
+     *
      * @return \GuzzleHttp\Psr7\Response
      */
     public function request($method, $uri = '', array $options = [])
