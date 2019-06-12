@@ -41,6 +41,18 @@ php
  - composer install
  - symfony server:start
 
+## .env.local
+
+```
+DOG_CEO_CACHE_KEY="something-really-secure-lol"
+DOG_CEO_LAMBDA_URI=https://example.execute-api.us-east-1.amazonaws.com/dev/
+```
+
+## Cache clear:
+```
+$ curl -X GET http://127.0.0.1:8000/cache-clear -H 'auth-key: something-really-secure-lol'
+```
+
 ## Endpoints
 
 #### /breeds/list/all

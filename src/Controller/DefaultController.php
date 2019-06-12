@@ -7,6 +7,7 @@ namespace App\Controller;
 use App\Util\BreedUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
@@ -234,5 +235,29 @@ class DefaultController extends AbstractController
         $amount = intval($amount) ?: 1;
 
         return $this->breedUtil->getRandomImagesWithAltTags($amount)->getResponse();
+    }
+
+    /**
+     * @route("/cache-clear", methods={"GET","HEAD"})
+     */
+    public function cacheClear(): ?object
+    {
+        $message = 'Cache was not cleared';
+
+        echo $_ENV['DOG_CEO_CACHE_KEY'];
+
+        if (Request::createFromGlobals()->headers->get('auth-key') === trim($_ENV['DOG_CEO_CACHE_KEY'])) {
+            $message = 'Success, cache was cleared with key';
+            $this->breedUtil->clearCache();
+        }
+
+        $response = new JsonResponse([
+            'status' => 'success',
+            'message' => $message,
+        ]);
+        $response->setStatusCode(200);
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        return $response;
     }
 }
