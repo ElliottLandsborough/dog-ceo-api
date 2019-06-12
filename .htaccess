@@ -6,14 +6,14 @@
     #RewriteRule ^$ https://dog.ceo/dog-api [R=301,L]
 
     # Block access to all dirs
-    RewriteRule ^bin/(.*)?$ / [R=301,L]
-    RewriteRule ^config/(.*)?$ / [R=301,L]
+    RewriteRule ^bin/(.*)?$ /dog-api/ [R=301,L]
+    RewriteRule ^config/(.*)?$ /dog-api/ [R=301,L]
     # Breaks stuff
-    #RewriteRule ^public/(.*)?$ / [R=301,L]
-    RewriteRule ^src/(.*)?$ / [R=301,L]
-    RewriteRule ^tests/(.*)?$ / [R=301,L]
-    RewriteRule ^var/(.*)?$ / [R=301,L]
-    RewriteRule ^vendor/(.*)?$ / [R=301,L]
+    #RewriteRule ^public/(.*)?$ /dog-api/ [R=301,L]
+    RewriteRule ^src/(.*)?$ /dog-api/ [R=301,L]
+    RewriteRule ^tests/(.*)?$ /dog-api/ [R=301,L]
+    RewriteRule ^var/(.*)?$ /dog-api/ [R=301,L]
+    RewriteRule ^vendor/(.*)?$ /dog-api/ [R=301,L]
 
     # rewrite all requests to /api/public/index.php
     RewriteBase /api/public/
