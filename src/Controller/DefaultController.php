@@ -240,7 +240,7 @@ class DefaultController extends AbstractController
     /**
      * @route("/cache-clear", methods={"GET","HEAD"})
      */
-    public function cacheClear(): ?object
+    public function cacheClear(): ?JsonResponse
     {
         $message = 'Cache was not cleared';
 
