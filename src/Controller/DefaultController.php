@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use App\Util\BreedUtil;
 
@@ -23,16 +22,6 @@ class DefaultController extends AbstractController
         if (Request::createFromGlobals()->headers->get('content-type') === 'application/xml') {
             $this->breedUtil->xmlOutputEnable();
         }
-    }
-
-    /**
-     * Forward a user who tries to visit / to the api home page
-     *
-     * @Route("/", methods={"GET"})
-     */
-    public function index(): ?RedirectResponse
-    {
-        return $this->redirect('https://dog.ceo/dog-api');
     }
 
     /**
