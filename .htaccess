@@ -18,7 +18,8 @@
     # rewrite all requests to /api/public/index.php
     RewriteBase /api/public/
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^(.*)$ index.php [QSA,L]
+    # RewriteRule ^(.*)$ index.php [QSA,L]
+    RewriteRule . index.php [L]
 </IfModule>
 
 # All files ending in these exts:
