@@ -605,6 +605,20 @@ class BreedUtil
     }
 
     /**
+     * Gets a response object and adds some cloudflare cache headers
+     *
+     * @return object
+     */
+    public function getResponseWithCacheHeaders(): ?object
+    {
+        $response = $this->getResponse();
+        // cache on cloudflare for 2 hours, cache in browser for 5 minutes
+        $response->headers->set('Cache-Control', 's-maxage=7200, max-age=300');
+
+        return $response;
+    }
+
+    /**
      * Gets a response object (JSON).
      *
      * @return JsonResponse

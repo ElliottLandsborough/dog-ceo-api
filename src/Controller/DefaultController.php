@@ -32,7 +32,7 @@ class DefaultController extends AbstractController
      */
     public function getAllBreeds(): ?object
     {
-        return $this->breedUtil->getAllBreeds()->getResponse();
+        return $this->breedUtil->getAllBreeds()->getResponseWithCacheHeaders();
     }
 
     /**
@@ -58,7 +58,7 @@ class DefaultController extends AbstractController
      */
     public function getAllTopLevelBreeds(): ?object
     {
-        return $this->breedUtil->getAllTopLevelBreeds()->getResponse();
+        return $this->breedUtil->getAllTopLevelBreeds()->getResponseWithCacheHeaders();
     }
 
     /**
@@ -84,7 +84,7 @@ class DefaultController extends AbstractController
      */
     public function getAllSubBreeds(string $breed): ?object
     {
-        return $this->breedUtil->getAllSubBreeds($breed)->getResponse();
+        return $this->breedUtil->getAllSubBreeds($breed)->getResponseWithCacheHeaders();
     }
 
     /**
@@ -110,7 +110,7 @@ class DefaultController extends AbstractController
      */
     public function getTopLevelImages(string $breed): ?object
     {
-        return $this->breedUtil->getTopLevelImages($breed)->getResponse();
+        return $this->breedUtil->getTopLevelImages($breed)->getResponseWithCacheHeaders();
     }
 
     /**
@@ -136,7 +136,7 @@ class DefaultController extends AbstractController
      */
     public function getSubLevelImages(string $breed1, string $breed2): ?object
     {
-        return $this->breedUtil->getSubLevelImages($breed1, $breed2)->getResponse();
+        return $this->breedUtil->getSubLevelImages($breed1, $breed2)->getResponseWithCacheHeaders();
     }
 
     /**
@@ -180,7 +180,7 @@ class DefaultController extends AbstractController
      */
     public function masterText(string $breed): ?object
     {
-        return $this->breedUtil->masterText($breed)->getResponse();
+        return $this->breedUtil->masterText($breed)->getResponseWithCacheHeaders();
     }
 
     /**
@@ -188,7 +188,7 @@ class DefaultController extends AbstractController
      */
     public function subText(string $breed1, string $breed2): ?object
     {
-        return $this->breedUtil->subText($breed1, $breed2)->getResponse();
+        return $this->breedUtil->subText($breed1, $breed2)->getResponseWithCacheHeaders();
     }
 
     /**
@@ -196,7 +196,7 @@ class DefaultController extends AbstractController
      */
     public function getTopLevelImagesWithAltTags(string $breed): ?object
     {
-        return $this->breedUtil->getTopLevelImagesWithAltTags($breed)->getResponse();
+        return $this->breedUtil->getTopLevelImagesWithAltTags($breed)->getResponseWithCacheHeaders();
     }
 
     /**
@@ -214,7 +214,7 @@ class DefaultController extends AbstractController
      */
     public function getSubLevelImagesWithAltTags(string $breed1, string $breed2): ?object
     {
-        return $this->breedUtil->getSubLevelImagesWithAltTags($breed1, $breed2)->getResponse();
+        return $this->breedUtil->getSubLevelImagesWithAltTags($breed1, $breed2)->getResponseWithCacheHeaders();
     }
 
     /**
