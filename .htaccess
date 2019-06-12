@@ -1,7 +1,10 @@
 <IfModule mod_rewrite.c>
     Options -MultiViews
     RewriteEngine On
-    RewriteBase /symfony/public/
+
+    RewriteRule ^$ https://dog.ceo/dog-api [R=301,L]
+
+    RewriteBase /api/public/
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
