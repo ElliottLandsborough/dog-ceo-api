@@ -612,8 +612,8 @@ class BreedUtil
     public function getResponseWithCacheHeaders(): ?object
     {
         $response = $this->getResponse();
-        // cache on cloudflare for 2 hours, cache in browser for 5 minutes
-        $response->headers->set('Cache-Control', 's-maxage=7200, max-age=300');
+        // cache on cloudflare for 6 hours, cache in browser for 30 minutes
+        $response->headers->set('Cache-Control', 's-maxage=21600, max-age=1800');
 
         return $response;
     }
