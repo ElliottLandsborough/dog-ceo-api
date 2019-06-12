@@ -136,7 +136,7 @@ Add 'Content-Type' request header containing 'application/xml' to any endpoint.
 
 ## MIT License
 
-Copyright (c) 2018 Dog CEO
+Copyright (c) 2019 Dog CEO
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
