@@ -1,0 +1,6 @@
+language: php
+before_script:
+  - composer self-update
+  - composer install --no-interaction
+php:
+  - '7.3'
