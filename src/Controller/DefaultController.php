@@ -29,6 +29,7 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/breeds/list/all", methods={"GET","HEAD"})
+     * @Route("/api/breeds/list/all", methods={"GET","HEAD"})
      */
     public function getAllBreeds(): ?object
     {
@@ -37,6 +38,7 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/breeds/list/all/random", methods={"GET","HEAD"})
+     * @Route("/api/breeds/list/all/random", methods={"GET","HEAD"})
      */
     public function getAllBreedsRandomSingle(): ?object
     {
@@ -45,6 +47,7 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/breeds/list/all/random/{amount}", methods={"GET","HEAD"})
+     * @Route("/api/breeds/list/all/random/{amount}", methods={"GET","HEAD"})
      */
     public function getAllBreedsRandomMultiple(string $amount): ?object
     {
@@ -55,6 +58,7 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/breeds/list", methods={"GET","HEAD"})
+     * @Route("/api/breeds/list", methods={"GET","HEAD"})
      */
     public function getAllTopLevelBreeds(): ?object
     {
@@ -63,6 +67,7 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/breeds/list/random", methods={"GET","HEAD"})
+     * @Route("/api/breeds/list/random", methods={"GET","HEAD"})
      */
     public function getAllTopLevelBreedsRandomSingle(): ?object
     {
@@ -71,6 +76,7 @@ class DefaultController extends AbstractController
 
     /**
      * @Route("/breeds/list/random/{amount}", methods={"GET","HEAD"})
+     * @Route("/api/breeds/list/random/{amount}", methods={"GET","HEAD"})
      */
     public function getAllTopLevelBreedsRandomMultiple(string $amount): ?object
     {
@@ -81,6 +87,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed}/list", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed}/list", methods={"GET","HEAD"})
      */
     public function getAllSubBreeds(string $breed): ?object
     {
@@ -89,6 +96,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed}/list/random", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed}/list/random", methods={"GET","HEAD"})
      */
     public function getAllSubBreedsRandomSingle(string $breed): ?object
     {
@@ -97,6 +105,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed}/list/random/{amount}", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed}/list/random/{amount}", methods={"GET","HEAD"})
      */
     public function getAllSubBreedsRandomMulti(string $breed, string $amount): ?object
     {
@@ -107,6 +116,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed}/images", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed}/images", methods={"GET","HEAD"})
      */
     public function getTopLevelImages(string $breed): ?object
     {
@@ -115,6 +125,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed}/images/random", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed}/images/random", methods={"GET","HEAD"})
      */
     public function getRandomTopLevelImage(string $breed): ?object
     {
@@ -123,6 +134,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed}/images/random/{amount}", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed}/images/random/{amount}", methods={"GET","HEAD"})
      */
     public function getRandomTopLevelImages(string $breed, string $amount): ?object
     {
@@ -133,6 +145,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed1}/{breed2}/images", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed1}/{breed2}/images", methods={"GET","HEAD"})
      */
     public function getSubLevelImages(string $breed1, string $breed2): ?object
     {
@@ -141,6 +154,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed1}/{breed2}/images/random", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed1}/{breed2}/images/random", methods={"GET","HEAD"})
      */
     public function getRandomSubLevelImage(string $breed1, string $breed2): ?object
     {
@@ -149,6 +163,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed1}/{breed2}/images/random/{amount}", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed1}/{breed2}/images/random/{amount}", methods={"GET","HEAD"})
      */
     public function getRandomSubLevelImages(string $breed1, string $breed2, string $amount): ?object
     {
@@ -159,6 +174,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breeds/image/random", methods={"GET","HEAD"})
+     * @route("/api/breeds/image/random", methods={"GET","HEAD"})
      */
     public function getRandomImage(): ?object
     {
@@ -167,6 +183,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breeds/image/random/{amount}", methods={"GET","HEAD"})
+     * @route("/api/breeds/image/random/{amount}", methods={"GET","HEAD"})
      */
     public function getRandomImages(string $amount): ?object
     {
@@ -177,6 +194,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed}", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed}", methods={"GET","HEAD"})
      */
     public function masterText(string $breed): ?object
     {
@@ -185,6 +203,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed1}/{breed2}", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed1}/{breed2}", methods={"GET","HEAD"})
      */
     public function subText(string $breed1, string $breed2): ?object
     {
@@ -193,6 +212,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed}/images/alt", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed}/images/alt", methods={"GET","HEAD"})
      */
     public function getTopLevelImagesWithAltTags(string $breed): ?object
     {
@@ -201,6 +221,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed}/images/random/{amount}/alt", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed}/images/random/{amount}/alt", methods={"GET","HEAD"})
      */
     public function getRandomTopLevelImagesWithAltTags(string $breed, string $amount): ?object
     {
@@ -211,6 +232,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed1}/{breed2}/images/alt", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed1}/{breed2}/images/alt", methods={"GET","HEAD"})
      */
     public function getSubLevelImagesWithAltTags(string $breed1, string $breed2): ?object
     {
@@ -219,6 +241,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breed/{breed1}/{breed2}/images/random/{amount}/alt", methods={"GET","HEAD"})
+     * @route("/api/breed/{breed1}/{breed2}/images/random/{amount}/alt", methods={"GET","HEAD"})
      */
     public function getRandomSubLevelImagesWithAltTags(string $breed1, string $breed2, string $amount): ?object
     {
@@ -229,6 +252,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/breeds/image/random/{amount}/alt", methods={"GET","HEAD"})
+     * @route("/api/breeds/image/random/{amount}/alt", methods={"GET","HEAD"})
      */
     public function getRandomImagesWithAltTags(string $amount): ?object
     {
@@ -239,6 +263,7 @@ class DefaultController extends AbstractController
 
     /**
      * @route("/cache-clear", methods={"GET","HEAD"})
+     * @route("/api/cache-clear", methods={"GET","HEAD"})
      */
     public function cacheClear(): ?JsonResponse
     {
