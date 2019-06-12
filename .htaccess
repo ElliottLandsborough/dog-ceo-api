@@ -1,9 +1,28 @@
 <IfModule mod_rewrite.c>
     Options -MultiViews
-    RewriteEngine On    
-    RewriteBase /api/
- 
-    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteEngine On
+
+    # Redirect users from / to a new place
+    #RewriteRule ^$ https://dog.ceo/dog-api [R=301,L]
+
+    # Block access to all dirs
+    RewriteRule ^bin/(.*)?$ /dog-api/ [R=301,L]
+    RewriteRule ^config/(.*)?$ /dog-api/ [R=301,L]
+    # Breaks stuff
+    #RewriteRule ^public/(.*)?$ /dog-api/ [R=301,L]
+    RewriteRule ^src/(.*)?$ /dog-api/ [R=301,L]
+    RewriteRule ^tests/(.*)?$ /dog-api/ [R=301,L]
+    RewriteRule ^var/(.*)?$ /dog-api/ [R=301,L]
+    RewriteRule ^vendor/(.*)?$ /dog-api/ [R=301,L]
+
+    # rewrite all requests to /api/public/index.php
+    RewriteBase /api/public/
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule . index.php [L]
+    RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
+
+# All files ending in these exts:
+<FilesMatch ".json|.lock|.dist|.md">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>
