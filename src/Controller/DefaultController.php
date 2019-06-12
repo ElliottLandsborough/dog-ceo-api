@@ -6,8 +6,8 @@ namespace App\Controller;
 
 use App\Util\BreedUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
@@ -250,7 +250,7 @@ class DefaultController extends AbstractController
         }
 
         $response = new JsonResponse([
-            'status' => 'success',
+            'status'  => 'success',
             'message' => $message,
         ]);
 
