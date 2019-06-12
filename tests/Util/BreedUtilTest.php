@@ -1,5 +1,7 @@
 <?php
+
 // tests/Util/BreedUtilTest.php
+
 namespace App\Tests\Util;
 
 use App\Util\BreedUtil;
@@ -54,7 +56,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('success', json_decode($response->getContent())->status);
         $this->assertContains('staffordshire', (array) json_decode($response->getContent())->message);
-        
+
         $response = $this->util->getAllSubBreeds('DOESNOTEXIST')->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('error', json_decode($response->getContent())->status);

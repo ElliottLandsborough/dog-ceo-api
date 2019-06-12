@@ -1,5 +1,7 @@
 <?php
+
 // src/EventListener/ExceptionListener.php
+
 namespace App\EventListener;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -34,9 +36,9 @@ class ExceptionListener
         $response->headers->set('Access-Control-Allow-Origin', '*');
 
         $response->setContent(json_encode((object) [
-            'status' => 'error',
+            'status'    => 'error',
             'message'   => $message,
-            'code' => $response->getStatusCode(),
+            'code'      => $response->getStatusCode(),
         ]));
 
         // sends the modified response object to the event
