@@ -88,11 +88,40 @@ class BreedUtil
      *
      * @return BreedUtil $this
      */
-    public function clearCache()
+    public function clearCache(): ?self
     {
         $this->cache->clear();
 
         return $this;
+    }
+
+    /**
+     * Clear the cloudflare cache based on the routes
+     *
+     * @return BreedUtil $this
+     */
+    public function clearCacheCloudFlare(): ?object
+    {
+        $url = 'https://api.cloudflare.com/client/v4/zones/' . trim($_ENV['DOG_CEO_CLOUDFLARE_ZONE_ID']) . '/purge_cache';
+
+        $headers = [
+            'X-Auth-Email' => trim($_ENV['DOG_CEO_CLOUDFLARE_AUTH_EMAIL']),
+            'X-Auth-Key' => trim($_ENV['DOG_CEO_CLOUDFLARE_AUTH_KEY']),
+            'Content-Type' => 'application/json',
+        ];
+
+        $data = ['files' => []];
+
+        try {
+            $res = $this->client->request('POST', $url, $headers, $data);
+
+            return json_decode($res->getBody()->getContents());
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            return (object) [
+                'status'  => 'error',
+                'message' => $e->getMessage(),
+            ];
+        }
     }
 
     /**

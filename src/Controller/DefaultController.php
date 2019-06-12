@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Symfony\Component\Routing\RouterInterface;
+
 class DefaultController extends AbstractController
 {
     protected $breedUtil;
@@ -272,6 +274,37 @@ class DefaultController extends AbstractController
         if (Request::createFromGlobals()->headers->get('auth-key') === trim($_ENV['DOG_CEO_CACHE_KEY'])) {
             $message = 'Success, cache was cleared with key';
             $this->breedUtil->clearCache();
+        }
+
+        $response = new JsonResponse([
+            'status'  => 'success',
+            'message' => $message,
+        ]);
+
+        $response->setStatusCode(200);
+
+        return $response;
+    }
+
+    /**
+     * @route("/cache-clear-cf", methods={"GET","HEAD"})
+     * @route("/api/cache-clear-cf", methods={"GET","HEAD"})
+     */
+    public function cacheClearCloudFlare(): ?JsonResponse
+    {
+        $router = new RouterInterface;
+
+        $routes = $router->getRouteCollection()->all();
+
+        print_r($routes);
+
+        $this->breedUtil->clearCacheCloudFlare();
+        die;
+        $message = 'Cache was not cleared';
+
+        if (Request::createFromGlobals()->headers->get('auth-key') === trim($_ENV['DOG_CEO_CACHE_KEY'])) {
+            $message = 'Success, cache was cleared with key';
+            $this->breedUtil->clearCacheCloudFlare();
         }
 
         $response = new JsonResponse([
