@@ -244,8 +244,6 @@ class DefaultController extends AbstractController
     {
         $message = 'Cache was not cleared';
 
-        echo $_ENV['DOG_CEO_CACHE_KEY'];
-
         if (Request::createFromGlobals()->headers->get('auth-key') === trim($_ENV['DOG_CEO_CACHE_KEY'])) {
             $message = 'Success, cache was cleared with key';
             $this->breedUtil->clearCache();
@@ -255,8 +253,8 @@ class DefaultController extends AbstractController
             'status' => 'success',
             'message' => $message,
         ]);
+
         $response->setStatusCode(200);
-        $response->headers->set('Access-Control-Allow-Origin', '*');
 
         return $response;
     }
