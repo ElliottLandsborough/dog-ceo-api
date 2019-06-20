@@ -10,7 +10,7 @@
 
  - To add your own images submit a pull request to https://github.com/jigsawpieces/dog-api-images
  - Rewritten in Symfony 4 recently. Check out the 'legacy' branch for the old version
- - API requests are cached from lambda https://github.com/ElliottLandsborough/dog-ceo-api-node
+ - API requests are cached from lambda https://github.com/ElliottLandsborough/dog-ceo-api-golang
 
 ## Stats
 
