@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 // todo: assert error codes
+// todo: get all strings etc from mock api and breedutil
 class DefaultControllerTest extends TestCase
 {
     protected $util;
@@ -547,5 +548,56 @@ class DefaultControllerTest extends TestCase
         $status = $object->status;
         $this->assertEquals("success", $status);
         $this->assertCount(1, $message);
+    }
+
+    public function testMasterText() {
+        $r = $this->controller->masterText('affenpinscher');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = (object) $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertEquals("Affenpinscher", $message->name);
+        $this->assertEquals("Info text.", $message->info);
+
+        $r = $this->controller->masterText('DOESNOTEXIST');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("error", $status);
+        $this->assertEquals("Breed not found (master breed does not exist)", $message);
+    }
+
+    public function testSubText() {
+        $r = $this->controller->subText('bullterrier', 'staffordshire');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = (object) $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertEquals("Staffordshire Bullterrier", $message->name);
+        $this->assertEquals("Info text.", $message->info);
+
+        $r = $this->controller->subText('bullterrier', 'DOESNOTEXIST');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("error", $status);
+        $this->assertEquals("Breed not found (sub breed does not exist)", $message);
+
+        $r = $this->controller->subText('DOESNOTEXIST', 'DOESNOTEXIST');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("error", $status);
+        $this->assertEquals("Breed not found (master breed does not exist)", $message);
     }
 }
