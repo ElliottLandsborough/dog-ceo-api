@@ -199,23 +199,6 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg', $content[0]->url);
     }
 
-    public function getRandomSubLevelImage()
-    {
-        $response = $this->util->getRandomSubLevelImage('bullterrier', 'staffordshire')->getResponse();
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertEquals('success', json_decode($response->getContent())->status);
-        $string = 'https://images.dog.ceo';
-        $this->assertEquals($string, substr(json_decode($response->getContent())->message, 0, strlen($string)));
-
-        $response = $this->util->getRandomSubLevelImage('DOESNOTEXIST', 'DOESNOTEXIST')->getResponse();
-        $this->assertEquals(404, $response->getStatusCode());
-        $this->assertEquals('error', json_decode($response->getContent())->status);
-
-        $response = $this->util->getRandomSubLevelImage('bullterrier', 'DOESNOTEXIST')->getResponse();
-        $this->assertEquals(404, $response->getStatusCode());
-        $this->assertEquals('error', json_decode($response->getContent())->status);
-    }
-
     public function testGetRandomSubLevelImages()
     {
         $response = $this->util->getRandomSubLevelImages('bullterrier', 'staffordshire', 3)->getResponse();
@@ -406,6 +389,21 @@ class BreedUtilTest extends TestCase
 
     public function testGetRandomSubLevelImage()
     {
+        $response = $this->util->getRandomSubLevelImage('bullterrier', 'staffordshire')->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+        $string = 'https://images.dog.ceo';
+        $this->assertEquals($string, substr(json_decode($response->getContent())->message, 0, strlen($string)));
+
+        $response = $this->util->getRandomSubLevelImage('DOESNOTEXIST', 'DOESNOTEXIST')->getResponse();
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals('error', json_decode($response->getContent())->status);
+
+        $response = $this->util->getRandomSubLevelImage('bullterrier', 'DOESNOTEXIST')->getResponse();
+        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertEquals('error', json_decode($response->getContent())->status);
+
+        // dupe?
         $result = $this->invokeMethod($this->util, 'getRandomSubLevelImage', ['bullterrier', 'staffordshire']);
         $result = $this->invokeMethod($this->util, 'arrayResponse');
         $this->assertEquals('success', $result->status);
