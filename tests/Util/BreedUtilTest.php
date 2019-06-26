@@ -41,6 +41,25 @@ class BreedUtilTest extends TestCase
         return $method->invokeArgs($object, $parameters);
     }
 
+    public function isValidXml($content)
+    {
+        $content = trim($content);
+        if (empty($content)) {
+            return false;
+        }
+        //html go to hell!
+        if (stripos($content, '<!DOCTYPE html>') !== false) {
+            return false;
+        }
+    
+        libxml_use_internal_errors(true);
+        simplexml_load_string($content);
+        $errors = libxml_get_errors();          
+        libxml_clear_errors();  
+    
+        return empty($errors);
+    }
+
     public function testGetAllBreeds()
     {
         $response = $this->util->getAllBreeds()->getResponse();
@@ -50,6 +69,10 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('success', json_decode($response->getContent())->status);
 
         $this->assertArrayHasKey('bullterrier', (array) json_decode($response->getContent())->message);
+
+        $xmlResponse = $this->util->getAllBreeds()->xmlOutputEnable()->getResponse()->getContent();
+
+        $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 
     public function testGetAllTopLevelBreeds()
@@ -92,6 +115,15 @@ class BreedUtilTest extends TestCase
         $response = $this->util->getTopLevelImages('DOESNOTEXIST')->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('error', json_decode($response->getContent())->status);
+
+        $response = $this->util->getTopLevelImagesWithAltTags('affenpinscher')->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+        $this->assertGreaterThan(0, count((array) json_decode($response->getContent())->message));
+        $string = 'https://images.dog.ceo';
+        $content = json_decode($response->getContent())->message;
+        $this->assertEquals('Affenpinscher dog', $content[0]->altText);
+        $this->assertEquals('https://images.dog.ceo/breeds/affenpinscher/image.jpg', $content[0]->url);
     }
 
     public function testGetRandomTopLevelImage()
@@ -119,6 +151,15 @@ class BreedUtilTest extends TestCase
         $response = $this->util->getRandomTopLevelImages('DOESNOTEXIST', 3)->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('error', json_decode($response->getContent())->status);
+
+        $response = $this->util->getRandomTopLevelImagesWithAltTags('affenpinscher', 3)->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+        $this->assertGreaterThan(0, count((array) json_decode($response->getContent())->message));
+        $string = 'https://images.dog.ceo';
+        $content = json_decode($response->getContent())->message;
+        $this->assertEquals('Affenpinscher dog', $content[0]->altText);
+        $this->assertEquals('https://images.dog.ceo/breeds/affenpinscher/image.jpg', $content[0]->url);
     }
 
     public function testGetSubLevelImages()
@@ -137,6 +178,15 @@ class BreedUtilTest extends TestCase
         $response = $this->util->getSubLevelImages('bullterrier', 'DOESNOTEXIST')->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('error', json_decode($response->getContent())->status);
+
+        $response = $this->util->getSubLevelImagesWithAltTags('bullterrier', 'staffordshire')->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+        $this->assertGreaterThan(0, count((array) json_decode($response->getContent())->message));
+        $string = 'https://images.dog.ceo';
+        $content = json_decode($response->getContent())->message;
+        $this->assertEquals('Staffordshire bullterrier dog', $content[0]->altText);
+        $this->assertEquals('https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg', $content[0]->url);
     }
 
     public function getRandomSubLevelImage()
@@ -154,6 +204,15 @@ class BreedUtilTest extends TestCase
         $response = $this->util->getRandomSubLevelImage('bullterrier', 'DOESNOTEXIST')->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('error', json_decode($response->getContent())->status);
+
+        $response = $this->util->getRandomSubLevelImagesWithAltTags('bullterrier', 'staffordshire')->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+        $this->assertGreaterThan(0, count((array) json_decode($response->getContent())->message));
+        $string = 'https://images.dog.ceo';
+        $content = json_decode($response->getContent())->message;
+        $this->assertEquals('Staffordshire bullterrier dog', $content[0]->altText);
+        $this->assertEquals('https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg', $content[0]->url);
     }
 
     public function testGetRandomSubLevelImages()
@@ -198,6 +257,15 @@ class BreedUtilTest extends TestCase
         $this->assertGreaterThan(0, count((array) json_decode($response->getContent())->message));
         $string = 'https://images.dog.ceo';
         $this->assertEquals($string, substr(json_decode($response->getContent())->message[0], 0, strlen($string)));
+
+        $response = $this->util->getRandomImagesWithAltTags(3)->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+        $this->assertGreaterThan(0, count((array) json_decode($response->getContent())->message));
+        $string = 'https://images.dog.ceo';
+        $content = json_decode($response->getContent())->message;
+        $this->assertEquals($string, substr($content[0]->url, 0, strlen($string)));
+        $this->assertEquals(' dog', substr($content[0]->altText, -4));
     }
 
     public function testGetMasterText()
