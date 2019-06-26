@@ -233,6 +233,9 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('success', json_decode($response->getContent())->status);
         $string = 'https://images.dog.ceo';
         $this->assertEquals($string, substr(json_decode($response->getContent())->message, 0, strlen($string)));
+
+        $xmlResponse = $this->util->getRandomImage()->xmlOutputEnable()->getResponse()->getContent();
+        $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 
     public function testGetRandomImages()
@@ -272,6 +275,9 @@ class BreedUtilTest extends TestCase
         $response = $this->util->masterText('DOESNOTEXIST')->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('error', json_decode($response->getContent())->status);
+
+        $xmlResponse = $this->util->masterText('affenpinscher')->xmlOutputEnable()->getResponse()->getContent();
+        $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 
     public function testGetSubText()
@@ -289,6 +295,9 @@ class BreedUtilTest extends TestCase
         $response = $this->util->subText('bullterrier', 'DOESNOTEXIST')->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('error', json_decode($response->getContent())->status);
+
+        $xmlResponse = $this->util->subText('bullterrier', 'staffordshire')->xmlOutputEnable()->getResponse()->getContent();
+        $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 
     public function testGetAllBreedsRandomSingle()
