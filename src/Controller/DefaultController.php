@@ -19,7 +19,8 @@ class DefaultController extends AbstractController
      */
     public function __construct(BreedUtil $breedUtil)
     {
-        $this->breedUtil = $breedUtil->setEndpointUrl($_ENV['DOG_CEO_LAMBDA_URI']);
+        $endpointUrl = isset($_ENV['DOG_CEO_LAMBDA_URI']) ? $_ENV['DOG_CEO_LAMBDA_URI'] : '';
+        $this->breedUtil = $breedUtil->setEndpointUrl($endpointUrl);
 
         // enable XML output if the header is set
         if (Request::createFromGlobals()->headers->get('content-type') === 'application/xml') {
