@@ -640,7 +640,7 @@ class BreedUtil
     private function xmlResponse(): ?Response
     {
         $response = new Response(ArrayToXml::convert($this->formatDataForXmlOutput()), $this->responseCode);
-        $response->headers->set('Content-Type', 'xml');
+        $response->headers->set('Content-Type', 'application/xml');
 
         return $response;
     }
@@ -876,7 +876,7 @@ class BreedUtil
      *
      * @return string
      */
-    private function niceBreedAltFromFolder(string $folder = 'unknown breed'): ?string
+    private function niceBreedAltFromFolder(string $folder = 'unknown-breed'): ?string
     {
         $alt = $this->niceBreedNameFromFolder($folder).' dog';
 
