@@ -440,4 +440,12 @@ class BreedUtilTest extends TestCase
         $result = $this->invokeMethod($this->util, 'breedFolderFromUrl', [$url]);
         $this->assertEquals("border-collie", $result);
     }
+
+    public function testRandomItemsFromArray()
+    {
+        $array = [1,2,3];
+        $count = count($array);
+        $result = $this->invokeMethod($this->util, 'randomItemsFromArray', [$array, -1]);
+        $this->assertEquals($count, count($result));
+    }
 }
