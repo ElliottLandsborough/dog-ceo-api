@@ -413,4 +413,139 @@ class DefaultControllerTest extends TestCase
         $this->assertEquals("error", $status);
         $this->assertEquals("Breed not found (master breed does not exist)", $message);
     }
+
+    public function testGetRandomSubLevelImage()
+    {
+        $r = $this->controller->getRandomSubLevelImage('bullterrier', 'staffordshire');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertEquals("https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg", $message);
+
+        $r = $this->controller->getRandomSubLevelImage('bullterrier', 'DOESNOTEXIST');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("error", $status);
+        $this->assertEquals("Breed not found (sub breed does not exist)", $message);
+
+        $r = $this->controller->getRandomSubLevelImage('bad', 'bad');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("error", $status);
+        $this->assertEquals("Breed not found (master breed does not exist)", $message);
+    }
+
+    public function testGetRandomSubLevelImages() {
+        $r = $this->controller->getRandomSubLevelImages('bullterrier', 'staffordshire', 1);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertEquals(["https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg"], $message);
+
+        $r = $this->controller->getRandomSubLevelImages('bullterrier', 'staffordshire', 2);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertEquals(["https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg"], $message);
+
+        $r = $this->controller->getRandomSubLevelImages('bullterrier', 'staffordshire', 999);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertEquals(["https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg"], $message);
+
+        $r = $this->controller->getRandomSubLevelImages('bullterrier', 'staffordshire', 'bad');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertEquals(["https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg"], $message);
+
+        $r = $this->controller->getRandomSubLevelImages('bullterrier', 'DOESNOTEXIST', 3);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("error", $status);
+        $this->assertEquals("Breed not found (sub breed does not exist)", $message);
+
+        $r = $this->controller->getRandomSubLevelImages('bad', 'bad', 3);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("error", $status);
+        $this->assertEquals("Breed not found (master breed does not exist)", $message);
+    }
+
+    public function testGetRandomImage() {
+        $r = $this->controller->getRandomImage();
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertContains($message, ["https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg", "https://images.dog.ceo/breeds/affenpinscher/image.jpg"]);
+    }
+
+    public function testGetRandomImages() {
+        $r = $this->controller->getRandomImages(5);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertCount(5, $message);
+
+        $r = $this->controller->getRandomImages(-1);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertCount(1, $message);
+
+        $r = $this->controller->getRandomImages(99999);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertCount(50, $message);
+
+        $r = $this->controller->getRandomImages("bad");
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertCount(1, $message);
+    }
 }
