@@ -808,7 +808,8 @@ class DefaultControllerTest extends TestCase
         $this->assertCount(1, $message);
     }
 
-    public function testCacheClear() {
+    public function testCacheClear()
+    {
         $r = $this->controller->cacheClear();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
         $json = $r->getContent();
@@ -816,6 +817,6 @@ class DefaultControllerTest extends TestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('success', $status);
-        $this->assertEquals('Cache was not cleared', $message);   
+        $this->assertEquals('Cache was not cleared', $message);
     }
 }
