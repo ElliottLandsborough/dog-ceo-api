@@ -670,18 +670,18 @@ class BreedUtil
 
         // restructure data a bit so that xml outputs correctly
         switch ($responseType) {
-            case 'breedOneDimensional': // /breeds/list/xml
+            case 'breedOneDimensional':
                 $data->breeds['breed'] = $data->message;
                 unset($data->message);
                 break;
-            case 'breedTwoDimensional': // /breeds/list/all/xml
+            case 'breedTwoDimensional':
                 $data->breeds['breed'] = array_keys($data->message);
                 $subBreeds = array_filter(array_map('array_filter', $data->message));
                 $data->subbreeds = $subBreeds;
                 $data->allbreeds = $data->message;
                 unset($data->message);
                 break;
-            case 'imageSingle': // /breeds/image/random/xml
+            case 'imageSingle':
                 // deal with alts
                 if (isset($data->message['alt'])) {
                     $data->message['alt'] = $data->message['altText'];
@@ -690,7 +690,7 @@ class BreedUtil
                 $data->images['image'] = [$data->message];
                 unset($data->message);
                 break;
-            case 'imageMulti': // /breed/bulldog/french/images/xml
+            case 'imageMulti':
                 // deal with alts
                 foreach ($data->message as $key => $value) {
                     if (isset($data->message[$key]['altText'])) {
@@ -701,7 +701,7 @@ class BreedUtil
                 $data->images['image'] = $data->message;
                 unset($data->message);
                 break;
-            case 'breedInfo': // /breed/spaniel/cocker/xml
+            case 'breedInfo':
                 $data->breed = $data->message;
                 unset($data->message);
                 break;
