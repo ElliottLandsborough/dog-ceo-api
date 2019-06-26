@@ -4,6 +4,8 @@
 
 namespace App\Util;
 
+use \GuzzleHttp\Exception\ClientException;
+
 /**
  * A mock api - returns a small subset of what lambda does.
  */
@@ -56,6 +58,11 @@ class MockApi extends \GuzzleHttp\Client
      */
     public function request($method, $uri = '', array $options = [])
     {
+        // see if we requested an exception
+        if ($uri === 'ClientException') {
+            throw new ClientException('ClientException', new \GuzzleHttp\Psr7\Request('GET', 'https://domain.test'), new \GuzzleHttp\Psr7\Response(418, [], ''));
+        }
+
         // default to 500/error
         $code = 500;
         $data = '{"status":"unitFail","message":"URI does not exist in MockApi.php"}';

@@ -315,6 +315,11 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('unitFail', $error->status);
         $this->assertEquals('URI does not exist in MockApi.php', $error->message);
 
+        // \GuzzleHttp\Exception\ClientException
+        $error = $this->invokeMethod($this->util, 'getWithGuzzle', ['ClientException']);
+        $this->assertEquals('error', $error->status);
+        $this->assertEquals('ClientException', $error->message);
+
         // good url
         $success = $this->invokeMethod($this->util, 'getWithGuzzle', ['breed/affenpinscher/list']);
         $this->assertEquals('success', $success->status);
