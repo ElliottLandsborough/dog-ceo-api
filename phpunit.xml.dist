@@ -23,7 +23,9 @@
 
     <filter>
         <whitelist>
-            <directory>src</directory>
+            <directory>src/Controller</directory>
+            <directory>src/EventListener</directory>
+            <directory>src/Util</directory>
         </whitelist>
     </filter>
 
