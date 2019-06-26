@@ -4,7 +4,7 @@
 
 namespace App\Util;
 
-use \GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\Exception\ClientException;
 
 /**
  * A mock api - returns a small subset of what lambda does.

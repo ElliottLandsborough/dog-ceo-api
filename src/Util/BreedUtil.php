@@ -265,7 +265,7 @@ class BreedUtil
     {
         $response = $this->getAllSubBreeds($breed)->arrayResponse();
 
-        if ($response->status === "error") {
+        if ($response->status === 'error') {
             return $this;
         }
 

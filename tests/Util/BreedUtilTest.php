@@ -4,8 +4,8 @@
 
 namespace App\Tests\Util;
 
-use App\Util\MockApi;
 use App\Util\BreedUtil;
+use App\Util\MockApi;
 use PHPUnit\Framework\TestCase;
 
 class BreedUtilTest extends TestCase
@@ -21,7 +21,7 @@ class BreedUtilTest extends TestCase
         $this->util->clearCache();
 
         // set the client to use the mock api
-        $this->util->setClient(new MockApi);
+        $this->util->setClient(new MockApi());
     }
 
     /**
@@ -33,7 +33,7 @@ class BreedUtilTest extends TestCase
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = array())
+    public function invokeMethod(&$object, $methodName, array $parameters = [])
     {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
@@ -52,12 +52,12 @@ class BreedUtilTest extends TestCase
         if (stripos($content, '<!DOCTYPE html>') !== false) {
             return false;
         }
-    
+
         libxml_use_internal_errors(true);
         simplexml_load_string($content);
-        $errors = libxml_get_errors();          
-        libxml_clear_errors();  
-    
+        $errors = libxml_get_errors();
+        libxml_clear_errors();
+
         return empty($errors);
     }
 
@@ -459,28 +459,28 @@ class BreedUtilTest extends TestCase
 
     public function testNiceBreedNameFromFolder()
     {
-        $folder = "string1-string2";
+        $folder = 'string1-string2';
         $result = $this->invokeMethod($this->util, 'niceBreedNameFromFolder', [$folder]);
-        $this->assertEquals("String2 string1", $result);
+        $this->assertEquals('String2 string1', $result);
     }
 
     public function testNiceBreedAltFromFolder()
     {
-        $folder = "string1-string2";
+        $folder = 'string1-string2';
         $result = $this->invokeMethod($this->util, 'niceBreedAltFromFolder', [$folder]);
-        $this->assertEquals("String2 string1 dog", $result);
+        $this->assertEquals('String2 string1 dog', $result);
     }
 
     public function testBreedFolderFromUrl()
     {
-        $url = "/api/border-collie/dog.jpg";
+        $url = '/api/border-collie/dog.jpg';
         $result = $this->invokeMethod($this->util, 'breedFolderFromUrl', [$url]);
-        $this->assertEquals("border-collie", $result);
+        $this->assertEquals('border-collie', $result);
     }
 
     public function testRandomItemsFromArray()
     {
-        $array = [1,2,3];
+        $array = [1, 2, 3];
         $count = count($array);
         $result = $this->invokeMethod($this->util, 'randomItemsFromArray', [$array, -1]);
         $this->assertEquals($count, count($result));
