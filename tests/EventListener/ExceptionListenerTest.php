@@ -5,11 +5,11 @@
 namespace App\Tests\Util;
 
 use App\EventListener\ExceptionListener;
-use Symfony\Component\HttpFoundation\Request;
-use \Exception;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Exception;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class ExceptionListenerTest extends TestCase
 {
@@ -18,15 +18,15 @@ class ExceptionListenerTest extends TestCase
     // runs per test
     public function setUp(): void
     {
-        $this->exceptionListener = new ExceptionListener;
+        $this->exceptionListener = new ExceptionListener();
     }
 
     public function testOnKernelException()
     {
         $expected = (object) [
-            'status' => 'error',
+            'status'  => 'error',
             'message' => 'Error Message Example with code: 0',
-            'code'  => 500,
+            'code'    => 500,
         ];
 
         $request = new Request();
