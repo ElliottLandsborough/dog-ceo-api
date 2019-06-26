@@ -234,7 +234,26 @@ class BreedUtilTest extends TestCase
         $string = 'https://images.dog.ceo';
         $this->assertEquals($string, substr(json_decode($response->getContent())->message, 0, strlen($string)));
 
+        $this->setUp();
         $xmlResponse = $this->util->getRandomImage()->xmlOutputEnable()->getResponse()->getContent();
+        $this->assertEquals(true, $this->isValidXml($xmlResponse));
+
+        $this->setUp();
+        $r = $this->invokeMethod($this->util, 'getRandomImage');
+        $r = $this->invokeMethod($this->util, 'addAltTags');
+        $r = $this->invokeMethod($this->util, 'getResponse');
+        $result = json_decode($r->getContent());
+        $message = $result->message;
+        $this->assertEquals(' dog', substr($message->altText, -4));
+        $string = 'https://images.dog.ceo';
+        $this->assertEquals($string, substr($message->url, 0, strlen($string)));
+
+        $this->setUp();
+        $r = $this->invokeMethod($this->util, 'getRandomImage');
+        $r = $this->invokeMethod($this->util, 'addAltTags');
+        $r = $this->invokeMethod($this->util, 'xmlOutputEnable');
+        $r = $this->invokeMethod($this->util, 'getResponse');
+        $xmlResponse = $r->getContent();
         $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 

@@ -835,7 +835,7 @@ class BreedUtil
     private function addAltTags(): ?self
     {
         if (!is_array($this->response->message) && is_string($this->response->message)) {
-            // single image response - this is never called at the moment
+            // single image response
             $this->response->message = [
                 'url'       => $this->response->message,
                 'altText'   => $this->niceBreedAltFromFolder($this->breedFolderFromUrl($this->response->message)),
