@@ -38,6 +38,8 @@ class DefaultControllerTest extends TestCase
         $json = $r->getContent();
         $object = json_decode($json);
         $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
         $this->assertCount(1, (array) $message);
     }
 
@@ -50,6 +52,8 @@ class DefaultControllerTest extends TestCase
         $json = $r->getContent();
         $object = json_decode($json);
         $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
         $this->assertCount($n, (array) $message);
 
         // 2 will return 2
@@ -59,6 +63,8 @@ class DefaultControllerTest extends TestCase
         $json = $r->getContent();
         $object = json_decode($json);
         $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
         $this->assertCount($n, (array) $message);
 
         // 3 will return all which is 2
@@ -68,6 +74,8 @@ class DefaultControllerTest extends TestCase
         $json = $r->getContent();
         $object = json_decode($json);
         $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
         $this->assertCount(2, (array) $message);
 
         // -1 will return 10 (so all which is 2)
@@ -77,6 +85,8 @@ class DefaultControllerTest extends TestCase
         $json = $r->getContent();
         $object = json_decode($json);
         $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
         $this->assertCount(2, (array) $message);
 
         // (string) will return 1
@@ -86,6 +96,8 @@ class DefaultControllerTest extends TestCase
         $json = $r->getContent();
         $object = json_decode($json);
         $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
         $this->assertCount(1, (array) $message);
     }
 
@@ -96,6 +108,89 @@ class DefaultControllerTest extends TestCase
         $json = $r->getContent();
         $object = json_decode($json);
         $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
         $this->assertEquals(['affenpinscher', 'bullterrier'], $message);
+    }
+
+    public function testGetAllTopLevelBreedsRandomSingle()
+    {
+        $r = $this->controller->getAllTopLevelBreedsRandomSingle();
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertContains($message, ['affenpinscher', 'bullterrier']);
+    }
+
+    public function testGetAllTopLevelBreedsRandomMultiple()
+    {
+        $r = $this->controller->getAllTopLevelBreedsRandomMultiple(2);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertEquals($message, ['affenpinscher', 'bullterrier']);
+
+        $r = $this->controller->getAllTopLevelBreedsRandomMultiple(-1);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertEquals($message, ['affenpinscher', 'bullterrier']);
+
+        $r = $this->controller->getAllTopLevelBreedsRandomMultiple(9999);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertEquals($message, ['affenpinscher', 'bullterrier']);
+
+        $r = $this->controller->getAllTopLevelBreedsRandomMultiple("$$");
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertContains($message[0], ['affenpinscher', 'bullterrier']);
+    }
+
+    public function testGetAllSubBreeds()
+    {
+        $r = $this->controller->getAllSubBreeds('affenpinscher');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertCount(0, (array) $message);
+
+        $r = $this->controller->getAllSubBreeds('bullterrier');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertEquals(["staffordshire"], (array) $message);
+
+        $r = $this->controller->getAllSubBreeds('BAD');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("error", $status);
+        $this->assertEquals("Breed not found (master breed does not exist)", $message);
     }
 }
