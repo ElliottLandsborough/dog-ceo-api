@@ -13,12 +13,15 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     protected $breedUtil;
+    protected $cacheKey;
 
     /**
      * @param BreedUtil $breedUtil
      */
     public function __construct(BreedUtil $breedUtil)
     {
+        $this->cacheKey = isset($_ENV['DOG_CEO_CACHE_KEY']) ? $_ENV['DOG_CEO_CACHE_KEY'] : '';
+
         $endpointUrl = isset($_ENV['DOG_CEO_LAMBDA_URI']) ? $_ENV['DOG_CEO_LAMBDA_URI'] : '';
         $this->breedUtil = $breedUtil->setEndpointUrl($endpointUrl);
 
@@ -270,7 +273,7 @@ class DefaultController extends AbstractController
     {
         $message = 'Cache was not cleared';
 
-        if (Request::createFromGlobals()->headers->get('auth-key') === trim($_ENV['DOG_CEO_CACHE_KEY'])) {
+        if (Request::createFromGlobals()->headers->get('auth-key') === trim($this->cacheKey)) {
             $message = 'Success, cache was cleared with key';
             $this->breedUtil->clearCache();
         }
