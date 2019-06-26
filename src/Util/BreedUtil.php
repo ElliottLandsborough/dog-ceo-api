@@ -263,7 +263,19 @@ class BreedUtil
 
     public function getAllSubBreedsRandomMulti(string $breed, $amount): ?object
     {
-        $this->response->message = $this->randomItemsFromArray((array) $this->getAllSubBreeds($breed)->arrayResponse()->message, $amount);
+        $response = $this->getAllSubBreeds($breed)->arrayResponse();
+
+        if ($response->status === "error") {
+            return $this;
+        }
+
+        $message = (array) $response->message;
+
+        if (count($message)) {
+            $this->response->message = $this->randomItemsFromArray($message, $amount);
+        } else {
+            $this->setNotFoundResponse($this->masterBreedHasNoSubBreedsMessage);
+        }
 
         return $this;
     }
