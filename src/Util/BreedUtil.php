@@ -430,6 +430,11 @@ class BreedUtil
      */
     public function getRandomImages(int $amount): ?self
     {
+        // minimum of 1
+        if ($amount < 1) {
+            $amount = 1;
+        }
+
         // maximum of 50 random images
         if ($amount > 50) {
             $amount = 50;
