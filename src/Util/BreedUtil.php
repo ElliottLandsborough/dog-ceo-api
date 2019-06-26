@@ -683,7 +683,7 @@ class BreedUtil
                 break;
             case 'imageSingle':
                 // deal with alts
-                if (isset($data->message['alt'])) {
+                if (isset($data->message['altText'])) {
                     $data->message['alt'] = $data->message['altText'];
                     unset($data->message['altText']);
                 }
