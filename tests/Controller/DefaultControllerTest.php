@@ -193,4 +193,34 @@ class DefaultControllerTest extends TestCase
         $this->assertEquals("error", $status);
         $this->assertEquals("Breed not found (master breed does not exist)", $message);
     }
+
+    public function testGetAllSubBreedsRandomSingle()
+    {
+        $r = $this->controller->getAllSubBreedsRandomSingle('bullterrier');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("success", $status);
+        $this->assertEquals("staffordshire", $message);
+
+        $r = $this->controller->getAllSubBreedsRandomSingle('BAD');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("error", $status);
+        $this->assertEquals("Breed not found (master breed does not exist)", $message);
+
+        $r = $this->controller->getAllSubBreedsRandomSingle('affenpinscher');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals("error", $status);
+        $this->assertEquals("Breed not found (no sub breeds exist for this master breed)", $message);
+    }
 }
