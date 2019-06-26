@@ -27,7 +27,7 @@ class MockApi extends \GuzzleHttp\Client
             'breed/affenpinscher/images'             => '{"status":"success","message":["https://images.dog.ceo/breeds/affenpinscher/image.jpg"]}',
             'breed/bullterrier/staffordshire/images' => '{"status":"success","message":["https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg"]}',
             'breed/affenpinscher'                    => '{"status":"success","message":{"name":"Affenpinscher","info":"Info text."}}',
-            'breed/bullterrier/staffordshire'        => '{"status":"success","message":{"name":"Staffordshire Bullterrier","info":"Info Text."}}',
+            'breed/bullterrier/staffordshire'        => '{"status":"success","message":{"name":"Staffordshire Bullterrier","info":"Info text."}}',
         ];
 
         $this->setResponses($responses);
