@@ -296,14 +296,16 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('error', json_decode($response->getContent())->status);
     }
 
-    public function textXmlOutputEnable()
+    public function testXmlOutputEnable()
     {
-        $this->assertAttributeEquals(true, 'xmlEnable', $this->util->xmlOutputEnable());
+        $result = $this->util->xmlOutputEnable();
+        $this->assertAttributeEquals(true, 'xmlEnable', $result);
     }
 
-    public function textSetEndpointUrl()
+    public function testSetEndpointUrl()
     {
-        $this->assertAttributeEquals('string', 'endpointUrl', $this->util->setEndpointUrl('string'));
+        $result = $this->util->setEndpointUrl('string');
+        $this->assertAttributeEquals('string', 'endpointUrl', $result);
     }
 
     public function testGetWithGuzzle()
