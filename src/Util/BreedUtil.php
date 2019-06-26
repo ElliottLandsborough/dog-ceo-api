@@ -693,8 +693,10 @@ class BreedUtil
             case 'imageMulti': // /breed/bulldog/french/images/xml
                 // deal with alts
                 foreach ($data->message as $key => $value) {
-                    $data->message[$key]['alt'] = $data->message[$key]['altText'];
-                    unset($data->message[$key]['altText']);
+                    if (isset($data->message[$key]['altText'])) {
+                        $data->message[$key]['alt'] = $data->message[$key]['altText'];
+                        unset($data->message[$key]['altText']);
+                    }
                 }
                 $data->images['image'] = $data->message;
                 unset($data->message);
