@@ -4,6 +4,7 @@
 
 namespace App\Tests\Util;
 
+use App\Util\MockApi;
 use App\Util\BreedUtil;
 use PHPUnit\Framework\TestCase;
 
@@ -20,7 +21,7 @@ class BreedUtilTest extends TestCase
         $this->util->clearCache();
 
         // set the client to use the mock api
-        $this->util->setClient(new \App\Util\MockApi());
+        $this->util->setClient(new MockApi);
     }
 
     /**
