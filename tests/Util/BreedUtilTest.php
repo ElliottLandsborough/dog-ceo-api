@@ -23,6 +23,24 @@ class BreedUtilTest extends TestCase
         $this->util->setClient(new \App\Util\MockApi());
     }
 
+    /**
+     * Call protected/private method of a class.
+     *
+     * @param object &$object    Instantiated object that we will run method on.
+     * @param string $methodName Method name to call
+     * @param array  $parameters Array of parameters to pass into method.
+     *
+     * @return mixed Method return.
+     */
+    public function invokeMethod(&$object, $methodName, array $parameters = array())
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $method = $reflection->getMethod($methodName);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($object, $parameters);
+    }
+
     public function testGetAllBreeds()
     {
         $response = $this->util->getAllBreeds()->getResponse();
@@ -173,6 +191,13 @@ class BreedUtilTest extends TestCase
         $this->assertGreaterThan(0, count((array) json_decode($response->getContent())->message));
         $string = 'https://images.dog.ceo';
         $this->assertEquals($string, substr(json_decode($response->getContent())->message[0], 0, strlen($string)));
+
+        $response = $this->util->getRandomImages(9999)->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('success', json_decode($response->getContent())->status);
+        $this->assertGreaterThan(0, count((array) json_decode($response->getContent())->message));
+        $string = 'https://images.dog.ceo';
+        $this->assertEquals($string, substr(json_decode($response->getContent())->message[0], 0, strlen($string)));
     }
 
     public function testGetMasterText()
@@ -269,5 +294,75 @@ class BreedUtilTest extends TestCase
         $response = $this->util->getAllSubBreedsRandomMulti('DOESNOTEXIST', 3)->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('error', json_decode($response->getContent())->status);
+    }
+
+    public function textXmlOutputEnable()
+    {
+        $this->assertAttributeEquals(true, 'xmlEnable', $this->util->xmlOutputEnable());
+    }
+
+    public function textSetEndpointUrl()
+    {
+        $this->assertAttributeEquals('string', 'endpointUrl', $this->util->setEndpointUrl('string'));
+    }
+
+    public function testGetWithGuzzle()
+    {
+        // bad url
+        $error = $this->invokeMethod($this->util, 'getWithGuzzle', ['https://domain.test']);
+        $this->assertEquals('unitFail', $error->status);
+        $this->assertEquals('URI does not exist in MockApi.php', $error->message);
+
+        // good url
+        $success = $this->invokeMethod($this->util, 'getWithGuzzle', ['breed/affenpinscher/list']);
+        $this->assertEquals('success', $success->status);
+        $this->assertEquals([], $success->message);
+    }
+
+    public function testGetRandomSubLevelImage()
+    {
+        $result = $this->invokeMethod($this->util, 'getRandomSubLevelImage', ['bullterrier', 'staffordshire']);
+        $result = $this->invokeMethod($this->util, 'arrayResponse');
+        $this->assertEquals('success', $result->status);
+        $this->assertEquals('https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg', $result->message);
+
+        $result = $this->invokeMethod($this->util, 'getResponseWithCacheHeaders');
+        $this->assertEquals('application/json', $result->headers->get('content-type'));
+        $this->assertEquals('max-age=1800, s-maxage=21600', $result->headers->get('cache-control'));
+
+        $result = $this->invokeMethod($this->util, 'xmlResponse');
+        $this->assertEquals('application/xml', $result->headers->get('content-type'));
+    }
+
+    public function testArrayIsMultiDimensional()
+    {
+        $twoDimensional = ['key' => []];
+        $result = $this->invokeMethod($this->util, 'arrayIsMultiDimensional', [$twoDimensional]);
+        $this->assertEquals(true, $result);
+
+        $oneDimensional = ['key' => ''];
+        $result = $this->invokeMethod($this->util, 'arrayIsMultiDimensional', [$oneDimensional]);
+        $this->assertEquals(false, $result);
+    }
+
+    public function testNiceBreedNameFromFolder()
+    {
+        $folder = "string1-string2";
+        $result = $this->invokeMethod($this->util, 'niceBreedNameFromFolder', [$folder]);
+        $this->assertEquals("String2 string1", $result);
+    }
+
+    public function testNiceBreedAltFromFolder()
+    {
+        $folder = "string1-string2";
+        $result = $this->invokeMethod($this->util, 'niceBreedAltFromFolder', [$folder]);
+        $this->assertEquals("String2 string1 dog", $result);
+    }
+
+    public function testBreedFolderFromUrl()
+    {
+        $url = "/api/border-collie/dog.jpg";
+        $result = $this->invokeMethod($this->util, 'breedFolderFromUrl', [$url]);
+        $this->assertEquals("border-collie", $result);
     }
 }
