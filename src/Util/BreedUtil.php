@@ -25,6 +25,7 @@ class BreedUtil
     protected $breedDelimiter = '-';
 
     // error messages
+    protected $masterBreedHasNoSubBreedsMessage = 'Breed not found (no sub breeds exist for this master breed)';
     protected $masterBreedNotFoundMessage = 'Breed not found (master breed does not exist)';
     protected $subBreedNotFoundMessage = 'Breed not found (sub breed does not exist)';
     protected $breedFileNotFound = 'Breed not found (No info file for this breed exists)';
@@ -249,7 +250,13 @@ class BreedUtil
 
     public function getAllSubBreedsRandomSingle(string $breed): ?object
     {
-        $this->response->message = $this->randomItemFromArray((array) $this->getAllSubBreeds($breed)->arrayResponse()->message);
+        $message = (array) $this->getAllSubBreeds($breed)->arrayResponse()->message;
+
+        if (count($message)) {
+            $this->response->message = $this->randomItemFromArray($message);
+        } else {
+            $this->setNotFoundResponse($this->masterBreedHasNoSubBreedsMessage);
+        }
 
         return $this;
     }
