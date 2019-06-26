@@ -933,7 +933,11 @@ class BreedUtil
      */
     public function getTopLevelImagesWithAltTags(string $breed): ?self
     {
-        $this->getTopLevelImages($breed)->addAltTags();
+        if ($this->masterBreedExists($breed)) {
+            $this->getTopLevelImages($breed)->addAltTags();
+        } else {
+            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+        }
 
         return $this;
     }
@@ -948,7 +952,11 @@ class BreedUtil
      */
     public function getRandomTopLevelImagesWithAltTags(string $breed, int $amount): ?self
     {
-        $this->getRandomTopLevelImages($breed, $amount)->addAltTags();
+        if ($this->masterBreedExists($breed)) {
+            $this->getRandomTopLevelImages($breed, $amount)->addAltTags();
+        } else {
+            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+        }
 
         return $this;
     }
@@ -963,7 +971,15 @@ class BreedUtil
      */
     public function getSubLevelImagesWithAltTags(string $breed1, string $breed2): ?self
     {
-        $this->getSubLevelImages($breed1, $breed2)->addAltTags();
+        if ($this->masterBreedExists($breed1)) {
+            if ($this->subBreedExists($breed1, $breed2)) {
+                $this->getSubLevelImages($breed1, $breed2)->addAltTags();
+            } else {
+                $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+            }
+        } else {
+            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+        }
 
         return $this;
     }
@@ -979,7 +995,15 @@ class BreedUtil
      */
     public function getRandomSubLevelImagesWithAltTags(string $breed1, string $breed2, int $amount): ?self
     {
-        $this->getRandomSubLevelImages($breed1, $breed2, $amount)->addAltTags();
+        if ($this->masterBreedExists($breed1)) {
+            if ($this->subBreedExists($breed1, $breed2)) {
+                $this->getRandomSubLevelImages($breed1, $breed2, $amount)->addAltTags();
+            } else {
+                $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+            }
+        } else {
+            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+        }
 
         return $this;
     }
