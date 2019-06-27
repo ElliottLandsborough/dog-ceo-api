@@ -669,6 +669,36 @@ class DefaultControllerTest extends TestCase
         $this->assertEquals('Breed not found (master breed does not exist)', $message);
     }
 
+    public function testGetSubLevelImages()
+    {
+        $r = $this->controller->getSubLevelImages('bullterrier', 'staffordshire');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals('success', $status);
+        $this->assertEquals(['https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg'], $message);
+
+        $r = $this->controller->getSubLevelImages('bullterrier', 'DOESNOTEXIST');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals('error', $status);
+        $this->assertEquals('Breed not found (sub breed does not exist)', $message);
+
+        $r = $this->controller->getSubLevelImages('DOESNOTEXIST', 'DOESNOTEXIST');
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals('error', $status);
+        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+    }
+
     public function testGetSubLevelImagesWithAltTags()
     {
         $r = $this->controller->getSubLevelImagesWithAltTags('bullterrier', 'staffordshire');
