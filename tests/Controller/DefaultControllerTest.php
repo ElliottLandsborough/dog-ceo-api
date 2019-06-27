@@ -20,10 +20,10 @@ class DefaultControllerTest extends WebTestCase
 
     public function setUp()
     {
-        $this->util = new BreedUtil(new MockApi, new FilesystemAdapter);
+        $this->util = new BreedUtil(new MockApi(), new FilesystemAdapter);
         $this->util->clearCache();
 
-        $this->controller = new DefaultController($this->util, new Request);
+        $this->controller = new DefaultController($this->util, new Request());
     }
 
     public function testGetAllBreeds()
@@ -53,7 +53,6 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('<?xml version="1.0"?>
 <root><status>success</status><breeds><breed>affenpinscher</breed><breed>bullterrier</breed></breeds><subbreeds><bullterrier>staffordshire</bullterrier></subbreeds><allbreeds><affenpinscher/><bullterrier>staffordshire</bullterrier></allbreeds></root>
 ', $r->getContent());
-
     }
 
     public function testGetAllBreedsRandomSingle()

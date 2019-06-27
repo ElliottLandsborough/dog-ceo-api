@@ -29,7 +29,7 @@ class ExceptionListenerTest extends TestCase
             'code'    => 500,
         ];
 
-        $request = new Request;
+        $request = new Request();
         $exception = new Exception('Error Message Example');
         $event = new GetResponseForExceptionEvent(new TestKernel(), $request, HttpKernelInterface::MASTER_REQUEST, $exception);
         $this->exceptionListener->onKernelException($event);

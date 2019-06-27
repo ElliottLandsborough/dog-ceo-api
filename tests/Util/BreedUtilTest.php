@@ -5,9 +5,9 @@
 namespace App\Tests\Util;
 
 use App\Util\BreedUtil;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use App\Util\MockApi;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class BreedUtilTest extends TestCase
 {
@@ -16,7 +16,7 @@ class BreedUtilTest extends TestCase
     // runs per test
     public function setUp(): void
     {
-        $this->util = new BreedUtil(new MockApi, new FilesystemAdapter);
+        $this->util = new BreedUtil(new MockApi(), new FilesystemAdapter());
 
         // disable the cache
         $this->util->clearCache();
