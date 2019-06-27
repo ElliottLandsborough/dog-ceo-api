@@ -31,6 +31,29 @@ class DefaultControllerTest extends WebTestCase
         $r = $this->controller->getAllBreeds();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
         $this->assertEquals('{"status":"success","message":{"affenpinscher":[],"bullterrier":["staffordshire"]}}', $r->getContent());
+
+        $client = static::createClient();
+
+        $client->request(
+            Request::METHOD_GET,
+            '/url',
+            [], // body
+            [],
+            [
+                'HTTP_content-type' => 'application/xml',
+            ]
+        );
+
+        $request = $client->getRequest();
+
+        $this->controller = new DefaultController($this->util, $request);
+
+        $r = $this->controller->getAllBreeds();
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $r);
+        $this->assertEquals('<?xml version="1.0"?>
+<root><status>success</status><breeds><breed>affenpinscher</breed><breed>bullterrier</breed></breeds><subbreeds><bullterrier>staffordshire</bullterrier></subbreeds><allbreeds><affenpinscher/><bullterrier>staffordshire</bullterrier></allbreeds></root>
+', $r->getContent());
+
     }
 
     public function testGetAllBreedsRandomSingle()

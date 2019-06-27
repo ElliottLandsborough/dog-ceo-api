@@ -29,7 +29,7 @@ class DefaultController extends AbstractController
         $this->breedUtil = $breedUtil->setEndpointUrl($endpointUrl);
 
         // enable XML output if the header is set
-        if ($request->createFromGlobals()->headers->get('content-type') === 'application/xml') {
+        if ($request->headers->get('content-type') === 'application/xml') {
             $this->breedUtil->xmlOutputEnable();
         }
     }
