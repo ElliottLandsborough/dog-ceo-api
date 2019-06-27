@@ -14,19 +14,22 @@ class DefaultController extends AbstractController
 {
     protected $breedUtil;
     protected $cacheKey;
+    protected $request;
 
     /**
      * @param BreedUtil $breedUtil
      */
-    public function __construct(BreedUtil $breedUtil)
+    public function __construct(BreedUtil $breedUtil, Request $request)
     {
-        $this->cacheKey = isset($_ENV['DOG_CEO_CACHE_KEY']) ? $_ENV['DOG_CEO_CACHE_KEY'] : '';
+        $this->request = $request;
+
+        $this->cacheKey = isset($_ENV['DOG_CEO_CACHE_KEY']) ? $_ENV['DOG_CEO_CACHE_KEY'] : false;
 
         $endpointUrl = isset($_ENV['DOG_CEO_LAMBDA_URI']) ? $_ENV['DOG_CEO_LAMBDA_URI'] : '';
         $this->breedUtil = $breedUtil->setEndpointUrl($endpointUrl);
 
         // enable XML output if the header is set
-        if (Request::createFromGlobals()->headers->get('content-type') === 'application/xml') {
+        if ($request->createFromGlobals()->headers->get('content-type') === 'application/xml') {
             $this->breedUtil->xmlOutputEnable();
         }
     }
@@ -273,7 +276,8 @@ class DefaultController extends AbstractController
     {
         $message = 'Cache was not cleared';
 
-        if (Request::createFromGlobals()->headers->get('auth-key') === trim($this->cacheKey)) {
+        // the false check means people can't clear the cache unless it is set
+        if ($this->cacheKey !== false && $this->request->headers->get('auth-key') === trim($this->cacheKey)) {
             $message = 'Success, cache was cleared with key';
             $this->breedUtil->clearCache();
         }

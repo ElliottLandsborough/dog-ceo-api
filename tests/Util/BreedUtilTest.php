@@ -5,6 +5,7 @@
 namespace App\Tests\Util;
 
 use App\Util\BreedUtil;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use App\Util\MockApi;
 use PHPUnit\Framework\TestCase;
 
@@ -15,13 +16,10 @@ class BreedUtilTest extends TestCase
     // runs per test
     public function setUp(): void
     {
-        $this->util = new BreedUtil();
+        $this->util = new BreedUtil(new MockApi, new FilesystemAdapter);
 
         // disable the cache
         $this->util->clearCache();
-
-        // set the client to use the mock api
-        $this->util->setClient(new MockApi());
     }
 
     /**

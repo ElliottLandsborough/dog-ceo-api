@@ -4,12 +4,13 @@
 
 namespace App\Util;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
 /**
  * A mock api - returns a small subset of what lambda does.
  */
-class MockApi extends \GuzzleHttp\Client
+class MockApi extends Client
 {
     protected $responses;
 

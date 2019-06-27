@@ -68,6 +68,9 @@
     "spatie/array-to-xml": {
         "version": "2.9.0"
     },
+    "symfony/browser-kit": {
+        "version": "v4.3.2"
+    },
     "symfony/cache": {
         "version": "v4.3.0"
     },
@@ -95,6 +98,9 @@
     },
     "symfony/dependency-injection": {
         "version": "v4.3.0"
+    },
+    "symfony/dom-crawler": {
+        "version": "v4.3.2"
     },
     "symfony/dotenv": {
         "version": "v4.3.0"

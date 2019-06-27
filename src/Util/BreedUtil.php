@@ -4,6 +4,7 @@
 
 namespace App\Util;
 
+use GuzzleHttp\Client;
 use Spatie\ArrayToXml\ArrayToXml;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -33,14 +34,14 @@ class BreedUtil
     /**
      * Constructor.
      */
-    public function __construct()
+    public function __construct(Client $client, FilesystemAdapter $cache)
     {
-        $this->setClient(new \GuzzleHttp\Client());
-        $this->cache = new FilesystemAdapter();
+        $this->client = $client;
+        $this->cache = $cache;
 
         // uncomment to emulate unit test behaviour:
         //$this->disableCache();
-        //$this->setClient(new \App\Util\MockApi());
+        //$this->client = new \App\Util\MockApi;
     }
 
     /**
@@ -66,20 +67,6 @@ class BreedUtil
     public function setEndpointUrl(string $url): ?self
     {
         $this->endpointUrl = $url;
-
-        return $this;
-    }
-
-    /**
-     * Set the guzzle client used to run gets on the endpoints.
-     *
-     * @param \GuzzleHttp\Client $client
-     *
-     * @return BreedUtil $this
-     */
-    public function setClient($client): ?self
-    {
-        $this->client = $client;
 
         return $this;
     }

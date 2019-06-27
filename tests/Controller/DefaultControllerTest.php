@@ -7,22 +7,23 @@ namespace App\Tests\Util;
 use App\Controller\DefaultController;
 use App\Util\BreedUtil;
 use App\Util\MockApi;
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\HttpFoundation\Request;
 
 // todo: assert error codes
 // todo: get all strings etc from mock api and breedutil
-class DefaultControllerTest extends TestCase
+class DefaultControllerTest extends WebTestCase
 {
     protected $util;
     protected $controller;
 
     public function setUp()
     {
-        $this->util = new BreedUtil();
+        $this->util = new BreedUtil(new MockApi, new FilesystemAdapter);
         $this->util->clearCache();
-        $this->util->setClient(new MockApi());
 
-        $this->controller = new DefaultController($this->util);
+        $this->controller = new DefaultController($this->util, new Request);
     }
 
     public function testGetAllBreeds()
@@ -848,5 +849,30 @@ class DefaultControllerTest extends TestCase
         $status = $object->status;
         $this->assertEquals('success', $status);
         $this->assertEquals('Cache was not cleared', $message);
+
+        $client = static::createClient();
+
+        $client->request(
+            Request::METHOD_GET,
+            '/url',
+            [], // body
+            [],
+            [
+                'HTTP_auth-key' => $_ENV['DOG_CEO_CACHE_KEY'],
+            ]
+        );
+
+        $request = $client->getRequest();
+
+        $this->controller = new DefaultController($this->util, $request);
+
+        $r = $this->controller->cacheClear();
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $json = $r->getContent();
+        $object = json_decode($json);
+        $message = $object->message;
+        $status = $object->status;
+        $this->assertEquals('success', $status);
+        $this->assertEquals('Success, cache was cleared with key', $message);
     }
 }
