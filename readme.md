@@ -14,7 +14,7 @@
 
 ## Stats
 
-![Screenshot of statistics page](/ElliottLandsborough/dog-ceo-api/blob/master/stats.png?raw=true)
+![Screenshot of statistics page](https://github.com/ElliottLandsborough/dog-ceo-api/blob/master/stats.png?raw=true)
 
 ## Requirements
 
