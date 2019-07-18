@@ -17,3 +17,14 @@ build:
       tests:
         override:
           - php-scrutinizer-run
+          -
+            command: phpcs-run
+            use_website_config: true
+filter:
+  excluded_paths:
+    - 'tests/*'
+    - 'bin/*'
+checks:
+  php: true
+coding_style:
+  php: {  }
