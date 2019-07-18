@@ -3,7 +3,6 @@ build:
     php: 7.3.0
   dependencies:
     before:
-      - composer self-update
       - composer install --no-interaction --prefer-source --dev
   tests:
     override:
