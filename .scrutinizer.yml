@@ -1,9 +1,9 @@
-before_commands:
-  - composer install --dev --prefer-source --no-interaction --dev
-
 build:
   environment:
     php: 7.3.0
+  dependencies:
+    before:
+      - composer install --no-interaction --prefer-source --dev
   tests:
     override:
       -
