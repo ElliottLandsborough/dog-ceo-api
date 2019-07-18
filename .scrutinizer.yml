@@ -1,6 +1,17 @@
 build:
   environment:
     php: 7.3.0
+  dependencies:
+    before:
+      - composer self-update
+      - composer install --no-interaction --prefer-source --dev
+  tests:
+    override:
+      -
+        command: bin/phpunit --coverage-clover=clover.xml
+        coverage:
+          file: clover.xml
+          format: php-clover
   nodes:
     analysis:
       tests:
