@@ -13,8 +13,9 @@
  - API requests are cached from lambda https://github.com/ElliottLandsborough/dog-ceo-api-golang
  
 ## Examples
-Vanilla JS: https://codepen.io/elliottlan/pen/MNEWNx
-Jquery: https://codepen.io/elliottlan/pen/KOXKLG
+
+ - Vanilla JS: https://codepen.io/elliottlan/pen/MNEWNx
+ - Jquery: https://codepen.io/elliottlan/pen/KOXKLG
 
 ## Stats
 
