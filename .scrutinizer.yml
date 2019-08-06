@@ -2,7 +2,7 @@ build:
   environment:
     php: 7.3.8
   dependencies:
-    before:
+    override:
       - composer install --no-interaction --prefer-source --dev
   tests:
     override:
