@@ -3,37 +3,22 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.3-node-browsers
-
-    steps:
-      - checkout
-      - run: sudo apt update # PHP CircleCI 2.0 Configuration File# PHP CircleCI 2.0 Configuration File sudo apt install zlib1g-dev libsqlite3-dev
+    steps: # a set of executable commands
+      - checkout # special step to check out source code to working directory
+      - run: sudo apt install -y zlib1g-dev
       - run: sudo docker-php-ext-install zip
-
-      # Download and cache dependencies
-      - restore_cache:
+      - run: sudo composer self-update
+      - restore_cache: # special step to restore the dependency cache if `composer.lock` does not change
           keys:
-            # "composer.lock" can be used if it is committed to the repo
-            - v1-dependencies-{{ checksum "composer.lock" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
+            - composer-v1-{{ checksum "composer.lock" }}
+            # fallback to using the latest cache if no exact match is found (See https://circleci.com/docs/2.0/caching/)
+            - composer-v1-
       - run: composer install -n --prefer-dist
-
-      - save_cache:
-          key: v1-dependencies-{{ checksum "composer.lock" }}
+      - save_cache: # special step to save the dependency cache with the `composer.lock` cache key template
+          key: composer-v1-{{ checksum "composer.lock" }}
           paths:
-            - ./vendor
-      - restore_cache:
-          keys:
-            - node-v1-{{ checksum "package.lock" }}
-            - node-v1-
-      - run: yarn install
-      - save_cache:
-          key: node-v1-{{ checksum "package.lock" }}
-          paths:
-            - node_modules
-
-      # run tests with phpunit or codecept
+            - vendor
       - run: ./vendor/bin/phpunit
-      #- run: ./vendor/bin/codecept build
-      #- run: ./vendor/bin/codecept run
+      # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples 
+
+
