@@ -1,6 +1,6 @@
 build:
   environment:
-    php: 7.3.0
+    php: 7.3.8
   dependencies:
     before:
       - composer install --no-interaction --prefer-source --dev
