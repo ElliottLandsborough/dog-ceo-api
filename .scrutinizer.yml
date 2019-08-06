@@ -1,6 +1,3 @@
-before_commands:
-  - composer install --no-interaction --prefer-source --dev
-
 filter:
   excluded_paths:
     - 'tests/*'
