@@ -18,9 +18,6 @@ jobs:
           key: composer-v1-{{ checksum "composer.lock" }}
           paths:
             - vendor
-      - run: ls -alh
-      - run: ls -alh vendor
-      - run: ls -alh vendor/bin
       - run: vendor/bin/simple-phpunit
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples 
 
