@@ -1,9 +1,20 @@
+before_commands:
+  - composer install --no-interaction --prefer-source --dev
+
+filter:
+  excluded_paths:
+    - 'tests/*'
+    - 'bin/*'
+
+checks:
+  php: true
+
+coding_style:
+  php: {  }
+
 build:
   environment:
     php: 7.3.8
-  dependencies:
-    override:
-      - composer install --no-interaction --prefer-source --dev
   tests:
     override:
       -
@@ -19,11 +30,4 @@ build:
           -
             command: phpcs-run
             use_website_config: true
-filter:
-  excluded_paths:
-    - 'tests/*'
-    - 'bin/*'
-checks:
-  php: true
-coding_style:
-  php: {  }
+
