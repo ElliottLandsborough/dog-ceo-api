@@ -834,12 +834,10 @@ class BreedUtil
 
                 return $this;
             }
-
             $this->setNotFoundResponse($this->subBreedNotFound);
 
             return $this;
         }
-
         $this->setNotFoundResponse($this->masterBreedNotFound);
 
         return $this;
@@ -948,9 +946,10 @@ class BreedUtil
     {
         if ($this->masterBreedExists($breed)) {
             $this->getRandomTopLevelImages($breed, $amount)->addAltTags();
-        } else {
-            $this->setNotFoundResponse($this->masterBreedNotFound);
+
+            return $this;
         }
+        $this->setNotFoundResponse($this->masterBreedNotFound);
 
         return $this;
     }
