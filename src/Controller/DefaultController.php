@@ -58,7 +58,7 @@ class DefaultController extends AbstractController
      */
     public function getAllBreedsRandomMultiple(string $amount): ?object
     {
-        $amount = intval($amount) ?: 1;
+        $amount = (int) $amount ?: 1;
 
         return $this->breedUtil->getAllBreedsRandomMultiple($amount)->getResponse();
     }
