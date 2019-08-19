@@ -116,7 +116,7 @@ class DefaultController extends AbstractController
      */
     public function getAllSubBreedsRandomMulti(string $breed, string $amount): ?object
     {
-        $amount = intval($amount) ?: 1;
+        $amount = (int) $amount ?: 1;
 
         return $this->breedUtil->getAllSubBreedsRandomMulti($breed, $amount)->getResponse();
     }
@@ -145,7 +145,7 @@ class DefaultController extends AbstractController
      */
     public function getRandomTopLevelImages(string $breed, string $amount): ?object
     {
-        $amount = intval($amount) ?: 1;
+        $amount = (int) $amount ?: 1;
 
         return $this->breedUtil->getRandomTopLevelImages($breed, $amount)->getResponse();
     }
@@ -174,7 +174,7 @@ class DefaultController extends AbstractController
      */
     public function getRandomSubLevelImages(string $breed1, string $breed2, string $amount): ?object
     {
-        $amount = intval($amount) ?: 1;
+        $amount = (int) $amount ?: 1;
 
         return $this->breedUtil->getRandomSubLevelImages($breed1, $breed2, $amount)->getResponse();
     }
@@ -194,7 +194,7 @@ class DefaultController extends AbstractController
      */
     public function getRandomImages(string $amount): ?object
     {
-        $amount = intval($amount) ?: 1;
+        $amount = (int) $amount ?: 1;
 
         return $this->breedUtil->getRandomImages($amount)->getResponse();
     }
@@ -232,7 +232,7 @@ class DefaultController extends AbstractController
      */
     public function getRandomTopLevelImagesWithAltTags(string $breed, string $amount): ?object
     {
-        $amount = intval($amount) ?: 1;
+        $amount = (int) $amount ?: 1;
 
         return $this->breedUtil->getRandomTopLevelImagesWithAltTags($breed, $amount)->getResponse();
     }
@@ -252,7 +252,7 @@ class DefaultController extends AbstractController
      */
     public function getRandomSubLevelImagesWithAltTags(string $breed1, string $breed2, string $amount): ?object
     {
-        $amount = intval($amount) ?: 1;
+        $amount = (int) $amount ?: 1;
 
         return $this->breedUtil->getRandomSubLevelImagesWithAltTags($breed1, $breed2, $amount)->getResponse();
     }
@@ -263,7 +263,7 @@ class DefaultController extends AbstractController
      */
     public function getRandomImagesWithAltTags(string $amount): ?object
     {
-        $amount = intval($amount) ?: 1;
+        $amount = (int) $amount ?: 1;
 
         return $this->breedUtil->getRandomImagesWithAltTags($amount)->getResponse();
     }
