@@ -985,12 +985,16 @@ class BreedUtil
         if ($this->masterBreedExists($breed1)) {
             if ($this->subBreedExists($breed1, $breed2)) {
                 $this->getRandomSubLevelImages($breed1, $breed2, $amount)->addAltTags();
-            } else {
-                $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+
+                return $this;
             }
-        } else {
-            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+            
+            $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+
+            return $this;
         }
+        
+        $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
 
         return $this;
     }
