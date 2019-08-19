@@ -703,7 +703,7 @@ class BreedUtil
                 break;
             case 'imageMulti':
                 // deal with alts
-                foreach ($data->message as $key => $value) {
+                foreach (array_keys($data->message) as $key) {
                     if (isset($data->message[$key]['altText'])) {
                         $data->message[$key]['alt'] = $data->message[$key]['altText'];
                         unset($data->message[$key]['altText']);
