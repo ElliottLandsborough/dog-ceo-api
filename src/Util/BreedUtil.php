@@ -229,9 +229,10 @@ class BreedUtil
             $url = $this->endpointUrl.$suffix;
 
             $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
-        } else {
-            $this->setNotFoundResponse($this->masterBreedNotFound);
+
+            return $this;
         }
+        $this->setNotFoundResponse($this->masterBreedNotFound);
 
         return $this;
     }
@@ -242,9 +243,10 @@ class BreedUtil
 
         if (count($message)) {
             $this->response->message = $this->randomItemFromArray($message);
-        } else {
-            $this->setNotFoundResponse($this->masterHasNoSubBreeds);
+
+            return $this;
         }
+        $this->setNotFoundResponse($this->masterHasNoSubBreeds);
 
         return $this;
     }
@@ -261,9 +263,10 @@ class BreedUtil
 
         if (count($message)) {
             $this->response->message = $this->randomItemsFromArray($message, $amount);
-        } else {
-            $this->setNotFoundResponse($this->masterHasNoSubBreeds);
+
+            return $this;
         }
+        $this->setNotFoundResponse($this->masterHasNoSubBreeds);
 
         return $this;
     }
@@ -283,9 +286,10 @@ class BreedUtil
             $url = $this->endpointUrl.$suffix;
 
             $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
-        } else {
-            $this->setNotFoundResponse($this->masterBreedNotFound);
+
+            return $this;
         }
+        $this->setNotFoundResponse($this->masterBreedNotFound);
 
         return $this;
     }
@@ -454,11 +458,12 @@ class BreedUtil
     private function getRandomImageWithCollapsedBreed(string $collapsedBreed): ?string
     {
         $exploded = explode($this->breedDelimiter, $collapsedBreed);
+
         if (!isset($exploded[1])) {
             return $this->getRandomTopLevelImage($exploded[0])->arrayResponse()->message;
-        } else {
-            return $this->getRandomSubLevelImage($exploded[0], $exploded[1])->arrayResponse()->message;
         }
+
+        return $this->getRandomSubLevelImage($exploded[0], $exploded[1])->arrayResponse()->message;
     }
 
     /**
@@ -803,9 +808,10 @@ class BreedUtil
             if ($this->response->status === 'error') {
                 $this->setNotFoundResponse($this->breedFileNotFound);
             }
-        } else {
-            $this->setNotFoundResponse($this->masterBreedNotFound);
+
+            return $this;
         }
+        $this->setNotFoundResponse($this->masterBreedNotFound);
 
         return $this;
     }
@@ -856,14 +862,15 @@ class BreedUtil
                 'url'       => $this->response->message,
                 'altText'   => $this->niceBreedAltFromFolder($this->breedFolderFromUrl($this->response->message)),
             ];
-        } else {
-            // multi image response
-            foreach ($this->response->message as $key => $image) {
-                $this->response->message[$key] = [
-                    'url'       => $image,
-                    'altText'   => $this->niceBreedAltFromFolder($this->breedFolderFromUrl($image)),
-                ];
-            }
+
+            return $this;
+        }
+        // multi image response
+        foreach ($this->response->message as $key => $image) {
+            $this->response->message[$key] = [
+                'url'       => $image,
+                'altText'   => $this->niceBreedAltFromFolder($this->breedFolderFromUrl($image)),
+            ];
         }
 
         return $this;
@@ -927,9 +934,10 @@ class BreedUtil
     {
         if ($this->masterBreedExists($breed)) {
             $this->getTopLevelImages($breed)->addAltTags();
-        } else {
-            $this->setNotFoundResponse($this->masterBreedNotFound);
+
+            return $this;
         }
+        $this->setNotFoundResponse($this->masterBreedNotFound);
 
         return $this;
     }
