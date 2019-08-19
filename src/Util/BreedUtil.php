@@ -5,6 +5,7 @@
 namespace App\Util;
 
 use GuzzleHttp\Client;
+use lastguest\Murmur;
 use Spatie\ArrayToXml\ArrayToXml;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -96,7 +97,7 @@ class BreedUtil
         $self = $this;
 
         // The callable will only be executed on a cache miss.
-        $value = $this->cache->get(md5($url), function (ItemInterface $item) use ($self, $url, $seconds) {
+        $value = $this->cache->get(Murmur::hash3($url), function (ItemInterface $item) use ($self, $url, $seconds) {
             $item->expiresAfter($seconds);
 
             return $self->getWithGuzzle($url);

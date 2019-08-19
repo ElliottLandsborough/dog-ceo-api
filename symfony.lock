@@ -38,6 +38,9 @@
     "guzzlehttp/psr7": {
         "version": "1.5.2"
     },
+    "lastguest/murmurhash": {
+        "version": "2.0.0"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },

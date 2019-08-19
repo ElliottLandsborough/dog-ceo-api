@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0550680fe33a10f17f2355316783d18c",
+    "content-hash": "3ed5c4d3285aa803c5729b6e51cac356",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -698,6 +698,53 @@
                 "url"
             ],
             "time": "2019-07-01T23:21:34+00:00"
+        },
+        {
+            "name": "lastguest/murmurhash",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lastguest/murmurhash-php.git",
+                "reference": "4fb7516f67e695e5d7fa129d1bbb925ec0ebe408"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lastguest/murmurhash-php/zipball/4fb7516f67e695e5d7fa129d1bbb925ec0ebe408",
+                "reference": "4fb7516f67e695e5d7fa129d1bbb925ec0ebe408",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.6.3",
+                "phpunit/phpunit": "^5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "lastguest\\": "src/lastguest/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Stefano Azzolini",
+                    "email": "lastguest@gmail.com",
+                    "homepage": "https://github.com/lastguest/murmurhash-php"
+                }
+            ],
+            "description": "MurmurHash3 Hash",
+            "homepage": "https://github.com/lastguest/murmurhash-php",
+            "keywords": [
+                "hash",
+                "hashing",
+                "murmur"
+            ],
+            "time": "2017-10-10T15:16:12+00:00"
         },
         {
             "name": "psr/cache",
