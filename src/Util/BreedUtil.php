@@ -27,9 +27,9 @@ class BreedUtil
     protected $breedDelimiter = '-';
 
     // error messages
-    protected $masterBreedHasNoSubBreedsMessage = 'Breed not found (no sub breeds exist for this master breed)';
-    protected $masterBreedNotFoundMessage = 'Breed not found (master breed does not exist)';
-    protected $subBreedNotFoundMessage = 'Breed not found (sub breed does not exist)';
+    protected $masterHasNoSubBreeds = 'Breed not found (no sub breeds exist for this master breed)';
+    protected $masterBreedNotFound = 'Breed not found (master breed does not exist)';
+    protected $subBreedNotFound = 'Breed not found (sub breed does not exist)';
     protected $breedFileNotFound = 'Breed not found (No info file for this breed exists)';
 
     /**
@@ -230,7 +230,7 @@ class BreedUtil
 
             $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
         } else {
-            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+            $this->setNotFoundResponse($this->masterBreedNotFound);
         }
 
         return $this;
@@ -243,7 +243,7 @@ class BreedUtil
         if (count($message)) {
             $this->response->message = $this->randomItemFromArray($message);
         } else {
-            $this->setNotFoundResponse($this->masterBreedHasNoSubBreedsMessage);
+            $this->setNotFoundResponse($this->masterHasNoSubBreeds);
         }
 
         return $this;
@@ -262,7 +262,7 @@ class BreedUtil
         if (count($message)) {
             $this->response->message = $this->randomItemsFromArray($message, $amount);
         } else {
-            $this->setNotFoundResponse($this->masterBreedHasNoSubBreedsMessage);
+            $this->setNotFoundResponse($this->masterHasNoSubBreeds);
         }
 
         return $this;
@@ -284,7 +284,7 @@ class BreedUtil
 
             $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
         } else {
-            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+            $this->setNotFoundResponse($this->masterBreedNotFound);
         }
 
         return $this;
@@ -347,11 +347,11 @@ class BreedUtil
 
                 return $this;
             }
-            $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+            $this->setNotFoundResponse($this->subBreedNotFound);
 
             return $this;
         }
-        $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+        $this->setNotFoundResponse($this->masterBreedNotFound);
 
         return $this;
     }
@@ -804,7 +804,7 @@ class BreedUtil
                 $this->setNotFoundResponse($this->breedFileNotFound);
             }
         } else {
-            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+            $this->setNotFoundResponse($this->masterBreedNotFound);
         }
 
         return $this;
@@ -835,12 +835,12 @@ class BreedUtil
                 return $this;
             }
 
-            $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+            $this->setNotFoundResponse($this->subBreedNotFound);
 
             return $this;
         }
 
-        $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+        $this->setNotFoundResponse($this->masterBreedNotFound);
 
         return $this;
     }
@@ -930,7 +930,7 @@ class BreedUtil
         if ($this->masterBreedExists($breed)) {
             $this->getTopLevelImages($breed)->addAltTags();
         } else {
-            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+            $this->setNotFoundResponse($this->masterBreedNotFound);
         }
 
         return $this;
@@ -949,7 +949,7 @@ class BreedUtil
         if ($this->masterBreedExists($breed)) {
             $this->getRandomTopLevelImages($breed, $amount)->addAltTags();
         } else {
-            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+            $this->setNotFoundResponse($this->masterBreedNotFound);
         }
 
         return $this;
@@ -971,11 +971,11 @@ class BreedUtil
 
                 return $this;
             }
-            $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+            $this->setNotFoundResponse($this->subBreedNotFound);
 
             return $this;
         }
-        $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+        $this->setNotFoundResponse($this->masterBreedNotFound);
 
         return $this;
     }
@@ -997,11 +997,11 @@ class BreedUtil
 
                 return $this;
             }
-            $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+            $this->setNotFoundResponse($this->subBreedNotFound);
 
             return $this;
         }
-        $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+        $this->setNotFoundResponse($this->masterBreedNotFound);
 
         return $this;
     }
