@@ -344,12 +344,14 @@ class BreedUtil
                 $url = $this->endpointUrl.$suffix;
 
                 $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
-            } else {
-                $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+
+                return $this;
             }
-        } else {
-            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+            $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+
+            return $this;
         }
+        $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
 
         return $this;
     }
@@ -829,12 +831,16 @@ class BreedUtil
                 if ($this->response->status === 'error') {
                     $this->setNotFoundResponse($this->breedFileNotFound);
                 }
-            } else {
-                $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+
+                return $this;
             }
-        } else {
-            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+
+            $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+
+            return $this;
         }
+
+        $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
 
         return $this;
     }
@@ -962,12 +968,14 @@ class BreedUtil
         if ($this->masterBreedExists($breed1)) {
             if ($this->subBreedExists($breed1, $breed2)) {
                 $this->getSubLevelImages($breed1, $breed2)->addAltTags();
-            } else {
-                $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+
+                return $this;
             }
-        } else {
-            $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
+            $this->setNotFoundResponse($this->subBreedNotFoundMessage);
+
+            return $this;
         }
+        $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
 
         return $this;
     }
@@ -989,12 +997,10 @@ class BreedUtil
 
                 return $this;
             }
-            
             $this->setNotFoundResponse($this->subBreedNotFoundMessage);
 
             return $this;
         }
-        
         $this->setNotFoundResponse($this->masterBreedNotFoundMessage);
 
         return $this;
