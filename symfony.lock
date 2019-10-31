@@ -14,20 +14,8 @@
     "doctrine/cache": {
         "version": "v1.8.0"
     },
-    "doctrine/collections": {
-        "version": "v1.6.1"
-    },
-    "doctrine/event-manager": {
-        "version": "v1.0.0"
-    },
     "doctrine/lexer": {
         "version": "v1.0.1"
-    },
-    "doctrine/persistence": {
-        "version": "1.1.1"
-    },
-    "doctrine/reflection": {
-        "version": "v1.0.0"
     },
     "guzzlehttp/guzzle": {
         "version": "6.3.3"
