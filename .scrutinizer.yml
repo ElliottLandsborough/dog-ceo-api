@@ -9,20 +9,21 @@ checks:
 coding_style:
   php: {  }
 
+
 build:
-  environment:
-    php: 7.4
-  dependencies:
-    override:
-      - composer install --no-interaction --prefer-source --dev
-  tests:
-    override:
-      -
-        command: bin/phpunit --coverage-clover=clover.xml
-        coverage:
-          file: clover.xml
-          format: php-clover
   nodes:
+    my-tests-with-coverage:
+      environment:
+        php: 7.4
+      dependencies:
+        override:
+          - composer install --no-interaction --prefer-source --dev
+      tests:
+        override:
+          - command: phpunit --coverage-clover=my-coverage-file
+            coverage:
+              file: my-coverage-file
+              format: php-clover
     analysis:
       tests:
         override:
