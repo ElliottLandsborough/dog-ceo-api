@@ -18,6 +18,7 @@
 
 - Vanilla JS: https://codepen.io/elliottlan/pen/MNEWNx
 - Jquery: https://codepen.io/elliottlan/pen/KOXKLG
+- Node.js: https://github.com/mrbrunelli/dog-time-decorator
 
 ## Stats
 
