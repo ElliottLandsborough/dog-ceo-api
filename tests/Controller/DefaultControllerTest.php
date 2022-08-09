@@ -874,6 +874,10 @@ class DefaultControllerTest extends WebTestCase
 
         $client = static::createClient();
 
+        if (!isset($_ENV['DOG_CEO_CACHE_KEY'])) {
+            die('Cache key was not set for some reason?');
+        }
+
         $client->request(
             Request::METHOD_GET,
             '/url',
