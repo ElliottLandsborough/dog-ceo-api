@@ -57,6 +57,11 @@ class BreedUtil
         return $this;
     }
 
+    public function getXmlEnable(): string
+    {
+        return $this->xmlEnable;
+    }
+
     /**
      * Set the url to the lambda endpoint
      * e.g http://dog-api.lambda.aws.com/dev/.
@@ -70,6 +75,11 @@ class BreedUtil
         $this->endpointUrl = $url;
 
         return $this;
+    }
+
+    public function getEndpointUrl(): string
+    {
+        return $this->endpointUrl;
     }
 
     /**

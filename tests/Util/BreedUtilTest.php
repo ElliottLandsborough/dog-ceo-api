@@ -387,13 +387,13 @@ class BreedUtilTest extends TestCase
     public function testXmlOutputEnable()
     {
         $result = $this->util->xmlOutputEnable();
-        $this->assertAttributeEquals(true, 'xmlEnable', $result);
+        $this->assertEquals($this->util->getXmlEnable(), true);
     }
 
     public function testSetEndpointUrl()
     {
         $result = $this->util->setEndpointUrl('string');
-        $this->assertAttributeEquals('string', 'endpointUrl', $result);
+        $this->assertEquals($this->util->getEndpointUrl(), 'string');
     }
 
     public function testGetWithGuzzle()
