@@ -1,6 +1,6 @@
 # Dog CEO API
 
-[![Build Status](https://travis-ci.org/ElliottLandsborough/dog-ceo-api.svg?branch=master)](https://travis-ci.org/ElliottLandsborough/dog-ceo-api)
+[![Build Status](https://travis-ci.com/ElliottLandsborough/dog-ceo-api.svg?branch=master)](https://travis-ci.org/ElliottLandsborough/dog-ceo-api)
 [![Code Coverage](https://codecov.io/gh/ElliottLandsborough/dog-ceo-api/branch/master/graph/badge.svg)](https://codecov.io/gh/ElliottLandsborough/dog-ceo-api)
 [![CircleCI](https://circleci.com/gh/ElliottLandsborough/dog-ceo-api.svg?style=svg)](https://circleci.com/gh/ElliottLandsborough/dog-ceo-api)
 [![Code Style](https://github.styleci.io/repos/97956282/shield?style=flat&branch=master)](https://github.styleci.io/repos/97956282)
