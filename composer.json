@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "ext-xml": "*",
         "ext-yaml": "*",
+        "ext-mbstring": "*",
         "doctrine/annotations": "^1.13",
         "doctrine/cache": "^1.13",
         "guzzlehttp/guzzle": "~6.5",
