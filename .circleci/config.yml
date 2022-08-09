@@ -21,7 +21,7 @@ jobs:
             which composer
       - run:
           name: Composer Install
-          command: php8.1 composer install
+          command: php8.1 /usr/local/bin/composer install
       - run:
           name: Test
           command: php8.1 ./vendor/bin/phpunit
