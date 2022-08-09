@@ -1,63 +1,18 @@
+version: 2.1
+orbs:
+    php: circleci/php@1.1.0
+
 jobs:
-  test:
+  build:
     executor: php/default
     steps:
       - checkout
       - php/install-composer:
           install-version: 1.10.16
       - php/install-packages
-      - php/test
-          test-command: "./bin/phpunit"
-orbs:
-  php: circleci/php@1.1.0
-version: 2.1
-workflows:
-  test:
-    jobs:
-      - test
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-jobs:
-  install_php:
-    docker:
-      - image: 'cimg/base:edge'
-    steps:
-      - checkout
-      - php/install-php:
-          version: '8.1'
-  install_composer_packages:
-    executor: php/default
-    steps:
-      - checkout
-      - php/install-composer:
-          install-version: 1.10.16
-      - php/install-packages
-          test-command: ./bin/phpunit
-orbs:
-  php: circleci/php@1.1.0
-version: 2.1
-workflows:
-  install:
-    jobs:
-      - install_php
-      - install_composer_packages
+      - run:
+          name: Composer Update
+          command: composer update
+      - run:
+          name: Test
+          command: ./vendor/bin/phpunit
