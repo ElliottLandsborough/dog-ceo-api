@@ -16,10 +16,6 @@ jobs:
           command: |
             sudo apt-get install -y php8.1-xml php8.1-yaml php8.1-mbstring
       - run:
-          name: Generate testing environment variables
-          command: |
-            php8.1 /usr/local/bin/composer dump-env test
-      - run:
           name: Composer Install
           command: php8.1 /usr/local/bin/composer install
       - run:
