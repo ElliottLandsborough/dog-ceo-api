@@ -12,13 +12,13 @@ jobs:
       - php/install-composer:
           install-version: '2.3.10'
       - run:
-          name: php packages
+          name: Extra PHP packages
           command: |
             sudo apt-get install -y php8.1-xml php8.1-yaml php8.1-mbstring
       - run:
-          name: what
+          name: Generate testing environment variables
           command: |
-            which composer
+            php8.1 /usr/local/bin/composer dump-env test
       - run:
           name: Composer Install
           command: php8.1 /usr/local/bin/composer install
