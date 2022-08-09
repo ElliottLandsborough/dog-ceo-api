@@ -19,11 +19,9 @@ jobs:
           name: what
           command: |
             which composer
-      - php/install-packages:
-          cache-version: 'v2'
       - run:
-          name: Composer Update
-          command: php8.1 composer update
+          name: Composer Install
+          command: php8.1 composer install
       - run:
           name: Test
           command: php8.1 ./vendor/bin/phpunit
