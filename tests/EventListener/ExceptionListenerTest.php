@@ -9,7 +9,7 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class ExceptionListenerTest extends TestCase
@@ -32,7 +32,7 @@ class ExceptionListenerTest extends TestCase
 
         $request = new Request();
         $exception = new Exception('Error Message Example');
-        $event = new GetResponseForExceptionEvent(new TestKernel(), $request, HttpKernelInterface::MAIN_REQUEST, $exception);
+        $event = new ExceptionEvent(new TestKernel(), $request, HttpKernelInterface::MAIN_REQUEST, $exception);
         $this->exceptionListener->onKernelException($event);
         $response = $event->getResponse();
         $json = $response->getContent();
