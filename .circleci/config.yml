@@ -7,9 +7,12 @@ jobs:
     executor: php/default
     steps:
       - checkout
+      - php/install-php:
+          version: '8.1'
       - php/install-composer:
-          install-version: 1.10.16
-      - php/install-packages
+          install-version: '2.3.10'
+      - php/install-packages:
+          cache-version: 'v2'
       - run:
           name: Composer Update
           command: composer update
