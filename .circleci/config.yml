@@ -14,12 +14,16 @@ jobs:
       - run:
           name: what
           command: |
-            ls -alh /usr/local/bin/php
+            php8.1 --version
+      - run:
+          name: what
+          command: |
+            which composer
       - php/install-packages:
           cache-version: 'v2'
       - run:
           name: Composer Update
-          command: composer update
+          command: php8.1 composer update
       - run:
           name: Test
-          command: ./vendor/bin/phpunit
+          command: php8.1 ./vendor/bin/phpunit
