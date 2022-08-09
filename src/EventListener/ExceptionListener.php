@@ -5,15 +5,15 @@
 namespace App\EventListener;
 
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ExceptionListener
 {
-    public function onKernelException(GetResponseForExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event)
     {
         // You get the exception object from the received event
-        $exception = $event->getException();
+        $exception = $event->getThrowable();
         $message = sprintf(
             '%s with code: %s',
             $exception->getMessage(),

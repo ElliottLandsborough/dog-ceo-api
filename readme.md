@@ -27,10 +27,10 @@
 
 ## Requirements
 
-- php 7.4+
+- php 8.1+
 - a few php packages
 - composer
-- run './bin/phpunit' for unit tests
+- run './bin/phpunit' for unit tests (composer dump-env test)
 
 ```
 $ composer check-platform-reqs

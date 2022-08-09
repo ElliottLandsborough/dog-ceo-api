@@ -8,7 +8,8 @@ use App\EventListener\ExceptionListener;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class ExceptionListenerTest extends TestCase
@@ -31,7 +32,7 @@ class ExceptionListenerTest extends TestCase
 
         $request = new Request();
         $exception = new Exception('Error Message Example');
-        $event = new GetResponseForExceptionEvent(new TestKernel(), $request, HttpKernelInterface::MASTER_REQUEST, $exception);
+        $event = new ExceptionEvent(new TestKernel(), $request, HttpKernelInterface::MAIN_REQUEST, $exception);
         $this->exceptionListener->onKernelException($event);
         $response = $event->getResponse();
         $json = $response->getContent();
@@ -43,7 +44,7 @@ class ExceptionListenerTest extends TestCase
 
 class TestKernel implements HttpKernelInterface
 {
-    public function handle(Request $request, $type = self::MASTER_REQUEST, $catch = true)
+    public function handle(Request $request, int $type = self::MAIN_REQUEST, bool $catch = true): Response
     {
         return new Response('unused body text');
     }

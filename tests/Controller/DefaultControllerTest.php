@@ -18,7 +18,7 @@ class DefaultControllerTest extends WebTestCase
     protected $util;
     protected $controller;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->util = new BreedUtil(new MockApi(), new FilesystemAdapter());
         $this->util->clearCache();
@@ -873,6 +873,10 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Cache was not cleared', $message);
 
         $client = static::createClient();
+
+        if (!isset($_ENV['DOG_CEO_CACHE_KEY'])) {
+            exit('Cache key was not set for some reason?');
+        }
 
         $client->request(
             Request::METHOD_GET,
