@@ -18,7 +18,7 @@ class DefaultControllerTest extends WebTestCase
     protected $util;
     protected $controller;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->util = new BreedUtil(new MockApi(), new FilesystemAdapter());
         $this->util->clearCache();
