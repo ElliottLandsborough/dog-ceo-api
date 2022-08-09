@@ -8,9 +8,13 @@ jobs:
     steps:
       - checkout
       - php/install-php:
-          version: '8.0'
+          version: '8.1'
       - php/install-composer:
           install-version: '2.3.10'
+      - run:
+          name: what
+          command: |
+            which php
       - php/install-packages:
           cache-version: 'v2'
       - run:
