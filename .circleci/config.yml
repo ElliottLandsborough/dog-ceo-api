@@ -12,9 +12,9 @@ jobs:
       - php/install-composer:
           install-version: '2.3.10'
       - run:
-          name: what
+          name: php packages
           command: |
-            php8.1 --version
+            sudo apt-get install -y php-dom php-xml php-yaml
       - run:
           name: what
           command: |
