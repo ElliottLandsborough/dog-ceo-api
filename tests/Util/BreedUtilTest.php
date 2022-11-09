@@ -4,9 +4,9 @@
 
 namespace App\Tests\Util;
 
-use ArrayIterator;
 use App\Util\BreedUtil;
 use App\Util\MockApi;
+use ArrayIterator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
