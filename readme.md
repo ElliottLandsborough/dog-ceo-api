@@ -26,18 +26,28 @@
 
 - php 8.1+
 - Symfony 6
+- modules
 - composer
 - run './bin/phpunit' for unit tests (composer dump-env test)
 
-```
+```bash
 $ composer check-platform-reqs
-Restricting packages listed in "symfony/symfony" to "4.3.*"
-composer-plugin-api
-ext-ctype
-ext-iconv
-ext-tokenizer
-ext-xml
-php
+Checking platform requirements for packages in the vendor dir
+composer-plugin-api  2.3.0     success                                       
+composer-runtime-api 2.2.2     success                                       
+ext-ctype            8.1.12    success                                       
+ext-dom              20031129  success                                       
+ext-filter           8.1.12    success                                       
+ext-iconv            8.1.12    success                                       
+ext-json             8.1.12    success                                       
+ext-libxml           8.1.12    success                                       
+ext-mbstring         *         success provided by symfony/polyfill-mbstring 
+ext-phar             8.1.12    success                                       
+ext-tokenizer        8.1.12    success                                       
+ext-xml              8.1.12    success                                       
+ext-xmlwriter        8.1.12    success                                       
+ext-yaml             2.2.2     success                                       
+php                  8.1.12    success
 ```
 
 ## Setup
