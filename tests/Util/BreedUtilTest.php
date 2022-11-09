@@ -42,7 +42,7 @@ class BreedUtilTest extends TestCase
         return $method->invokeArgs($object, $parameters);
     }
 
-    public function isValidXml($content)
+    public function isValidXml($content): bool
     {
         $content = trim($content);
         if (empty($content)) {
@@ -61,7 +61,7 @@ class BreedUtilTest extends TestCase
         return empty($errors);
     }
 
-    public function testGetAllBreeds()
+    public function testGetAllBreeds(): void
     {
         $response = $this->util->getAllBreeds()->getResponse();
 
@@ -76,7 +76,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 
-    public function testGetAllTopLevelBreeds()
+    public function testGetAllTopLevelBreeds(): void
     {
         $response = $this->util->getAllTopLevelBreeds()->getResponse();
 
@@ -91,7 +91,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 
-    public function testGetAllSubBreeds()
+    public function testGetAllSubBreeds(): void
     {
         $response = $this->util->getAllSubBreeds('affenpinscher')->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -108,7 +108,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('error', json_decode($response->getContent())->status);
     }
 
-    public function testGetTopLevelImages()
+    public function testGetTopLevelImages(): void
     {
         $response = $this->util->getTopLevelImages('affenpinscher')->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -137,7 +137,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 
-    public function testGetRandomTopLevelImage()
+    public function testGetRandomTopLevelImage(): void
     {
         $response = $this->util->getRandomTopLevelImage('affenpinscher')->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -150,7 +150,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('error', json_decode($response->getContent())->status);
     }
 
-    public function testGetRandomTopLevelImages()
+    public function testGetRandomTopLevelImages(): void
     {
         $response = $this->util->getRandomTopLevelImages('affenpinscher', 3)->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -173,7 +173,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('https://images.dog.ceo/breeds/affenpinscher/image.jpg', $content[0]->url);
     }
 
-    public function testGetSubLevelImages()
+    public function testGetSubLevelImages(): void
     {
         $response = $this->util->getSubLevelImages('bullterrier', 'staffordshire')->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -200,7 +200,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg', $content[0]->url);
     }
 
-    public function testGetRandomSubLevelImages()
+    public function testGetRandomSubLevelImages(): void
     {
         $response = $this->util->getRandomSubLevelImages('bullterrier', 'staffordshire', 3)->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -227,7 +227,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg', $content[0]->url);
     }
 
-    public function testGetRandomImage()
+    public function testGetRandomImage(): void
     {
         $response = $this->util->getRandomImage()->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -258,7 +258,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 
-    public function testGetRandomImages()
+    public function testGetRandomImages(): void
     {
         $response = $this->util->getRandomImages(3)->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -284,7 +284,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals(' dog', substr($content[0]->altText, -4));
     }
 
-    public function testGetMasterText()
+    public function testGetMasterText(): void
     {
         $response = $this->util->masterText('affenpinscher')->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -300,7 +300,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 
-    public function testGetSubText()
+    public function testGetSubText(): void
     {
         $response = $this->util->subText('bullterrier', 'staffordshire')->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -320,7 +320,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 
-    public function testGetAllBreedsRandomSingle()
+    public function testGetAllBreedsRandomSingle(): void
     {
         $response = $this->util->getAllBreedsRandomSingle()->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -336,7 +336,7 @@ class BreedUtilTest extends TestCase
         }
     }
 
-    public function testGetAllBreedsRandomMultiple()
+    public function testGetAllBreedsRandomMultiple(): void
     {
         $response = $this->util->getAllBreedsRandomMultiple(3)->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -353,7 +353,7 @@ class BreedUtilTest extends TestCase
         }
     }
 
-    public function testGetAllTopLevelBreedsRandomSingle()
+    public function testGetAllTopLevelBreedsRandomSingle(): void
     {
         $response = $this->util->getAllTopLevelBreedsRandomSingle()->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -362,7 +362,7 @@ class BreedUtilTest extends TestCase
         $this->assertNotEmpty($content);
     }
 
-    public function testGetAllTopLevelBreedsRandomMultiple()
+    public function testGetAllTopLevelBreedsRandomMultiple(): void
     {
         $response = $this->util->getAllTopLevelBreedsRandomMultiple(3)->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -371,7 +371,7 @@ class BreedUtilTest extends TestCase
         $this->assertGreaterThan(1, count($content));
     }
 
-    public function testGetAllSubBreedsRandomSingle()
+    public function testGetAllSubBreedsRandomSingle(): void
     {
         $response = $this->util->getAllSubBreedsRandomSingle('bullterrier')->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -384,7 +384,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('error', json_decode($response->getContent())->status);
     }
 
-    public function testGetAllSubBreedsRandomMulti()
+    public function testGetAllSubBreedsRandomMulti(): void
     {
         $response = $this->util->getAllSubBreedsRandomMulti('bullterrier', 3)->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -398,19 +398,19 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('error', json_decode($response->getContent())->status);
     }
 
-    public function testXmlOutputEnable()
+    public function testXmlOutputEnable(): void
     {
         $result = $this->util->xmlOutputEnable();
         $this->assertEquals($this->util->getXmlEnable(), true);
     }
 
-    public function testSetEndpointUrl()
+    public function testSetEndpointUrl(): void
     {
         $result = $this->util->setEndpointUrl('string');
         $this->assertEquals($this->util->getEndpointUrl(), 'string');
     }
 
-    public function testGetWithGuzzle()
+    public function testGetWithGuzzle(): void
     {
         // bad url
         $error = $this->invokeMethod($this->util, 'getWithGuzzle', ['https://domain.test']);
@@ -428,7 +428,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals([], $success->message);
     }
 
-    public function testGetRandomSubLevelImage()
+    public function testGetRandomSubLevelImage(): void
     {
         $response = $this->util->getRandomSubLevelImage('bullterrier', 'staffordshire')->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
@@ -458,7 +458,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('application/xml', $result->headers->get('content-type'));
     }
 
-    public function testArrayIsMultiDimensional()
+    public function testArrayIsMultiDimensional(): void
     {
         $twoDimensional = ['key' => []];
         $result = $this->invokeMethod($this->util, 'arrayIsMultiDimensional', [$twoDimensional]);
@@ -469,28 +469,28 @@ class BreedUtilTest extends TestCase
         $this->assertEquals(false, $result);
     }
 
-    public function testNiceBreedNameFromFolder()
+    public function testNiceBreedNameFromFolder(): void
     {
         $folder = 'string1-string2';
         $result = $this->invokeMethod($this->util, 'niceBreedNameFromFolder', [$folder]);
         $this->assertEquals('String2 string1', $result);
     }
 
-    public function testNiceBreedAltFromFolder()
+    public function testNiceBreedAltFromFolder(): void
     {
         $folder = 'string1-string2';
         $result = $this->invokeMethod($this->util, 'niceBreedAltFromFolder', [$folder]);
         $this->assertEquals('String2 string1 dog', $result);
     }
 
-    public function testBreedFolderFromUrl()
+    public function testBreedFolderFromUrl(): void
     {
         $url = '/api/border-collie/dog.jpg';
         $result = $this->invokeMethod($this->util, 'breedFolderFromUrl', [$url]);
         $this->assertEquals('border-collie', $result);
     }
 
-    public function testRandomItemsFromArray()
+    public function testRandomItemsFromArray(): void
     {
         $array = [1, 2, 3];
         $count = count($array);
