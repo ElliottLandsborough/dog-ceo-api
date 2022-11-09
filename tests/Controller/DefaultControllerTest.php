@@ -26,7 +26,7 @@ class DefaultControllerTest extends WebTestCase
         $this->controller = new DefaultController($this->util, new Request());
     }
 
-    public function testGetAllBreeds()
+    public function testGetAllBreeds(): void
     {
         $r = $this->controller->getAllBreeds();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -55,7 +55,7 @@ class DefaultControllerTest extends WebTestCase
 ', $r->getContent());
     }
 
-    public function testGetAllBreedsRandomSingle()
+    public function testGetAllBreedsRandomSingle(): void
     {
         $r = $this->controller->getAllBreedsRandomSingle();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -67,7 +67,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertCount(1, (array) $message);
     }
 
-    public function testGetAllBreedsRandomMultiple()
+    public function testGetAllBreedsRandomMultiple(): void
     {
         // 1 will return 1
         $n = 1;
@@ -125,7 +125,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertCount(1, (array) $message);
     }
 
-    public function testGetAllTopLevelBreeds()
+    public function testGetAllTopLevelBreeds(): void
     {
         $r = $this->controller->getAllTopLevelBreeds();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -137,7 +137,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals(['affenpinscher', 'bullterrier'], $message);
     }
 
-    public function testGetAllTopLevelBreedsRandomSingle()
+    public function testGetAllTopLevelBreedsRandomSingle(): void
     {
         $r = $this->controller->getAllTopLevelBreedsRandomSingle();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -149,7 +149,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertContains($message, ['affenpinscher', 'bullterrier']);
     }
 
-    public function testGetAllTopLevelBreedsRandomMultiple()
+    public function testGetAllTopLevelBreedsRandomMultiple(): void
     {
         $r = $this->controller->getAllTopLevelBreedsRandomMultiple(2);
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -188,7 +188,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertContains($message[0], ['affenpinscher', 'bullterrier']);
     }
 
-    public function testGetAllSubBreeds()
+    public function testGetAllSubBreeds(): void
     {
         $r = $this->controller->getAllSubBreeds('affenpinscher');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -218,7 +218,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (master breed does not exist)', $message);
     }
 
-    public function testGetAllSubBreedsRandomSingle()
+    public function testGetAllSubBreedsRandomSingle(): void
     {
         $r = $this->controller->getAllSubBreedsRandomSingle('bullterrier');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -248,7 +248,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (no sub breeds exist for this master breed)', $message);
     }
 
-    public function testGetAllSubBreedsRandomMulti()
+    public function testGetAllSubBreedsRandomMulti(): void
     {
         $r = $this->controller->getAllSubBreedsRandomMulti('bullterrier', 2);
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -320,7 +320,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (no sub breeds exist for this master breed)', $message);
     }
 
-    public function testGetTopLevelImages()
+    public function testGetTopLevelImages(): void
     {
         $r = $this->controller->getTopLevelImages('affenpinscher');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -350,7 +350,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (master breed does not exist)', $message);
     }
 
-    public function testGetRandomTopLevelImage()
+    public function testGetRandomTopLevelImage(): void
     {
         $r = $this->controller->getRandomTopLevelImage('affenpinscher');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -380,7 +380,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (master breed does not exist)', $message);
     }
 
-    public function testGetRandomTopLevelImages()
+    public function testGetRandomTopLevelImages(): void
     {
         $r = $this->controller->getRandomTopLevelImages('affenpinscher', 3);
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -437,7 +437,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (master breed does not exist)', $message);
     }
 
-    public function testGetRandomSubLevelImage()
+    public function testGetRandomSubLevelImage(): void
     {
         $r = $this->controller->getRandomSubLevelImage('bullterrier', 'staffordshire');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -467,7 +467,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (master breed does not exist)', $message);
     }
 
-    public function testGetRandomSubLevelImages()
+    public function testGetRandomSubLevelImages(): void
     {
         $r = $this->controller->getRandomSubLevelImages('bullterrier', 'staffordshire', 1);
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -524,7 +524,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (master breed does not exist)', $message);
     }
 
-    public function testGetRandomImage()
+    public function testGetRandomImage(): void
     {
         $r = $this->controller->getRandomImage();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -536,7 +536,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertContains($message, ['https://images.dog.ceo/breeds/bullterrier-staffordshire/image.jpg', 'https://images.dog.ceo/breeds/affenpinscher/image.jpg']);
     }
 
-    public function testGetRandomImages()
+    public function testGetRandomImages(): void
     {
         $r = $this->controller->getRandomImages(5);
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -575,7 +575,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertCount(1, $message);
     }
 
-    public function testMasterText()
+    public function testMasterText(): void
     {
         $r = $this->controller->masterText('affenpinscher');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -597,7 +597,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (master breed does not exist)', $message);
     }
 
-    public function testSubText()
+    public function testSubText(): void
     {
         $r = $this->controller->subText('bullterrier', 'staffordshire');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -628,7 +628,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (master breed does not exist)', $message);
     }
 
-    public function testGetTopLevelImagesWithAltTags()
+    public function testGetTopLevelImagesWithAltTags(): void
     {
         $r = $this->controller->getTopLevelImagesWithAltTags('affenpinscher');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -650,7 +650,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (master breed does not exist)', $message);
     }
 
-    public function testGetRandomTopLevelImagesWithAltTags()
+    public function testGetRandomTopLevelImagesWithAltTags(): void
     {
         $r = $this->controller->getRandomTopLevelImagesWithAltTags('affenpinscher', 3);
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -692,7 +692,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (master breed does not exist)', $message);
     }
 
-    public function testGetSubLevelImages()
+    public function testGetSubLevelImages(): void
     {
         $r = $this->controller->getSubLevelImages('bullterrier', 'staffordshire');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -722,7 +722,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (master breed does not exist)', $message);
     }
 
-    public function testGetSubLevelImagesWithAltTags()
+    public function testGetSubLevelImagesWithAltTags(): void
     {
         $r = $this->controller->getSubLevelImagesWithAltTags('bullterrier', 'staffordshire');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -753,7 +753,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (master breed does not exist)', $message);
     }
 
-    public function testGetRandomSubLevelImagesWithAltTags()
+    public function testGetRandomSubLevelImagesWithAltTags(): void
     {
         $r = $this->controller->getRandomSubLevelImagesWithAltTags('bullterrier', 'staffordshire', 2);
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -814,7 +814,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Breed not found (master breed does not exist)', $message);
     }
 
-    public function testGetRandomImagesWithAltTags()
+    public function testGetRandomImagesWithAltTags(): void
     {
         $r = $this->controller->getRandomImagesWithAltTags(1);
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -861,7 +861,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertCount(1, $message);
     }
 
-    public function testCacheClear()
+    public function testCacheClear(): void
     {
         $r = $this->controller->cacheClear();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
