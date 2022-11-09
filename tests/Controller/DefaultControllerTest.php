@@ -878,13 +878,15 @@ class DefaultControllerTest extends WebTestCase
             exit('Cache key was not set for some reason?');
         }
 
+        $_SERVER['HTTP_auth-key'] = $_ENV['DOG_CEO_CACHE_KEY'];
+
         $client->request(
             Request::METHOD_GET,
             '/url',
             [], // body
             [],
             [
-                'HTTP_auth-key' => $_ENV['DOG_CEO_CACHE_KEY'],
+                //'HTTP_auth-key' => $_ENV['DOG_CEO_CACHE_KEY'],
             ]
         );
 
