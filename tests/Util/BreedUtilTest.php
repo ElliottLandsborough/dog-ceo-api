@@ -4,6 +4,8 @@
 
 namespace App\Tests\Util;
 
+use ArrayObject;
+use ArrayIterator;
 use App\Util\BreedUtil;
 use App\Util\MockApi;
 use PHPUnit\Framework\TestCase;
@@ -324,8 +326,14 @@ class BreedUtilTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('success', json_decode($response->getContent())->status);
         $content = json_decode($response->getContent())->message;
-        $first = reset($content);
-        $this->assertEquals(is_array($first), true);
+
+        $it = new ArrayIterator($content);
+
+        while ($it->valid())
+        {
+            $this->assertEquals(is_array($it->current()), true);
+            break; // only check first instance
+        }
     }
 
     public function testGetAllBreedsRandomMultiple()
