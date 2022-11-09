@@ -343,8 +343,14 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('success', json_decode($response->getContent())->status);
         $content = json_decode($response->getContent())->message;
         $this->assertGreaterThan(0, count((array) $content));
-        $first = reset($content);
-        $this->assertEquals(is_array($first), true);
+
+        $it = new ArrayIterator($content);
+
+        while ($it->valid())
+        {
+            $this->assertEquals(is_array($it->current()), true);
+            break; // only check first instance
+        }
     }
 
     public function testGetAllTopLevelBreedsRandomSingle()
