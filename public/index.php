@@ -20,7 +20,6 @@ class DogKernel1337 extends BaseKernel
     }
 }
 
-
 return function (array $context) {
     return new DogKernel1337($context['APP_ENV'], (bool) $context['APP_DEBUG']);
 };
