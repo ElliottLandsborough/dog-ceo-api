@@ -9,7 +9,6 @@
 ## Info
 
 - To add your own images submit a pull request to https://github.com/jigsawpieces/dog-api-images
-- Rewritten in Symfony 4 recently. Check out the 'legacy' branch for the old version
 - API requests are cached from lambda https://github.com/ElliottLandsborough/dog-ceo-api-golang
 
 ## Examples
@@ -23,10 +22,10 @@
 
 ![Screenshot of statistics page](https://github.com/ElliottLandsborough/dog-ceo-api/blob/master/stats.png?raw=true)
 
-## Requirements
+## Dependencies
 
 - php 8.1+
-- a few php packages
+- Symfony 6
 - composer
 - run './bin/phpunit' for unit tests (composer dump-env test)
 
@@ -44,9 +43,9 @@ php
 ## Setup
 
 - Clone repo
-- cd repo dir
 - composer install
-- symfony server:start
+- cd public
+- php -S 127.0.0.1:6969
 
 ## .env.local
 
