@@ -21,7 +21,7 @@ class DefaultController extends AbstractController
      */
     public function __construct(BreedUtil $breedUtil, Request $request)
     {
-        $this->request = $request;
+        $this->request = Request::createFromGlobals();
 
         $this->cacheKey = isset($_ENV['DOG_CEO_CACHE_KEY']) ? $_ENV['DOG_CEO_CACHE_KEY'] : false;
 
