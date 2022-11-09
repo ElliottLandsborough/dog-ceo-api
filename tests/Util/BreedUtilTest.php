@@ -4,7 +4,6 @@
 
 namespace App\Tests\Util;
 
-use ArrayObject;
 use ArrayIterator;
 use App\Util\BreedUtil;
 use App\Util\MockApi;
@@ -329,8 +328,7 @@ class BreedUtilTest extends TestCase
 
         $it = new ArrayIterator($content);
 
-        while ($it->valid())
-        {
+        while ($it->valid()) {
             $this->assertEquals(is_array($it->current()), true);
             break; // only check first instance
         }
@@ -346,8 +344,7 @@ class BreedUtilTest extends TestCase
 
         $it = new ArrayIterator($content);
 
-        while ($it->valid())
-        {
+        while ($it->valid()) {
             $this->assertEquals(is_array($it->current()), true);
             break; // only check first instance
         }
