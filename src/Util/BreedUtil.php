@@ -4,8 +4,8 @@
 
 namespace App\Util;
 
-use Psr\Http\Client\ClientInterface;
 use lastguest\Murmur;
+use Psr\Http\Client\ClientInterface;
 use Spatie\ArrayToXml\ArrayToXml;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\HttpFoundation\JsonResponse;
