@@ -38,7 +38,6 @@ class DefaultController extends AbstractController
         }
     }
 
-    // ...existing code...
     #[Route('/breeds/list/all', methods: ['GET', 'HEAD'])]
     #[Route('/api/breeds/list/all', methods: ['GET', 'HEAD'])]
     public function getAllBreeds(): ?object
@@ -46,7 +45,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getAllBreeds()->getResponseWithCacheHeaders();
     }
 
-    // ...existing code...
     #[Route('/breeds/list/all/random', methods: ['GET', 'HEAD'])]
     #[Route('/api/breeds/list/all/random', methods: ['GET', 'HEAD'])]
     public function getAllBreedsRandomSingle(): ?object
@@ -54,7 +52,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getAllBreedsRandomSingle()->getResponse();
     }
 
-    // ...existing code...
     #[Route('/breeds/list/all/random/{amount}', methods: ['GET', 'HEAD'])]
     #[Route('/api/breeds/list/all/random/{amount}', methods: ['GET', 'HEAD'])]
     public function getAllBreedsRandomMultiple(string $amount): ?object
@@ -64,7 +61,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getAllBreedsRandomMultiple($amount)->getResponse();
     }
 
-    // ...existing code...
     #[Route('/breeds/list', methods: ['GET', 'HEAD'])]
     #[Route('/api/breeds/list', methods: ['GET', 'HEAD'])]
     public function getAllTopLevelBreeds(): ?object
@@ -72,7 +68,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getAllTopLevelBreeds()->getResponseWithCacheHeaders();
     }
 
-    // ...existing code...
     #[Route('/breeds/list/random', methods: ['GET', 'HEAD'])]
     #[Route('/api/breeds/list/random', methods: ['GET', 'HEAD'])]
     public function getAllTopLevelBreedsRandomSingle(): ?object
@@ -80,7 +75,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getAllTopLevelBreedsRandomSingle()->getResponse();
     }
 
-    // ...existing code...
     #[Route('/breeds/list/random/{amount}', methods: ['GET', 'HEAD'])]
     #[Route('/api/breeds/list/random/{amount}', methods: ['GET', 'HEAD'])]
     public function getAllTopLevelBreedsRandomMultiple(string $amount): ?object
@@ -90,7 +84,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getAllTopLevelBreedsRandomMultiple($amount)->getResponse();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed}/list', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed}/list', methods: ['GET', 'HEAD'])]
     public function getAllSubBreeds(string $breed): ?object
@@ -98,7 +91,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getAllSubBreeds($breed)->getResponseWithCacheHeaders();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed}/list/random', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed}/list/random', methods: ['GET', 'HEAD'])]
     public function getAllSubBreedsRandomSingle(string $breed): ?object
@@ -106,7 +98,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getAllSubBreedsRandomSingle($breed)->getResponse();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed}/list/random/{amount}', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed}/list/random/{amount}', methods: ['GET', 'HEAD'])]
     public function getAllSubBreedsRandomMulti(string $breed, string $amount): ?object
@@ -116,7 +107,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getAllSubBreedsRandomMulti($breed, $amount)->getResponse();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed}/images', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed}/images', methods: ['GET', 'HEAD'])]
     public function getTopLevelImages(string $breed): ?object
@@ -124,7 +114,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getTopLevelImages($breed)->getResponseWithCacheHeaders();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed}/images/random', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed}/images/random', methods: ['GET', 'HEAD'])]
     public function getRandomTopLevelImage(string $breed): ?object
@@ -132,7 +121,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getRandomTopLevelImage($breed)->getResponse();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed}/images/random/{amount}', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed}/images/random/{amount}', methods: ['GET', 'HEAD'])]
     public function getRandomTopLevelImages(string $breed, string $amount): ?object
@@ -142,7 +130,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getRandomTopLevelImages($breed, $amount)->getResponse();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed1}/{breed2}/images', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed1}/{breed2}/images', methods: ['GET', 'HEAD'])]
     public function getSubLevelImages(string $breed1, string $breed2): ?object
@@ -150,7 +137,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getSubLevelImages($breed1, $breed2)->getResponseWithCacheHeaders();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed1}/{breed2}/images/random', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed1}/{breed2}/images/random', methods: ['GET', 'HEAD'])]
     public function getRandomSubLevelImage(string $breed1, string $breed2): ?object
@@ -158,7 +144,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getRandomSubLevelImage($breed1, $breed2)->getResponse();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed1}/{breed2}/images/random/{amount}', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed1}/{breed2}/images/random/{amount}', methods: ['GET', 'HEAD'])]
     public function getRandomSubLevelImages(string $breed1, string $breed2, string $amount): ?object
@@ -168,7 +153,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getRandomSubLevelImages($breed1, $breed2, $amount)->getResponse();
     }
 
-    // ...existing code...
     #[Route('/breeds/image/random', methods: ['GET', 'HEAD'])]
     #[Route('/api/breeds/image/random', methods: ['GET', 'HEAD'])]
     public function getRandomImage(): ?object
@@ -176,7 +160,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getRandomImage()->getResponse();
     }
 
-    // ...existing code...
     #[Route('/breeds/image/random/{amount}', methods: ['GET', 'HEAD'])]
     #[Route('/api/breeds/image/random/{amount}', methods: ['GET', 'HEAD'])]
     public function getRandomImages(string $amount): ?object
@@ -186,7 +169,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getRandomImages($amount)->getResponse();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed}', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed}', methods: ['GET', 'HEAD'])]
     public function mainText(string $breed): ?object
@@ -194,7 +176,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->mainText($breed)->getResponseWithCacheHeaders();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed1}/{breed2}', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed1}/{breed2}', methods: ['GET', 'HEAD'])]
     public function subText(string $breed1, string $breed2): ?object
@@ -202,7 +183,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->subText($breed1, $breed2)->getResponseWithCacheHeaders();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed}/images/alt', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed}/images/alt', methods: ['GET', 'HEAD'])]
     public function getTopLevelImagesWithAltTags(string $breed): ?object
@@ -210,7 +190,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getTopLevelImagesWithAltTags($breed)->getResponseWithCacheHeaders();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed}/images/random/{amount}/alt', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed}/images/random/{amount}/alt', methods: ['GET', 'HEAD'])]
     public function getRandomTopLevelImagesWithAltTags(string $breed, string $amount): ?object
@@ -220,7 +199,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getRandomTopLevelImagesWithAltTags($breed, $amount)->getResponse();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed1}/{breed2}/images/alt', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed1}/{breed2}/images/alt', methods: ['GET', 'HEAD'])]
     public function getSubLevelImagesWithAltTags(string $breed1, string $breed2): ?object
@@ -228,7 +206,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getSubLevelImagesWithAltTags($breed1, $breed2)->getResponseWithCacheHeaders();
     }
 
-    // ...existing code...
     #[Route('/breed/{breed1}/{breed2}/images/random/{amount}/alt', methods: ['GET', 'HEAD'])]
     #[Route('/api/breed/{breed1}/{breed2}/images/random/{amount}/alt', methods: ['GET', 'HEAD'])]
     public function getRandomSubLevelImagesWithAltTags(string $breed1, string $breed2, string $amount): ?object
@@ -238,7 +215,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getRandomSubLevelImagesWithAltTags($breed1, $breed2, $amount)->getResponse();
     }
 
-    // ...existing code...
     #[Route('/breeds/image/random/{amount}/alt', methods: ['GET', 'HEAD'])]
     #[Route('/api/breeds/image/random/{amount}/alt', methods: ['GET', 'HEAD'])]
     public function getRandomImagesWithAltTags(string $amount): ?object
@@ -248,7 +224,6 @@ class DefaultController extends AbstractController
         return $this->breedUtil->getRandomImagesWithAltTags($amount)->getResponse();
     }
 
-    // ...existing code...
     #[Route('/cache-clear', methods: ['GET', 'HEAD'])]
     #[Route('/api/cache-clear', methods: ['GET', 'HEAD'])]
     public function cacheClear(): ?JsonResponse
