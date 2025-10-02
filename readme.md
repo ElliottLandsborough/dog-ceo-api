@@ -26,11 +26,13 @@
 
 ## Dependencies
 
-- php 8.1+
+- php 8.3+
 - Symfony 6
 - modules
 - composer
-- run './bin/phpunit' for unit tests (composer dump-env test)
+- run `make build; make install; make test;` for unit tests
+
+Not sure that the yaml module is actually require below:
 
 ```bash
 $ composer check-platform-reqs
@@ -62,14 +64,14 @@ php                  8.1.12    success
 ## .env.local
 
 ```
-DOG_CEO_CACHE_KEY="something-really-secure-lol"
+DOG_CEO_CACHE_KEY="something-really-secure"
 DOG_CEO_LAMBDA_URI=https://example.execute-api.us-east-1.amazonaws.com/dev/
 ```
 
 ## Cache clear:
 
 ```
-$ curl -X GET http://127.0.0.1:8000/cache-clear -H 'auth-key: something-really-secure-lol'
+$ curl -X GET http://127.0.0.1:8000/cache-clear -H 'auth-key: something-really-secure'
 ```
 
 ## Endpoints
