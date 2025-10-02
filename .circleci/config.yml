@@ -7,6 +7,8 @@ jobs:
   build:
     docker:
       - image: cimg/php:8.3
+      - setup_remote_docker:
+          version: 20.10.24  # Specify a recent Docker version
     steps:
       - checkout
 
