@@ -13,7 +13,7 @@ jobs:
       - run:
           name: Clear Docker cache
           command: |
-            docker system prune -af
+            sudo docker system prune -af
 
       - run:
           name: Verify PHP version
