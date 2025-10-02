@@ -1,23 +1,29 @@
 version: 2.1
+
 orbs:
-    php: circleci/php@1.1.0
+  php: circleci/php@1.1.0
 
 jobs:
   build:
-    executor: php/default
+    docker:
+      - image: cimg/php:8.3
     steps:
       - checkout
-      - php/install-php:
-          version: '8.1'
-      - php/install-composer:
-          install-version: '2.3.10'
+
       - run:
-          name: Extra PHP packages
-          command: |
-            sudo apt-get install -y php8.1-xml php8.1-yaml php8.1-mbstring
+          name: Verify PHP version
+          command: php -v
+
       - run:
-          name: Composer Install
-          command: php8.1 /usr/local/bin/composer install
+          name: Install Composer dependencies
+          command: composer install --no-interaction --prefer-dist --optimize-autoloader
+
       - run:
-          name: Test
-          command: php8.1 ./vendor/bin/phpunit
+          name: Run tests
+          command: vendor/bin/phpunit
+
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build

@@ -4,14 +4,23 @@
 
 namespace App\Util;
 
-use GuzzleHttp\Client;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
 use GuzzleHttp\Exception\ClientException;
 
 /**
  * A mock api - returns a small subset of what lambda does.
  */
-class MockApi extends Client
+class MockApi implements ClientInterface
 {
+    /**
+     * PSR-18 sendRequest implementation (not used in tests, but required for interface).
+     */
+    public function sendRequest(RequestInterface $request): \Psr\Http\Message\ResponseInterface
+    {
+        // Use the request() method for compatibility with BreedUtil
+        return $this->request($request->getMethod(), $request->getUri()->__toString());
+    }
     protected $responses;
 
     /**
@@ -30,7 +39,6 @@ class MockApi extends Client
             'breed/affenpinscher'                    => '{"status":"success","message":{"name":"Affenpinscher","info":"Info text."}}',
             'breed/bullterrier/staffordshire'        => '{"status":"success","message":{"name":"Staffordshire Bullterrier","info":"Info text."}}',
         ];
-
         $this->setResponses($responses);
     }
 
@@ -57,7 +65,7 @@ class MockApi extends Client
      *
      * @return \GuzzleHttp\Psr7\Response
      */
-    public function request($method, $uri = '', array $options = [])
+    public function request(string $method, $uri = '', array $options = []): \Psr\Http\Message\ResponseInterface
     {
         // see if we requested an exception
         if ($uri === 'ClientException') {
