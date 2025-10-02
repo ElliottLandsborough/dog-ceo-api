@@ -23,7 +23,7 @@ class ExceptionListenerTest extends TestCase
         $this->exceptionListener = new ExceptionListener();
     }
 
-    public function testOnKernelException()
+    public function testOnKernelException(): void
     {
         $expected = (object) [
             'status'  => 'error',

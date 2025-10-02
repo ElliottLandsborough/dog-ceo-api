@@ -32,7 +32,7 @@ class BreedUtilTest extends TestCase
      *
      * @return mixed Method return.
      */
-    public function invokeMethod(&$object, $methodName, array $parameters = [])
+    public function invokeMethod(&$object, $methodName, array $parameters = []): mixed
     {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
@@ -41,7 +41,7 @@ class BreedUtilTest extends TestCase
         return $method->invokeArgs($object, $parameters);
     }
 
-    public function isValidXml($content): bool
+    public function isValidXml(string $content): bool
     {
         $content = trim($content);
         if (empty($content)) {
