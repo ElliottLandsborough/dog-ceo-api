@@ -8,16 +8,16 @@ jobs:
     steps:
       - checkout
       - php/install-php:
-          version: '8.1'
+          version: '8.3'
       - php/install-composer:
-          install-version: '2.3.10'
+          install-version: '2.8.4'
       - run:
           name: Extra PHP packages
           command: |
             sudo apt-get install -y php8.1-xml php8.1-yaml php8.1-mbstring
       - run:
           name: Composer Install
-          command: php8.1 /usr/local/bin/composer install
+          command: php8.3 /usr/local/bin/composer install
       - run:
           name: Test
-          command: php8.1 ./vendor/bin/phpunit
+          command: php8.3 ./vendor/bin/phpunit
