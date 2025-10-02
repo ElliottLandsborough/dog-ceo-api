@@ -687,7 +687,7 @@ class BreedUtil
     /**
      * Formats the response and returns it ready for XML output.
      *
-     * @todo It is probably possible to make this less dirty
+     * @todo Improve this, it is a bit hacky
      *
      * @return object Formatted response
      */
