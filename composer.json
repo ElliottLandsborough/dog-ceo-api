@@ -16,7 +16,7 @@
         "symfony/config": "^7.3",
         "symfony/console": "^7.3",
         "symfony/dependency-injection": "^7.3",
-        "symfony/dotenv": "~6.1",
+        "symfony/dotenv": "^7.0",
         "symfony/error-handler": "^7.3",
         "symfony/event-dispatcher": "^7.3",
         "symfony/filesystem": "^7.3",
