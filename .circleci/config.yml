@@ -20,7 +20,7 @@ jobs:
 
       - run:
           name: Run tests
-          command: vendor/bin/phpunit
+          command: composer dump-env test && ./bin/phpunit
 
 workflows:
   version: 2
