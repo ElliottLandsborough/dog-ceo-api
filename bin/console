@@ -9,7 +9,7 @@ if (!is_file(dirname(__DIR__).'/vendor/autoload_runtime.php')) {
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
-use MicroKernel;
+use App\MicroKernel;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 
 return function (array $context) {
