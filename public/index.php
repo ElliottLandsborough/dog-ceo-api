@@ -3,7 +3,7 @@
 use App\Kernel as BaseKernel;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 
-require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+require_once dirname(__DIR__).'/vendor/autoload.php';
 
 // This is why you don't host in subdirectories with apache...
 class DogKernel1337 extends BaseKernel
