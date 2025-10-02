@@ -2,9 +2,8 @@
 
 // tests/Util/DefaultControllerTest.php
 
-namespace App\Tests\Util;
+namespace App\Controller;
 
-use App\Controller\DefaultController;
 use App\Util\BreedUtil;
 use App\Util\MockApi;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

@@ -2,7 +2,7 @@
 
 // tests/Util/ExceptionListenerTest.php
 
-namespace App\Tests\Util;
+namespace App\EventListener;
 
 use App\EventListener\ExceptionListener;
 use Exception;
