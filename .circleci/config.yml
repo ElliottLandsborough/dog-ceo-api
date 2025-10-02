@@ -11,6 +11,12 @@ jobs:
       - checkout
 
       - run:
+          name: Clear Docker cache
+          command: |
+            docker system prune -af
+            docker builder prune -af
+
+      - run:
           name: Verify PHP version
           command: php -v
 
