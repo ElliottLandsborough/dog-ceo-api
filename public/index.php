@@ -1,12 +1,12 @@
 <?php
 
-use App\Kernel as BaseKernel;
+use MicroKernel;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
 // This is why you don't host in subdirectories with apache...
-class DogKernel1337 extends BaseKernel
+class Kernel extends MicroKernel
 {
     use MicroKernelTrait;
 
@@ -21,5 +21,5 @@ class DogKernel1337 extends BaseKernel
 }
 
 return function (array $context) {
-    return new DogKernel1337($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+    return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
 };

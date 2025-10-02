@@ -37,7 +37,8 @@
     "autoload": {
         "psr-4": {
             "App\\": "src/"
-        }
+        },
+        "classmap": [ "src/MicroKernel.php" ]
     },
     "autoload-dev": {
         "psr-4": {
