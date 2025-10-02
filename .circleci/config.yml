@@ -18,6 +18,7 @@ jobs:
 
       - run:
           name: Install YAML extension
+          no_output_timeout: 30m # took > 10mins on first run
           command: |
             sudo pecl install yaml
             echo "extension=yaml.so" | sudo tee /usr/local/etc/php/conf.d/yaml.ini
