@@ -4,9 +4,9 @@
 
 namespace App\Util;
 
-use Psr\Http\Message\RequestInterface;
 use GuzzleHttp\Exception\ClientException;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * A mock api - returns a small subset of what lambda does.
