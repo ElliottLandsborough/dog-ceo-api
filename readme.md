@@ -8,8 +8,10 @@
 
 ## Info
 
+- Images are hosted on [Vultr, The Everywhere Cloud](https://www.vultr.com/?ref=8302423)
 - To add your own images submit a pull request to https://github.com/jigsawpieces/dog-api-images
-- API requests are cached from lambda https://github.com/ElliottLandsborough/dog-ceo-api-golang
+- Some API requests are cached from AWS lambda https://github.com/ElliottLandsborough/dog-ceo-api-golang
+
 
 ## Examples
 
