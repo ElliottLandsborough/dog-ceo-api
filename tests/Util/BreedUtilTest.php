@@ -2,8 +2,10 @@
 
 // tests/Util/BreedUtilTest.php
 
-namespace App\Util;
+namespace App\Tests\Util;
 
+use App\Util\BreedUtil;
+use App\Util\MockApi;
 use ArrayIterator;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
