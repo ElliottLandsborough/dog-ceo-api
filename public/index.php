@@ -1,9 +1,10 @@
 <?php
 
-use MicroKernel;
-use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
+
+use App\MicroKernel;
+use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 
 // This is why you don't host in subdirectories with apache...
 class Kernel extends MicroKernel
@@ -12,6 +13,9 @@ class Kernel extends MicroKernel
 
     /**
      * NOTICE:
+     * 
+     * @todo This is a temporary workaround for... something. I forget what.
+     * 
      * We don't want to deploy composer.json that's being used to compute project dir, so we will specify it here manually.
      */
     public function getProjectDir(): string
@@ -21,5 +25,5 @@ class Kernel extends MicroKernel
 }
 
 return function (array $context) {
-    return new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+    return new MicroKernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
 };
