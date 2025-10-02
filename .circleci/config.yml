@@ -21,7 +21,7 @@ jobs:
       - run:
           name: Run tests
           #command: ./bin/console cache:clear && composer dump-autoload -o && composer dump-env test && ./bin/phpunit
-          command: ./vendor/bin/phpunit --filter testGetAllBreeds tests/Controller/DefaultControllerTest.php
+          command: ./bin/console cache:clear && composer dump-autoload -o && composer dump-env test && ./bin/phpunit --filter testGetAllBreeds tests/Controller/DefaultControllerTest.php
 
 workflows:
   version: 2
