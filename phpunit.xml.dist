@@ -15,14 +15,10 @@
     <server name="APP_ENV" value="test" force="true"/>
     <server name="SHELL_VERBOSITY" value="-1"/>
     <server name="SYMFONY_PHPUNIT_REMOVE" value=""/>
-    <server name="SYMFONY_PHPUNIT_VERSION" value="9"/>
   </php>
   <testsuites>
     <testsuite name="Project Test Suite">
       <directory>tests</directory>
     </testsuite>
   </testsuites>
-  <listeners>
-    <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
-  </listeners>
 </phpunit>
