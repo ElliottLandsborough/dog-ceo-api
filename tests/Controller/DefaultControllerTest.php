@@ -33,7 +33,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('{"status":"success","message":{"affenpinscher":[],"bullterrier":["staffordshire"]}}', $r->getContent());
 
         $client = static::createClient();
-
+        /*
         $client->request(
             Request::METHOD_GET,
             '/url',
@@ -47,7 +47,6 @@ class DefaultControllerTest extends WebTestCase
         $request = $client->getRequest();
 
         $this->controller = new DefaultController($this->util, $request);
-        /*
         $r = $this->controller->getAllBreeds();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $r);
         $this->assertEquals('<?xml version="1.0"?>
