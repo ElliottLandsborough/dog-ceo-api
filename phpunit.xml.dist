@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd" backupGlobals="false" colors="true" bootstrap="tests/bootstrap.php" convertDeprecationsToExceptions="false">
-  <coverage>
-    <include>
-      <directory>src/Controller</directory>
-      <directory>src/EventListener</directory>
-      <directory>src/Util</directory>
-    </include>
-  </coverage>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd" backupGlobals="false" colors="true" bootstrap="tests/bootstrap.php" cacheDirectory=".phpunit.cache">
   <php>
     <ini name="display_errors" value="1"/>
     <ini name="error_reporting" value="-1"/>
@@ -21,4 +14,11 @@
       <directory>tests</directory>
     </testsuite>
   </testsuites>
+  <source>
+    <include>
+      <directory>src/Controller</directory>
+      <directory>src/EventListener</directory>
+      <directory>src/Util</directory>
+    </include>
+  </source>
 </phpunit>
