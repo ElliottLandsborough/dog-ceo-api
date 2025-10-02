@@ -15,7 +15,7 @@ class Kernel extends BaseKernel
     public static function debugLoadedFrom()
     {
         if (true) {
-            error_log('App\\Kernel loaded from: ' . __FILE__);
+            error_log('App\\Kernel loaded from: ' . __FILE__ . ' (realpath: ' . realpath(__FILE__) . ')');
             error_log("Backtrace:\n" . print_r(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS), true));
         }
     }
