@@ -32,8 +32,8 @@ class DefaultControllerTest extends WebTestCase
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
         $this->assertEquals('{"status":"success","message":{"affenpinscher":[],"bullterrier":["staffordshire"]}}', $r->getContent());
 
-        /*
         $client = static::createClient();
+        /*
 
         $client->request(
             Request::METHOD_GET,
