@@ -2,12 +2,11 @@
 
 namespace App\Controller;
 
-use Symfony\Component\Routing\Attribute\Route;
 use App\Util\BreedUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-
+use Symfony\Component\Routing\Attribute\Route;
 
 class DefaultController extends AbstractController
 {
@@ -29,7 +28,7 @@ class DefaultController extends AbstractController
         // Hint: uncomment to debug environment variables
         //echo "WARNING: Debugging environment variables." . PHP_EOL;
         //var_dump($_ENV); exit(1);
-        
+
         $this->breedUtil = $breedUtil->setEndpointUrl($endpointUrl);
 
         // enable XML output if the header is set
