@@ -9,21 +9,27 @@ jobs:
       - image: cimg/php:8.3
     steps:
       - checkout
-      
+
+      #- run:
+      #    name: Install PHP extensions
+      #    command: |
+      #      sudo apt-get update
+      #      sudo apt-get install -y php8.3-xml php8.3-mbstring
+
       - run:
-          name: Install PHP extensions
+          name: Install YAML extension
           command: |
-            sudo apt-get update
-            sudo apt-get install -y php8.3-xml php8.3-yaml php8.3-mbstring
-      
+            sudo pecl install yaml
+            echo "extension=yaml.so" | sudo tee /usr/local/etc/php/conf.d/yaml.ini
+
       - run:
           name: Verify PHP version
           command: php -v
-      
+
       - run:
           name: Install Composer dependencies
           command: composer install --no-interaction --prefer-dist --optimize-autoloader
-      
+
       - run:
           name: Run tests
           command: vendor/bin/phpunit
