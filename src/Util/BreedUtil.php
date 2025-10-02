@@ -131,6 +131,7 @@ class BreedUtil
         try {
             $request = new \GuzzleHttp\Psr7\Request('GET', $url);
             $res = $this->client->sendRequest($request);
+
             return json_decode($res->getBody()->getContents());
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             return (object) [
