@@ -40,9 +40,12 @@ class DefaultControllerTest extends WebTestCase
         $controller = new DefaultController($this->util, $request);
         $response = $controller->getAllBreeds();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
-        $this->assertEquals('<?xml version="1.0"?>
+        $this->assertEquals(
+            '<?xml version="1.0"?>
 <root><status>success</status><breeds><breed>affenpinscher</breed><breed>bullterrier</breed></breeds><subbreeds><bullterrier>staffordshire</bullterrier></subbreeds><allbreeds><affenpinscher/><bullterrier>staffordshire</bullterrier></allbreeds></root>
-', $response->getContent());
+',
+            $response->getContent()
+        );
     }
 
     public function testGetAllBreedsRandomSingle(): void
