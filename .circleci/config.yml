@@ -20,7 +20,7 @@ jobs:
 
       - run:
           name: Run tests
-          command: ./bin/console cache:clear && composer dump-autoload -o && composer dump-env test && ./bin/phpunit
+          command: ./bin/console cache:clear && composer dump-autoload -o && composer dump-env test && ./vendor/bin/phpunit
 
 workflows:
   version: 2
