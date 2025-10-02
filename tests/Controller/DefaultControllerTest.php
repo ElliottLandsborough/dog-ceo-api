@@ -26,38 +26,23 @@ class DefaultControllerTest extends WebTestCase
         $this->controller = new DefaultController($this->util, new Request());
     }
 
-    public function testGetAllBreeds(): void
+    public function testGetAllBreedsJson(): void
     {
-        // thie does not belong here, check if it makes createClient work
-        $r = $this->controller->getAllBreedsRandomSingle();
-
-        // this does belong here
-        //$r = $this->controller->getAllBreeds();
-        //$this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
-        //$this->assertEquals('{"status":"success","message":{"affenpinscher":[],"bullterrier":["staffordshire"]}}', $r->getContent());
-
-        $client = static::createClient();
-        /*
-
-        $client->request(
-            Request::METHOD_GET,
-            '/url',
-            [], // body
-            [],
-            [
-                'HTTP_content-type' => 'application/xml',
-            ]
-        );
-
-        $request = $client->getRequest();
-
-        $this->controller = new DefaultController($this->util, $request);
         $r = $this->controller->getAllBreeds();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $r);
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        $this->assertEquals('{"status":"success","message":{"affenpinscher":[],"bullterrier":["staffordshire"]}}', $r->getContent());
+    }
+
+    public function testGetAllBreedsXml(): void
+    {
+        $request = new Request();
+        $request->headers->set('Content-Type', 'application/xml');
+        $controller = new DefaultController($this->util, $request);
+        $response = $controller->getAllBreeds();
+        $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertEquals('<?xml version="1.0"?>
 <root><status>success</status><breeds><breed>affenpinscher</breed><breed>bullterrier</breed></breeds><subbreeds><bullterrier>staffordshire</bullterrier></subbreeds><allbreeds><affenpinscher/><bullterrier>staffordshire</bullterrier></allbreeds></root>
-', $r->getContent());
-        */
+', $response->getContent());
     }
 
     public function testGetAllBreedsRandomSingle(): void
