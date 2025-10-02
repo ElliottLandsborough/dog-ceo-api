@@ -1,5 +1,7 @@
 <?php
 
+// The main entry point for the application
+// see https://symfony.com/doc/current/setup.html#the-front-controller
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
