@@ -5601,8 +5601,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-mbstring": "*",
-        "ext-xml": "*",
-        "ext-yaml": "*"
+        "ext-xml": "*"
     },
     "platform-dev": {},
     "plugin-api-version": "2.6.0"
