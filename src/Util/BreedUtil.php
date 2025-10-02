@@ -4,7 +4,7 @@
 
 namespace App\Util;
 
-use GuzzleHttp\Client;
+use Psr\Http\Client\ClientInterface;
 use lastguest\Murmur;
 use Spatie\ArrayToXml\ArrayToXml;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
@@ -35,7 +35,7 @@ class BreedUtil
     /**
      * Constructor.
      */
-    public function __construct(Client $client, FilesystemAdapter $cache)
+    public function __construct(ClientInterface $client, FilesystemAdapter $cache)
     {
         $this->client = $client;
         $this->cache = $cache;
@@ -129,8 +129,8 @@ class BreedUtil
     private function getWithGuzzle(string $url): ?object
     {
         try {
-            $res = $this->client->request('GET', $url);
-
+            $request = new \GuzzleHttp\Psr7\Request('GET', $url);
+            $res = $this->client->sendRequest($request);
             return json_decode($res->getBody()->getContents());
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             return (object) [
