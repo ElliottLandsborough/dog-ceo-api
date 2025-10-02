@@ -57,7 +57,7 @@ class MockApi extends Client
      *
      * @return \GuzzleHttp\Psr7\Response
      */
-    public function request($method, $uri = '', array $options = [])
+    public function request(string $method, $uri = '', array $options = []): \Psr\Http\Message\ResponseInterface
     {
         // see if we requested an exception
         if ($uri === 'ClientException') {
