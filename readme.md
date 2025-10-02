@@ -4,7 +4,7 @@
 [![CircleCI](https://circleci.com/gh/ElliottLandsborough/dog-ceo-api.svg?style=svg)](https://circleci.com/gh/ElliottLandsborough/dog-ceo-api)
 [![Code Style](https://github.styleci.io/repos/97956282/shield?style=flat&branch=main)](https://github.styleci.io/repos/97956282)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/28e7bd35f2fe4d42a19aec5f705c5024)](https://www.codacy.com/app/ElliottLandsborough/dog-ceo-api?utm_source=github.com&utm_medium=referral&utm_content=ElliottLandsborough/dog-ceo-api&utm_campaign=Badge_Grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/28e7bd35f2fe4d42a19aec5f705c5024)](https://app.codacy.com/gh/ElliottLandsborough/dog-ceo-api/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 ## Info
 
