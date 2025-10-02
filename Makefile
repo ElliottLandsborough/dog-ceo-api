@@ -16,6 +16,9 @@ test: ## Run PHPUnit
 requirements: ## Show PHP requirements
 	docker run --rm -v $$(pwd):/app php-dev composer check-platform-reqs
 
+upgrade: ## Upgrade dependencies
+	docker run --rm -v $$(pwd):/app php-dev composer update
+
 install-simple: ## Install dependencies (simple)
 	docker run --rm -v $$(pwd):/app composer:latest composer install
 
@@ -24,6 +27,9 @@ test-simple: ## Run PHPUnit (simple)
 
 requirements-simple: ## Show PHP requirements (simple)
 	docker run --rm -v $$(pwd):/app php:8.3-cli composer check-platform-reqs
+
+upgrade-simple: ## Upgrade dependencies (simple)
+	docker run --rm -v $$(pwd):/app composer:latest composer update
 
 clean: ## Clean up
 	rm -rf vendor/
