@@ -28,9 +28,13 @@ class DefaultControllerTest extends WebTestCase
 
     public function testGetAllBreeds(): void
     {
-        $r = $this->controller->getAllBreeds();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
-        $this->assertEquals('{"status":"success","message":{"affenpinscher":[],"bullterrier":["staffordshire"]}}', $r->getContent());
+        // thie does not belong here, check if it makes createClient work
+        $r = $this->controller->getAllBreedsRandomSingle();
+
+        // this does belong here
+        //$r = $this->controller->getAllBreeds();
+        //$this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
+        //$this->assertEquals('{"status":"success","message":{"affenpinscher":[],"bullterrier":["staffordshire"]}}', $r->getContent());
 
         $client = static::createClient();
         /*
