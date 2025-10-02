@@ -11,7 +11,7 @@ install: ## Install dependencies
 	docker run --rm -v $$(pwd):/app php-dev composer install
 
 test: ## Run PHPUnit
-	docker run --rm -v $$(pwd):/app php-dev vendor/bin/phpunit
+	docker run --rm -v $$(pwd):/app php-dev composer dump-env test && ./bin/phpunit
 
 requirements: ## Show PHP requirements
 	docker run --rm -v $$(pwd):/app php-dev composer check-platform-reqs
@@ -23,7 +23,7 @@ install-simple: ## Install dependencies (simple)
 	docker run --rm -v $$(pwd):/app composer:latest composer install
 
 test-simple: ## Run PHPUnit (simple)
-	docker run --rm -v $$(pwd):/app php:8.3-cli vendor/bin/phpunit
+	docker run --rm -v $$(pwd):/app php:8.3-cli composer dump-env test && ./bin/phpunit
 
 requirements-simple: ## Show PHP requirements (simple)
 	docker run --rm -v $$(pwd):/app php:8.3-cli composer check-platform-reqs
