@@ -203,9 +203,9 @@ class DefaultController extends AbstractController
      * @route("/breed/{breed}", methods={"GET","HEAD"})
      * @route("/api/breed/{breed}", methods={"GET","HEAD"})
      */
-    public function masterText(string $breed): ?object
+    public function mainText(string $breed): ?object
     {
-        return $this->breedUtil->masterText($breed)->getResponseWithCacheHeaders();
+        return $this->breedUtil->mainText($breed)->getResponseWithCacheHeaders();
     }
 
     /**

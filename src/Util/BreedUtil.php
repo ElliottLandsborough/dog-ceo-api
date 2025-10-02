@@ -27,8 +27,8 @@ class BreedUtil
     protected $breedDelimiter = '-';
 
     // error messages
-    protected $masterHasNoSubBreeds = 'Breed not found (no sub breeds exist for this master breed)';
-    protected $masterBreedNotFound = 'Breed not found (master breed does not exist)';
+    protected $mainHasNoSubBreeds = 'Breed not found (no sub breeds exist for this main breed)';
+    protected $mainBreedNotFound = 'Breed not found (main breed does not exist)';
     protected $subBreedNotFound = 'Breed not found (sub breed does not exist)';
     protected $breedFileNotFound = 'Breed not found (No info file for this breed exists)';
 
@@ -183,7 +183,7 @@ class BreedUtil
     }
 
     /**
-     * List all master breed names.
+     * List all main breed names.
      *
      * @return BreedUtil $this
      */
@@ -199,7 +199,7 @@ class BreedUtil
     }
 
     /**
-     * Get single random master breed.
+     * Get single random main breed.
      *
      * @return BreedUtil $this
      */
@@ -211,7 +211,7 @@ class BreedUtil
     }
 
     /**
-     * Get multiple random master breeds.
+     * Get multiple random main breeds.
      *
      * @param int|int $amount How many breeds to return
      *
@@ -225,15 +225,15 @@ class BreedUtil
     }
 
     /**
-     * List sub breeds of a master breed.
+     * List sub breeds of a main breed.
      *
-     * @param string $breed The master breed
+     * @param string $breed The main breed
      *
      * @return BreedUtil $this
      */
     public function getAllSubBreeds(string $breed): ?self
     {
-        if ($this->masterBreedExists($breed)) {
+        if ($this->mainBreedExists($breed)) {
             $suffix = "breed/$breed/list";
 
             $url = $this->endpointUrl.$suffix;
@@ -242,7 +242,7 @@ class BreedUtil
 
             return $this;
         }
-        $this->setNotFoundResponse($this->masterBreedNotFound);
+        $this->setNotFoundResponse($this->mainBreedNotFound);
 
         return $this;
     }
@@ -256,7 +256,7 @@ class BreedUtil
 
             return $this;
         }
-        $this->setNotFoundResponse($this->masterHasNoSubBreeds);
+        $this->setNotFoundResponse($this->mainHasNoSubBreeds);
 
         return $this;
     }
@@ -276,21 +276,21 @@ class BreedUtil
 
             return $this;
         }
-        $this->setNotFoundResponse($this->masterHasNoSubBreeds);
+        $this->setNotFoundResponse($this->mainHasNoSubBreeds);
 
         return $this;
     }
 
     /**
-     * Get all master breed images.
+     * Get all main breed images.
      *
-     * @param string $breed The master breed
+     * @param string $breed The main breed
      *
      * @return BreedUtil $this
      */
     public function getTopLevelImages(string $breed): ?self
     {
-        if ($this->masterBreedExists($breed)) {
+        if ($this->mainBreedExists($breed)) {
             $suffix = "breed/$breed/images";
 
             $url = $this->endpointUrl.$suffix;
@@ -299,7 +299,7 @@ class BreedUtil
 
             return $this;
         }
-        $this->setNotFoundResponse($this->masterBreedNotFound);
+        $this->setNotFoundResponse($this->mainBreedNotFound);
 
         return $this;
     }
@@ -307,7 +307,7 @@ class BreedUtil
     /**
      * Get random image from a breed (and all its sub-breeds).
      *
-     * @param string $breed The master breed
+     * @param string $breed The main breed
      *
      * @return BreedUtil $this
      */
@@ -325,7 +325,7 @@ class BreedUtil
     /**
      * Get multiple random images from a breed (and all its sub-breeds).
      *
-     * @param string  $breed  The master breed
+     * @param string  $breed  The main breed
      * @param int|int $amount How many images to return
      *
      * @return BreedUtil $this
@@ -344,14 +344,14 @@ class BreedUtil
     /**
      * Get all images from a sub breed.
      *
-     * @param string $breed1 The master breed
+     * @param string $breed1 The main breed
      * @param string $breed2 The sub breed
      *
      * @return BreedUtil $this
      */
     public function getSubLevelImages(string $breed1, string $breed2): ?self
     {
-        if ($this->masterBreedExists($breed1)) {
+        if ($this->mainBreedExists($breed1)) {
             if ($this->subBreedExists($breed1, $breed2)) {
                 $suffix = "breed/$breed1/$breed2/images";
 
@@ -365,7 +365,7 @@ class BreedUtil
 
             return $this;
         }
-        $this->setNotFoundResponse($this->masterBreedNotFound);
+        $this->setNotFoundResponse($this->mainBreedNotFound);
 
         return $this;
     }
@@ -373,7 +373,7 @@ class BreedUtil
     /**
      * Get random image from a sub breed.
      *
-     * @param string $breed1 The master breed
+     * @param string $breed1 The main breed
      * @param string $breed2 The sub breed
      *
      * @return BreedUtil $this
@@ -392,7 +392,7 @@ class BreedUtil
     /**
      * Get multiple random images from a sub breed.
      *
-     * @param string  $breed1 The master breed
+     * @param string  $breed1 The main breed
      * @param string  $breed2 The sub breed
      * @param int|int $amount How many images to return
      *
@@ -459,7 +459,7 @@ class BreedUtil
     }
 
     /**
-     * Get a random image from either a master or master/sub based on a string.
+     * Get a random image from either a main or main/sub based on a string.
      *
      * @param  string Collapsed breed e.g affenpischer or collie-border
      *
@@ -488,12 +488,12 @@ class BreedUtil
     {
         $result = [];
 
-        foreach ($object as $master => $subs) {
+        foreach ($object as $main => $subs) {
             if (!count($subs)) {
-                $result[] = $master;
+                $result[] = $main;
             } else {
                 foreach ($subs as $sub) {
-                    $result[] = $master.$delimiter.$sub;
+                    $result[] = $main.$delimiter.$sub;
                 }
             }
         }
@@ -575,13 +575,13 @@ class BreedUtil
     }
 
     /**
-     * Check if the master breed exists.
+     * Check if the main breed exists.
      *
-     * @param string $breed The master breed
+     * @param string $breed The main breed
      *
      * @return bool
      */
-    private function masterBreedExists(string $breed): ?bool
+    private function mainBreedExists(string $breed): ?bool
     {
         return in_array($breed, $this->getAllTopLevelBreeds()->arrayResponse()->message);
     }
@@ -589,7 +589,7 @@ class BreedUtil
     /**
      * Check if the sub breed exists.
      *
-     * @param string $breed1 The master breed
+     * @param string $breed1 The main breed
      * @param string $breed2 The sub breed
      *
      * @return bool
@@ -800,15 +800,15 @@ class BreedUtil
     }
 
     /**
-     * Get the info text for a master breed.
+     * Get the info text for a main breed.
      *
-     * @param string $breed The master breed
+     * @param string $breed The main breed
      *
      * @return BreedUtil $this
      */
-    public function masterText(string $breed): ?self
+    public function mainText(string $breed): ?self
     {
-        if ($this->masterBreedExists($breed)) {
+        if ($this->mainBreedExists($breed)) {
             $suffix = "breed/$breed";
 
             $url = $this->endpointUrl.$suffix;
@@ -821,7 +821,7 @@ class BreedUtil
 
             return $this;
         }
-        $this->setNotFoundResponse($this->masterBreedNotFound);
+        $this->setNotFoundResponse($this->mainBreedNotFound);
 
         return $this;
     }
@@ -829,14 +829,14 @@ class BreedUtil
     /**
      * Get the info text for a sub breed.
      *
-     * @param string $breed1 The master breed
+     * @param string $breed1 The main breed
      * @param string $breed2 The sub breed
      *
      * @return BreedUtil $this
      */
     public function subText(string $breed1, string $breed2): ?self
     {
-        if ($this->masterBreedExists($breed1)) {
+        if ($this->mainBreedExists($breed1)) {
             if ($this->subBreedExists($breed1, $breed2)) {
                 $suffix = "breed/$breed1/$breed2";
 
@@ -854,7 +854,7 @@ class BreedUtil
 
             return $this;
         }
-        $this->setNotFoundResponse($this->masterBreedNotFound);
+        $this->setNotFoundResponse($this->mainBreedNotFound);
 
         return $this;
     }
@@ -934,20 +934,20 @@ class BreedUtil
     }
 
     /**
-     * Get all master breed images (with alt tags).
+     * Get all main breed images (with alt tags).
      *
-     * @param string $breed The master breed
+     * @param string $breed The main breed
      *
      * @return BreedUtil $this
      */
     public function getTopLevelImagesWithAltTags(string $breed): ?self
     {
-        if ($this->masterBreedExists($breed)) {
+        if ($this->mainBreedExists($breed)) {
             $this->getTopLevelImages($breed)->addAltTags();
 
             return $this;
         }
-        $this->setNotFoundResponse($this->masterBreedNotFound);
+        $this->setNotFoundResponse($this->mainBreedNotFound);
 
         return $this;
     }
@@ -955,19 +955,19 @@ class BreedUtil
     /**
      * Get multiple random images from a breed (and all its sub-breeds) with alt tags.
      *
-     * @param string  $breed  The master breed
+     * @param string  $breed  The main breed
      * @param int|int $amount How many images to return
      *
      * @return BreedUtil $this
      */
     public function getRandomTopLevelImagesWithAltTags(string $breed, int $amount): ?self
     {
-        if ($this->masterBreedExists($breed)) {
+        if ($this->mainBreedExists($breed)) {
             $this->getRandomTopLevelImages($breed, $amount)->addAltTags();
 
             return $this;
         }
-        $this->setNotFoundResponse($this->masterBreedNotFound);
+        $this->setNotFoundResponse($this->mainBreedNotFound);
 
         return $this;
     }
@@ -975,14 +975,14 @@ class BreedUtil
     /**
      * Get all images from a sub breed (with alt tags).
      *
-     * @param string $breed1 The master breed
+     * @param string $breed1 The main breed
      * @param string $breed2 The sub breed
      *
      * @return BreedUtil $this
      */
     public function getSubLevelImagesWithAltTags(string $breed1, string $breed2): ?self
     {
-        if ($this->masterBreedExists($breed1)) {
+        if ($this->mainBreedExists($breed1)) {
             if ($this->subBreedExists($breed1, $breed2)) {
                 $this->getSubLevelImages($breed1, $breed2)->addAltTags();
 
@@ -992,7 +992,7 @@ class BreedUtil
 
             return $this;
         }
-        $this->setNotFoundResponse($this->masterBreedNotFound);
+        $this->setNotFoundResponse($this->mainBreedNotFound);
 
         return $this;
     }
@@ -1000,7 +1000,7 @@ class BreedUtil
     /**
      * Get multiple random images from a sub breed (with alt tags).
      *
-     * @param string  $breed1 The master breed
+     * @param string  $breed1 The main breed
      * @param string  $breed2 The sub breed
      * @param int|int $amount How many images to return
      *
@@ -1008,7 +1008,7 @@ class BreedUtil
      */
     public function getRandomSubLevelImagesWithAltTags(string $breed1, string $breed2, int $amount): ?self
     {
-        if ($this->masterBreedExists($breed1)) {
+        if ($this->mainBreedExists($breed1)) {
             if ($this->subBreedExists($breed1, $breed2)) {
                 $this->getRandomSubLevelImages($breed1, $breed2, $amount)->addAltTags();
 
@@ -1018,7 +1018,7 @@ class BreedUtil
 
             return $this;
         }
-        $this->setNotFoundResponse($this->masterBreedNotFound);
+        $this->setNotFoundResponse($this->mainBreedNotFound);
 
         return $this;
     }

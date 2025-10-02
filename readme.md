@@ -1,8 +1,8 @@
 # Dog CEO API
 
-[![Code Coverage](https://codecov.io/gh/ElliottLandsborough/dog-ceo-api/branch/master/graph/badge.svg)](https://codecov.io/gh/ElliottLandsborough/dog-ceo-api)
+[![Code Coverage](https://codecov.io/gh/ElliottLandsborough/dog-ceo-api/branch/main/graph/badge.svg)](https://codecov.io/gh/ElliottLandsborough/dog-ceo-api)
 [![CircleCI](https://circleci.com/gh/ElliottLandsborough/dog-ceo-api.svg?style=svg)](https://circleci.com/gh/ElliottLandsborough/dog-ceo-api)
-[![Code Style](https://github.styleci.io/repos/97956282/shield?style=flat&branch=master)](https://github.styleci.io/repos/97956282)
+[![Code Style](https://github.styleci.io/repos/97956282/shield?style=flat&branch=main)](https://github.styleci.io/repos/97956282)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/28e7bd35f2fe4d42a19aec5f705c5024)](https://www.codacy.com/app/ElliottLandsborough/dog-ceo-api?utm_source=github.com&utm_medium=referral&utm_content=ElliottLandsborough/dog-ceo-api&utm_campaign=Badge_Grade)
 
@@ -22,7 +22,7 @@
 
 ## Stats
 
-![Screenshot of statistics page](https://github.com/ElliottLandsborough/dog-ceo-api/blob/master/stats.png?raw=true)
+![Screenshot of statistics page](https://github.com/ElliottLandsborough/dog-ceo-api/blob/main/stats.png?raw=true)
 
 ## Dependencies
 
@@ -88,15 +88,15 @@ Get 10 random breeds including any sub breeds.
 
 #### /breeds/list
 
-List all master breed names.
+List all main breed names.
 
 #### /breeds/list/random
 
-Get single random master breed.
+Get single random main breed.
 
 #### /breeds/list/random/10
 
-Get 10 random master breeds.
+Get 10 random main breeds.
 
 #### /breed/{breed}/list
 
@@ -112,7 +112,7 @@ List 10 random sub breeds.
 
 #### /breed/{breed}
 
-Get master breed info (data is incomplete, see content folder).
+Get main breed info (data is incomplete, see content folder).
 
 #### /breed/{breed}/{breed2}
 

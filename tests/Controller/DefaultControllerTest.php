@@ -215,7 +215,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
     }
 
     public function testGetAllSubBreedsRandomSingle(): void
@@ -236,7 +236,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
 
         $r = $this->controller->getAllSubBreedsRandomSingle('affenpinscher');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -245,7 +245,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (no sub breeds exist for this master breed)', $message);
+        $this->assertEquals('Breed not found (no sub breeds exist for this main breed)', $message);
     }
 
     public function testGetAllSubBreedsRandomMulti(): void
@@ -297,7 +297,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
 
         $this->setUp();
         $r = $this->controller->getAllSubBreedsRandomMulti('DOESNOTEXIST', 1);
@@ -307,7 +307,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
 
         $this->setUp();
         $r = $this->controller->getAllSubBreedsRandomMulti('affenpinscher', -1);
@@ -317,7 +317,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (no sub breeds exist for this master breed)', $message);
+        $this->assertEquals('Breed not found (no sub breeds exist for this main breed)', $message);
     }
 
     public function testGetTopLevelImages(): void
@@ -338,7 +338,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
 
         $r = $this->controller->getTopLevelImages('bad');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -347,7 +347,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
     }
 
     public function testGetRandomTopLevelImage(): void
@@ -368,7 +368,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
 
         $r = $this->controller->getRandomTopLevelImage('bad');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -377,7 +377,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
     }
 
     public function testGetRandomTopLevelImages(): void
@@ -425,7 +425,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
 
         $r = $this->controller->getRandomTopLevelImages('bad', 3);
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
@@ -434,7 +434,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
     }
 
     public function testGetRandomSubLevelImage(): void
@@ -464,7 +464,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
     }
 
     public function testGetRandomSubLevelImages(): void
@@ -521,7 +521,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
     }
 
     public function testGetRandomImage(): void
@@ -575,9 +575,9 @@ class DefaultControllerTest extends WebTestCase
         $this->assertCount(1, $message);
     }
 
-    public function testMasterText(): void
+    public function testmainText(): void
     {
-        $r = $this->controller->masterText('affenpinscher');
+        $r = $this->controller->mainText('affenpinscher');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
         $json = $r->getContent();
         $object = json_decode($json);
@@ -587,14 +587,14 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('Affenpinscher', $message->name);
         $this->assertEquals('Info text.', $message->info);
 
-        $r = $this->controller->masterText('DOESNOTEXIST');
+        $r = $this->controller->mainText('DOESNOTEXIST');
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
         $json = $r->getContent();
         $object = json_decode($json);
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
     }
 
     public function testSubText(): void
@@ -625,7 +625,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
     }
 
     public function testGetTopLevelImagesWithAltTags(): void
@@ -647,7 +647,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
     }
 
     public function testGetRandomTopLevelImagesWithAltTags(): void
@@ -689,7 +689,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
     }
 
     public function testGetSubLevelImages(): void
@@ -719,7 +719,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
     }
 
     public function testGetSubLevelImagesWithAltTags(): void
@@ -750,7 +750,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
     }
 
     public function testGetRandomSubLevelImagesWithAltTags(): void
@@ -811,7 +811,7 @@ class DefaultControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('error', $status);
-        $this->assertEquals('Breed not found (master breed does not exist)', $message);
+        $this->assertEquals('Breed not found (main breed does not exist)', $message);
     }
 
     public function testGetRandomImagesWithAltTags(): void

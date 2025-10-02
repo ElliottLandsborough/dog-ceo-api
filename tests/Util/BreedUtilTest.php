@@ -283,19 +283,19 @@ class BreedUtilTest extends TestCase
         $this->assertEquals(' dog', substr($content[0]->altText, -4));
     }
 
-    public function testGetMasterText(): void
+    public function testGetmainText(): void
     {
-        $response = $this->util->masterText('affenpinscher')->getResponse();
+        $response = $this->util->mainText('affenpinscher')->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertEquals('success', json_decode($response->getContent())->status);
         $this->assertArrayHasKey('name', (array) json_decode($response->getContent())->message);
         $this->assertArrayHasKey('info', (array) json_decode($response->getContent())->message);
 
-        $response = $this->util->masterText('DOESNOTEXIST')->getResponse();
+        $response = $this->util->mainText('DOESNOTEXIST')->getResponse();
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('error', json_decode($response->getContent())->status);
 
-        $xmlResponse = $this->util->masterText('affenpinscher')->xmlOutputEnable()->getResponse()->getContent();
+        $xmlResponse = $this->util->mainText('affenpinscher')->xmlOutputEnable()->getResponse()->getContent();
         $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 
