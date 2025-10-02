@@ -71,7 +71,7 @@ class MockApi extends Client
         // loop through responses
         foreach ($this->responses as $key => $message) {
             // did the end of the url match one of them?
-            if (substr((string) $uri, (strlen($key) * -1)) == $key) {
+            if (substr((string) $uri, strlen($key) * -1) == $key) {
                 // set up some vars
                 $code = ((strpos($message, 'DOESNOTEXIST') !== false) ? 404 : 200);
                 $data = $message;
