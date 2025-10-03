@@ -22,8 +22,8 @@ jobs:
           name: Install and enable PCOV
           command: |
             sudo pecl install pcov
-            echo "extension=pcov.so" | sudo tee /etc/php/8.3/cli/conf.d/20-pcov.ini
-            echo "pcov.enabled=1" | sudo tee -a /etc/php/8.3/cli/conf.d/20-pcov.ini
+            echo "extension=pcov.so" | sudo tee /usr/local/etc/php/conf.d/20-pcov.ini
+            echo "pcov.enabled=1" | sudo tee -a /usr/local/etc/php/conf.d/20-pcov.ini
             php -m | grep pcov
 
       - run:
