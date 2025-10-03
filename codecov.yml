@@ -12,3 +12,6 @@ coverage:
 ignore:
   - "tests/**/*"
   - "vendor/**/*"
+
+codecov:
+  branch: main # set new Default branch
