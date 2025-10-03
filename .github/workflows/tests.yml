@@ -20,12 +20,15 @@ jobs:
       
       - name: Run tests with coverage
         run: vendor/bin/phpunit --coverage-clover coverage/clover.xml
-      
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+  
+      - uses: codecov/codecov-action@v5
         with:
-          files: ./coverage/clover.xml
+          #fail_ci_if_error: true # optional (default = false)
+          #files: ./coverage1.xml,./coverage2.xml # optional
+          #flags: unittests # optional
+          #name: codecov-umbrella # optional
           token: ${{ secrets.CODECOV_TOKEN }}
+          #verbose: true # optional (default = false)
 
       - name: Upload coverage to Codacy
         env:
