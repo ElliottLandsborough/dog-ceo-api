@@ -500,12 +500,14 @@ class BreedUtil
         $result = [];
 
         foreach ($object as $main => $subs) {
-            if (!count($subs)) {
+            if (!count($subs)) { // 1d breed
                 $result[] = $main;
-            } else {
-                foreach ($subs as $sub) {
-                    $result[] = $main.$delimiter.$sub;
-                }
+                continue;
+            }
+
+            // multi dimensional breed
+            foreach ($subs as $sub) {
+                $result[] = $main.$delimiter.$sub;
             }
         }
 
