@@ -106,6 +106,12 @@ class BreedUtil
     {
         $self = $this;
 
+        // Hint: uncomment to bypass the cache
+        //echo "WARNING: Cache is disabled, this is only for debugging purposes." . PHP_EOL;
+        //return $self->getWithGuzzle($url);
+        // or to check the full url
+        //echo $url . PHP_EOL; exit;
+
         // The callable will only be executed on a cache miss.
         $value = $this->cache->get(Murmur::hash3($url), function (ItemInterface $item) use ($self, $url, $seconds) {
             $item->expiresAfter($seconds);
@@ -151,6 +157,10 @@ class BreedUtil
         $suffix = 'breeds/list/all';
 
         $url = $this->endpointUrl.$suffix;
+
+        // Hint: uncomment to debug full url
+        //echo "WARNING: Debugging full url." . PHP_EOL;
+        //echo $url; exit(1);
 
         $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
@@ -642,6 +652,7 @@ class BreedUtil
     public function getResponseWithCacheHeaders(): ?object
     {
         $response = $this->getResponse();
+
         // cache on cloudflare for 6 hours, cache in browser for 30 minutes
         $response->headers->set('Cache-Control', 's-maxage=21600, max-age=1800');
 

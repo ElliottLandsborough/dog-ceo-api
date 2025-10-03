@@ -19,8 +19,16 @@ jobs:
           command: composer install --no-interaction --prefer-dist --optimize-autoloader
 
       - run:
+          name: Install and enable PCOV
+          command: |
+            sudo pecl install pcov
+            echo "extension=pcov.so" | sudo tee /usr/local/etc/php/conf.d/20-pcov.ini
+            echo "pcov.enabled=1" | sudo tee -a /usr/local/etc/php/conf.d/20-pcov.ini
+            php -m | grep pcov
+
+      - run:
           name: Run tests
-          command: composer dump-env test && ./bin/phpunit
+          command: ./bin/console cache:clear && composer dump-autoload -o && composer dump-env test && ./vendor/bin/phpunit
 
 workflows:
   version: 2

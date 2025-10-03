@@ -1,17 +1,22 @@
 <?php
 
-use App\Kernel as BaseKernel;
-use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+// The main entry point for the application
+// see https://symfony.com/doc/current/setup.html#the-front-controller
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
-// This is why you don't host in subdirectories with apache...
-class DogKernel1337 extends BaseKernel
+use App\MicroKernel;
+use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
+
+class Kernel extends MicroKernel
 {
     use MicroKernelTrait;
 
     /**
      * NOTICE:
+     *
+     * @todo This is a temporary workaround for... something. I forget what.
+     *
      * We don't want to deploy composer.json that's being used to compute project dir, so we will specify it here manually.
      */
     public function getProjectDir(): string
@@ -21,5 +26,5 @@ class DogKernel1337 extends BaseKernel
 }
 
 return function (array $context) {
-    return new DogKernel1337($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+    return new MicroKernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
 };

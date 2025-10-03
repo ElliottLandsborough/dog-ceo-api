@@ -3,17 +3,17 @@
 
 namespace Console;
 
-use App\Kernel;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-
 if (!is_file(dirname(__DIR__).'/vendor/autoload_runtime.php')) {
     throw new \LogicException('Symfony Runtime is missing. Try running "composer require symfony/runtime".');
 }
 
 require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 
+use App\MicroKernel;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+
 return function (array $context) {
-    $kernel = new Kernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
+    $kernel = new MicroKernel($context['APP_ENV'], (bool) $context['APP_DEBUG']);
 
     return new Application($kernel);
 };

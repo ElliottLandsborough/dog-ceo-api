@@ -2,7 +2,7 @@
 
 // tests/Util/ExceptionListenerTest.php
 
-namespace App\Tests\Util;
+namespace App\Tests\EventListener;
 
 use App\EventListener\ExceptionListener;
 use Exception;
@@ -22,7 +22,7 @@ class ExceptionListenerTest extends TestCase
         $this->exceptionListener = new ExceptionListener();
     }
 
-    public function testOnKernelException()
+    public function testOnKernelException(): void
     {
         $expected = (object) [
             'status'  => 'error',
