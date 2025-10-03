@@ -494,4 +494,19 @@ class BreedUtilTest extends TestCase
         $result = $this->invokeMethod($this->util, 'randomItemsFromArray', [$array, -1]);
         $this->assertEquals($count, count($result));
     }
+
+    public function testSetNotFoundResponseDirectly(): void
+    {
+        $message = 'Custom not found message';
+        $result = $this->invokeMethod($this->util, 'setNotFoundResponse', [$message]);
+        // The method should return $this
+        $this->assertSame($this->util, $result);
+        // After calling, get the response and check its contents
+        $response = $this->invokeMethod($this->util, 'getResponse');
+        $this->assertInstanceOf(\Symfony\Component\HttpFoundation\JsonResponse::class, $response);
+        $this->assertEquals(404, $response->getStatusCode());
+        $content = json_decode($response->getContent());
+        $this->assertEquals('error', $content->status);
+        $this->assertEquals($message, $content->message);
+    }
 }
