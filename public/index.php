@@ -8,7 +8,6 @@ require_once dirname(__DIR__).'/vendor/autoload_runtime.php';
 use App\MicroKernel;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 
-// This is why you don't host in subdirectories with apache...
 class Kernel extends MicroKernel
 {
     use MicroKernelTrait;
