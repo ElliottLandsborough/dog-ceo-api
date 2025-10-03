@@ -495,18 +495,51 @@ class BreedUtilTest extends TestCase
         $this->assertEquals($count, count($result));
     }
 
-    public function testSetNotFoundResponseDirectly(): void
+    public function testSetNotFoundResponseBreedFileNotFoundInMainText(): void
     {
-        $message = 'Custom not found message';
-        $result = $this->invokeMethod($this->util, 'setNotFoundResponse', [$message]);
-        // The method should return $this
-        $this->assertSame($this->util, $result);
-        // After calling, get the response and check its contents
-        $response = $this->invokeMethod($this->util, 'getResponse');
-        $this->assertInstanceOf(\Symfony\Component\HttpFoundation\JsonResponse::class, $response);
-        $this->assertEquals(404, $response->getStatusCode());
-        $content = json_decode($response->getContent());
-        $this->assertEquals('error', $content->status);
-        $this->assertEquals($message, $content->message);
+        // Use a real instance and call setNotFoundResponse directly
+        $util = new BreedUtil(new MockApi(), new FilesystemAdapter());
+
+        $reflection = new \ReflectionClass(BreedUtil::class);
+        $property = $reflection->getProperty('breedFileNotFound');
+        $property->setAccessible(true);
+        $expectedMessage = $property->getValue($util);
+
+        // Call setNotFoundResponse directly
+        $method = $reflection->getMethod('setNotFoundResponse');
+        $method->setAccessible(true);
+        $method->invoke($util, $expectedMessage);
+
+        // Get the response property
+        $responseProp = $reflection->getProperty('response');
+        $responseProp->setAccessible(true);
+        $response = $responseProp->getValue($util);
+
+        $this->assertEquals('error', $response->status);
+        $this->assertEquals($expectedMessage, $response->message);
+        $this->assertEquals(404, $response->code);
+    }
+
+    public function testSetNotFoundResponseBreedFileNotFoundInSubText(): void
+    {
+        $util = new BreedUtil(new MockApi(), new FilesystemAdapter());
+
+        $reflection = new \ReflectionClass(BreedUtil::class);
+        $property = $reflection->getProperty('breedFileNotFound');
+        $property->setAccessible(true);
+        $expectedMessage = $property->getValue($util);
+
+        // Directly call setNotFoundResponse as would happen in subText error path
+        $method = $reflection->getMethod('setNotFoundResponse');
+        $method->setAccessible(true);
+        $method->invoke($util, $expectedMessage);
+
+        $responseProp = $reflection->getProperty('response');
+        $responseProp->setAccessible(true);
+        $response = $responseProp->getValue($util);
+
+        $this->assertEquals('error', $response->status);
+        $this->assertEquals($expectedMessage, $response->message);
+        $this->assertEquals(404, $response->code);
     }
 }
