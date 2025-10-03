@@ -1,6 +1,6 @@
 # Dog CEO API
 
-[![Code Coverage](https://codecov.io/gh/ElliottLandsborough/dog-ceo-api/branch/main/graph/badge.svg)](https://codecov.io/gh/ElliottLandsborough/dog-ceo-api)
+[![codecov](https://codecov.io/gh/ElliottLandsborough/dog-ceo-api/graph/badge.svg?token=wEfVTxeFOz)](https://codecov.io/gh/ElliottLandsborough/dog-ceo-api)
 [![CircleCI](https://circleci.com/gh/ElliottLandsborough/dog-ceo-api.svg?style=svg)](https://circleci.com/gh/ElliottLandsborough/dog-ceo-api)
 [![Code Style](https://github.styleci.io/repos/97956282/shield?style=flat&branch=main)](https://github.styleci.io/repos/97956282)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)

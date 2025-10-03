@@ -14,6 +14,11 @@
       <directory>tests</directory>
     </testsuite>
   </testsuites>
+  <coverage>
+    <report>
+      <clover outputFile="coverage/clover.xml"/>
+    </report>
+  </coverage>
   <source>
     <include>
       <directory>src/Controller</directory>
