@@ -9,4 +9,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip l
 # Install yaml extension
 RUN pecl install yaml && docker-php-ext-enable yaml
 
+# Install and enable pcov for code coverage
+RUN pecl install pcov && docker-php-ext-enable pcov
+
 WORKDIR /app

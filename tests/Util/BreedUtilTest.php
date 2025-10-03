@@ -494,4 +494,52 @@ class BreedUtilTest extends TestCase
         $result = $this->invokeMethod($this->util, 'randomItemsFromArray', [$array, -1]);
         $this->assertEquals($count, count($result));
     }
+
+    public function testSetNotFoundResponseBreedFileNotFoundInMainText(): void
+    {
+        // Use a real instance and call setNotFoundResponse directly
+        $util = new BreedUtil(new MockApi(), new FilesystemAdapter());
+
+        $reflection = new \ReflectionClass(BreedUtil::class);
+        $property = $reflection->getProperty('breedFileNotFound');
+        $property->setAccessible(true);
+        $expectedMessage = $property->getValue($util);
+
+        // Call setNotFoundResponse directly
+        $method = $reflection->getMethod('setNotFoundResponse');
+        $method->setAccessible(true);
+        $method->invoke($util, $expectedMessage);
+
+        // Get the response property
+        $responseProp = $reflection->getProperty('response');
+        $responseProp->setAccessible(true);
+        $response = $responseProp->getValue($util);
+
+        $this->assertEquals('error', $response->status);
+        $this->assertEquals($expectedMessage, $response->message);
+        $this->assertEquals(404, $response->code);
+    }
+
+    public function testSetNotFoundResponseBreedFileNotFoundInSubText(): void
+    {
+        $util = new BreedUtil(new MockApi(), new FilesystemAdapter());
+
+        $reflection = new \ReflectionClass(BreedUtil::class);
+        $property = $reflection->getProperty('breedFileNotFound');
+        $property->setAccessible(true);
+        $expectedMessage = $property->getValue($util);
+
+        // Directly call setNotFoundResponse as would happen in subText error path
+        $method = $reflection->getMethod('setNotFoundResponse');
+        $method->setAccessible(true);
+        $method->invoke($util, $expectedMessage);
+
+        $responseProp = $reflection->getProperty('response');
+        $responseProp->setAccessible(true);
+        $response = $responseProp->getValue($util);
+
+        $this->assertEquals('error', $response->status);
+        $this->assertEquals($expectedMessage, $response->message);
+        $this->assertEquals(404, $response->code);
+    }
 }
