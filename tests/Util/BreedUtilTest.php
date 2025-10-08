@@ -136,6 +136,7 @@ class BreedUtilTest extends TestCase
             ->xmlOutputEnable()
             ->getResponse()
             ->getContent();
+
         $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 
