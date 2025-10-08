@@ -13,15 +13,8 @@ use Psr\Http\Message\RequestInterface;
  */
 class MockApi implements ClientInterface
 {
-    /**
-     * PSR-18 sendRequest implementation (not used in tests, but required for interface).
-     */
-    public function sendRequest(RequestInterface $request): \Psr\Http\Message\ResponseInterface
-    {
-        // Use the request() method for compatibility with BreedUtil
-        return $this->request($request->getMethod(), $request->getUri()->__toString());
-    }
-    protected $responses;
+    /** @var array The responses */
+    protected array $responses;
 
     /**
      * Constructor.
@@ -40,6 +33,15 @@ class MockApi implements ClientInterface
             'breed/bullterrier/staffordshire'        => '{"status":"success","message":{"name":"Staffordshire Bullterrier","info":"Info text."}}',
         ];
         $this->setResponses($responses);
+    }
+
+    /**
+     * PSR-18 sendRequest implementation (not used in tests, but required for interface).
+     */
+    public function sendRequest(RequestInterface $request): \Psr\Http\Message\ResponseInterface
+    {
+        // Use the request() method for compatibility with BreedUtil
+        return $this->request($request->getMethod(), $request->getUri()->__toString());
     }
 
     /**
@@ -69,7 +71,11 @@ class MockApi implements ClientInterface
     {
         // see if we requested an exception
         if ($uri === 'ClientException') {
-            throw new ClientException('ClientException', new \GuzzleHttp\Psr7\Request('GET', 'https://domain.test'), new \GuzzleHttp\Psr7\Response(418, [], ''));
+            throw new ClientException(
+                'ClientException',
+                new \GuzzleHttp\Psr7\Request('GET', 'https://domain.test'),
+                new \GuzzleHttp\Psr7\Response(418, [], '')
+            );
         }
 
         // default to 500/error

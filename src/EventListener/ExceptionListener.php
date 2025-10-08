@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ExceptionListener
 {
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         // You get the exception object from the received event
         $exception = $event->getThrowable();
@@ -35,6 +35,11 @@ class ExceptionListener
 
         $response->headers->set('Content-Type', 'application/json');
         $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        // shorten output...
+        if (strlen($message) > 128) {
+            $message = substr($message, 0, 128).'...';
+        }
 
         $response->setContent(json_encode((object) [
             'status'    => 'error',

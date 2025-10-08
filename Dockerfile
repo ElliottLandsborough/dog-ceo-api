@@ -7,7 +7,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip libyaml-dev && rm -rf /var/lib/apt/lists/*
 
 # Install yaml extension
-RUN pecl install yaml && docker-php-ext-enable yaml
+#RUN pecl install yaml && docker-php-ext-enable yaml
 
 # Install and enable pcov for code coverage
 RUN pecl install pcov && docker-php-ext-enable pcov

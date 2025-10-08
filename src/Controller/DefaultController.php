@@ -10,9 +10,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class DefaultController extends AbstractController
 {
-    protected $breedUtil;
-    protected $cacheKey;
-    protected $request;
+    protected BreedUtil $breedUtil;
+    protected ?string $cacheKey;
+    protected Request $request;
 
     /**
      * @param BreedUtil $breedUtil
@@ -21,12 +21,12 @@ class DefaultController extends AbstractController
     {
         $this->request = $request;
 
-        $this->cacheKey = isset($_ENV['DOG_CEO_CACHE_KEY']) ? $_ENV['DOG_CEO_CACHE_KEY'] : false;
+        $this->cacheKey = isset($_ENV['DOG_CEO_CACHE_KEY']) ? $_ENV['DOG_CEO_CACHE_KEY'] : null;
 
         $endpointUrl = isset($_ENV['DOG_CEO_LAMBDA_URI']) ? $_ENV['DOG_CEO_LAMBDA_URI'] : '';
 
         // Hint: uncomment to debug environment variables
-        //echo "WARNING: Debugging environment variables." . PHP_EOL;
+        //echo "WARNING: Debugging environment variables.".PHP_EOL;
         //var_dump($_ENV); exit(1);
 
         $this->breedUtil = $breedUtil->setEndpointUrl($endpointUrl);
@@ -230,7 +230,11 @@ class DefaultController extends AbstractController
         $message = 'Cache was not cleared';
 
         // the false check means people can't clear the cache unless it is set
-        if ($this->cacheKey !== false && $this->request->headers->get('auth-key') === trim($this->cacheKey)) {
+        if (
+            $this->request->headers->has('auth-key')
+            && $this->cacheKey
+            && substr($this->request->headers->get('auth-key'), 0, 64) === trim(substr($this->cacheKey, 0, 64))
+        ) {
             $message = 'Success, cache was cleared with key';
             $this->breedUtil->clearCache();
         }

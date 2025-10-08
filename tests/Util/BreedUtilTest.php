@@ -12,7 +12,7 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class BreedUtilTest extends TestCase
 {
-    protected $util;
+    protected BreedUtil $util;
 
     // runs per test
     public function setUp(): void
@@ -132,7 +132,11 @@ class BreedUtilTest extends TestCase
         $xmlResponse = $this->util->getTopLevelImages('affenpinscher')->xmlOutputEnable()->getResponse()->getContent();
         $this->assertEquals(true, $this->isValidXml($xmlResponse));
 
-        $xmlResponse = $this->util->getTopLevelImagesWithAltTags('affenpinscher')->xmlOutputEnable()->getResponse()->getContent();
+        $xmlResponse = $this->util->getTopLevelImagesWithAltTags('affenpinscher')
+            ->xmlOutputEnable()
+            ->getResponse()
+            ->getContent();
+
         $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 
@@ -315,7 +319,11 @@ class BreedUtilTest extends TestCase
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('error', json_decode($response->getContent())->status);
 
-        $xmlResponse = $this->util->subText('bullterrier', 'staffordshire')->xmlOutputEnable()->getResponse()->getContent();
+        $xmlResponse = $this->util->subText('bullterrier', 'staffordshire')
+            ->xmlOutputEnable()
+            ->getResponse()
+            ->getContent();
+
         $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 

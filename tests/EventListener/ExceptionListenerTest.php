@@ -1,6 +1,6 @@
 <?php
 
-// tests/Util/ExceptionListenerTest.php
+// tests/EventListener/ExceptionListenerTest.php
 
 namespace App\Tests\EventListener;
 
@@ -8,13 +8,12 @@ use App\EventListener\ExceptionListener;
 use Exception;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class ExceptionListenerTest extends TestCase
 {
-    protected $exceptionListener;
+    protected ExceptionListener $exceptionListener;
 
     // runs per test
     public function setUp(): void
@@ -39,13 +38,5 @@ class ExceptionListenerTest extends TestCase
         $object = json_decode($json);
 
         $this->assertEquals($expected, $object);
-    }
-}
-
-class TestKernel implements HttpKernelInterface
-{
-    public function handle(Request $request, int $type = self::MAIN_REQUEST, bool $catch = true): Response
-    {
-        return new Response('unused body text');
     }
 }

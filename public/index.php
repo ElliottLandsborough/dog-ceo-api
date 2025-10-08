@@ -17,7 +17,8 @@ class Kernel extends MicroKernel
      *
      * @todo This is a temporary workaround for... something. I forget what.
      *
-     * We don't want to deploy composer.json that's being used to compute project dir, so we will specify it here manually.
+     * We don't want to deploy composer.json that's being used to
+     * compute project dir, so we will specify it here manually.
      */
     public function getProjectDir(): string
     {
