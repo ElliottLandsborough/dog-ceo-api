@@ -318,7 +318,11 @@ class BreedUtilTest extends TestCase
         $this->assertEquals(404, $response->getStatusCode());
         $this->assertEquals('error', json_decode($response->getContent())->status);
 
-        $xmlResponse = $this->util->subText('bullterrier', 'staffordshire')->xmlOutputEnable()->getResponse()->getContent();
+        $xmlResponse = $this->util->subText('bullterrier', 'staffordshire')
+            ->xmlOutputEnable()
+            ->getResponse()
+            ->getContent();
+
         $this->assertEquals(true, $this->isValidXml($xmlResponse));
     }
 

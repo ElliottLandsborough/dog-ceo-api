@@ -12,7 +12,7 @@ install: ## Install dependencies
 
 test: ## Run PHPUnit
 	docker run --rm -v $$(pwd):/app php-dev composer dump-env test
-	docker run --rm -v $$(pwd):/app php-dev ./vendor/bin/phpunit
+	docker run --rm -v $$(pwd):/app php-dev ./vendor/bin/phpunit --display-deprecations
 
 requirements: ## Show PHP requirements
 	docker run --rm -v $$(pwd):/app php-dev composer check-platform-reqs

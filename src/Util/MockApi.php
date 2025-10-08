@@ -71,7 +71,11 @@ class MockApi implements ClientInterface
     {
         // see if we requested an exception
         if ($uri === 'ClientException') {
-            throw new ClientException('ClientException', new \GuzzleHttp\Psr7\Request('GET', 'https://domain.test'), new \GuzzleHttp\Psr7\Response(418, [], ''));
+            throw new ClientException(
+                'ClientException',
+                new \GuzzleHttp\Psr7\Request('GET', 'https://domain.test'),
+                new \GuzzleHttp\Psr7\Response(418, [], '')
+            );
         }
 
         // default to 500/error

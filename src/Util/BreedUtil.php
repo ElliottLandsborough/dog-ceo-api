@@ -285,7 +285,7 @@ class BreedUtil
         return $this;
     }
 
-    public function getAllSubBreedsRandomMulti(string $breed, $amount): ?object
+    public function getAllSubBreedsRandomMulti(string $breed, int $amount): ?object
     {
         $response = $this->getAllSubBreeds($breed)->arrayResponse();
 
@@ -424,7 +424,7 @@ class BreedUtil
      */
     public function getRandomSubLevelImages(string $breed1, string $breed2, int $amount): ?self
     {
-        $images = $this->getSubLevelImages($breed1, $breed2, $amount)->arrayResponse()->message;
+        $images = $this->getSubLevelImages($breed1, $breed2/*, $amount*/)->arrayResponse()->message;
 
         if ($this->response->status === 'success') {
             $this->response->message = $this->randomItemsFromArray($images, $amount);

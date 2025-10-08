@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class DefaultController extends AbstractController
 {
     protected BreedUtil $breedUtil;
-    protected string $cacheKey;
+    protected ?string $cacheKey;
     protected Request $request;
 
     /**
@@ -21,7 +21,7 @@ class DefaultController extends AbstractController
     {
         $this->request = $request;
 
-        $this->cacheKey = isset($_ENV['DOG_CEO_CACHE_KEY']) ? $_ENV['DOG_CEO_CACHE_KEY'] : false;
+        $this->cacheKey = isset($_ENV['DOG_CEO_CACHE_KEY']) ? $_ENV['DOG_CEO_CACHE_KEY'] : null;
 
         $endpointUrl = isset($_ENV['DOG_CEO_LAMBDA_URI']) ? $_ENV['DOG_CEO_LAMBDA_URI'] : '';
 
@@ -230,7 +230,11 @@ class DefaultController extends AbstractController
         $message = 'Cache was not cleared';
 
         // the false check means people can't clear the cache unless it is set
-        if ($this->cacheKey && substr($this->request->headers->get('auth-key'), 0, 64) === trim(substr($this->cacheKey, 0, 64))) {
+        if (
+            $this->request->headers->has('auth-key')
+            && $this->cacheKey
+            && substr($this->request->headers->get('auth-key'), 0, 64) === trim(substr($this->cacheKey, 0, 64))
+        ) {
             $message = 'Success, cache was cleared with key';
             $this->breedUtil->clearCache();
         }

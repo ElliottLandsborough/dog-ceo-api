@@ -1,5 +1,7 @@
 <?php
 
+namespace App;
+
 // The main entry point for the application
 // see https://symfony.com/doc/current/setup.html#the-front-controller
 
@@ -17,7 +19,8 @@ class Kernel extends MicroKernel
      *
      * @todo This is a temporary workaround for... something. I forget what.
      *
-     * We don't want to deploy composer.json that's being used to compute project dir, so we will specify it here manually.
+     * We don't want to deploy composer.json that's being used to
+     * compute project dir, so we will specify it here manually.
      */
     public function getProjectDir(): string
     {
