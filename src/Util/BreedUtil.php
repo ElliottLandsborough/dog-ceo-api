@@ -109,10 +109,10 @@ class BreedUtil
         $self = $this;
 
         // Hint: uncomment to bypass the cache
-        //echo "WARNING: Cache is disabled, this is only for debugging purposes." . PHP_EOL;
+        //echo "WARNING: Cache is disabled, this is only for debugging purposes.".PHP_EOL;
         //return $self->getWithGuzzle($url);
         // or to check the full url
-        //echo $url . PHP_EOL; exit;
+        //echo $url.PHP_EOL; exit;
 
         // The callable will only be executed on a cache miss.
         $value = $this->cache->get(Murmur::hash3($url), function (ItemInterface $item) use ($self, $url, $seconds) {
@@ -158,10 +158,10 @@ class BreedUtil
     {
         $suffix = 'breeds/list/all';
 
-        $url = $this->endpointUrl . $suffix;
+        $url = $this->endpointUrl.$suffix;
 
         // Hint: uncomment to debug full url
-        //echo "WARNING: Debugging full url." . PHP_EOL;
+        //echo "WARNING: Debugging full url.".PHP_EOL;
         //echo $url; exit(1);
 
         $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
@@ -210,7 +210,7 @@ class BreedUtil
     {
         $suffix = 'breeds/list';
 
-        $url = $this->endpointUrl . $suffix;
+        $url = $this->endpointUrl.$suffix;
 
         $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
@@ -260,7 +260,7 @@ class BreedUtil
         if ($this->mainBreedExists($breed)) {
             $suffix = "breed/$breed/list";
 
-            $url = $this->endpointUrl . $suffix;
+            $url = $this->endpointUrl.$suffix;
 
             $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
@@ -317,7 +317,7 @@ class BreedUtil
         if ($this->mainBreedExists($breed)) {
             $suffix = "breed/$breed/images";
 
-            $url = $this->endpointUrl . $suffix;
+            $url = $this->endpointUrl.$suffix;
 
             $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
@@ -379,7 +379,7 @@ class BreedUtil
             if ($this->subBreedExists($breed1, $breed2)) {
                 $suffix = "breed/$breed1/$breed2/images";
 
-                $url = $this->endpointUrl . $suffix;
+                $url = $this->endpointUrl.$suffix;
 
                 $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
@@ -526,7 +526,7 @@ class BreedUtil
 
             // multi dimensional breed
             foreach ($subs as $sub) {
-                $result[] = $main . $delimiter . $sub;
+                $result[] = $main.$delimiter.$sub;
             }
         }
 
@@ -844,7 +844,7 @@ class BreedUtil
         if ($this->mainBreedExists($breed)) {
             $suffix = "breed/$breed";
 
-            $url = $this->endpointUrl . $suffix;
+            $url = $this->endpointUrl.$suffix;
 
             $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
@@ -873,7 +873,7 @@ class BreedUtil
             if ($this->subBreedExists($breed1, $breed2)) {
                 $suffix = "breed/$breed1/$breed2";
 
-                $url = $this->endpointUrl . $suffix;
+                $url = $this->endpointUrl.$suffix;
 
                 $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
@@ -946,7 +946,7 @@ class BreedUtil
      */
     private function niceBreedAltFromFolder(string $folder = 'unknown-breed'): ?string
     {
-        $alt = $this->niceBreedNameFromFolder($folder) . ' dog';
+        $alt = $this->niceBreedNameFromFolder($folder).' dog';
 
         return $alt;
     }

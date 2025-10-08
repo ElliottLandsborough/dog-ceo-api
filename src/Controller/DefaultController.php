@@ -26,7 +26,7 @@ class DefaultController extends AbstractController
         $endpointUrl = isset($_ENV['DOG_CEO_LAMBDA_URI']) ? $_ENV['DOG_CEO_LAMBDA_URI'] : '';
 
         // Hint: uncomment to debug environment variables
-        //echo "WARNING: Debugging environment variables." . PHP_EOL;
+        //echo "WARNING: Debugging environment variables.".PHP_EOL;
         //var_dump($_ENV); exit(1);
 
         $this->breedUtil = $breedUtil->setEndpointUrl($endpointUrl);
