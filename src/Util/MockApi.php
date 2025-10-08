@@ -13,7 +13,7 @@ use Psr\Http\Message\RequestInterface;
  */
 class MockApi implements ClientInterface
 {
-    /** @var array $responses The responses */
+    /** @var array The responses */
     protected array $responses;
 
     /**

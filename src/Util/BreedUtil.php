@@ -5,7 +5,6 @@
 namespace App\Util;
 
 use lastguest\Murmur;
-use PhpParser\Node\Expr\Cast\Object_;
 use Psr\Http\Client\ClientInterface;
 use Spatie\ArrayToXml\ArrayToXml;
 use stdClass;
@@ -177,7 +176,7 @@ class BreedUtil
     public function getAllBreedsRandomSingle(): ?self
     {
         $this->response->message = $this->randomItemFromAssociativeArray(
-            (array)$this->getAllBreeds()->arrayResponse()->message
+            (array) $this->getAllBreeds()->arrayResponse()->message
         );
 
         return $this;
@@ -193,7 +192,7 @@ class BreedUtil
     public function getAllBreedsRandomMultiple(int $amount): ?self
     {
         $this->response->message = $this->randomItemsFromArray(
-            (array)$this->getAllBreeds()->arrayResponse()->message,
+            (array) $this->getAllBreeds()->arrayResponse()->message,
             $amount,
             true
         );
@@ -225,7 +224,7 @@ class BreedUtil
     public function getAllTopLevelBreedsRandomSingle(): ?self
     {
         $this->response->message = $this->randomItemFromArray(
-            (array)$this->getAllTopLevelBreeds()->arrayResponse()->message
+            (array) $this->getAllTopLevelBreeds()->arrayResponse()->message
         );
 
         return $this;
@@ -241,7 +240,7 @@ class BreedUtil
     public function getAllTopLevelBreedsRandomMultiple(int $amount): ?self
     {
         $this->response->message = $this->randomItemsFromArray(
-            (array)$this->getAllTopLevelBreeds()->arrayResponse()->message,
+            (array) $this->getAllTopLevelBreeds()->arrayResponse()->message,
             $amount
         );
 

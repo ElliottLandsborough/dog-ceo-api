@@ -1,7 +1,5 @@
 <?php
 
-namespace App;
-
 // The main entry point for the application
 // see https://symfony.com/doc/current/setup.html#the-front-controller
 
