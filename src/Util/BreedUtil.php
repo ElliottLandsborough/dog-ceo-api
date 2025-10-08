@@ -5,8 +5,10 @@
 namespace App\Util;
 
 use lastguest\Murmur;
+use PhpParser\Node\Expr\Cast\Object_;
 use Psr\Http\Client\ClientInterface;
 use Spatie\ArrayToXml\ArrayToXml;
+use stdClass;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,22 +17,22 @@ use Symfony\Contracts\Cache\ItemInterface;
 class BreedUtil
 {
     // empty vars
-    protected $cache;
-    protected $client;
-    protected $response;
-    protected $responseCode;
+    protected FilesystemAdapter $cache;
+    protected ClientInterface $client;
+    protected Response|JsonResponse|stdClass $response;
+    protected int $responseCode;
 
     // default vars
-    protected $xmlEnable = false;
-    protected $endpointUrl = '';
-    protected $cacheSeconds = 2 * 24 * 60 * 60; // 2 weeks in seconds
-    protected $breedDelimiter = '-';
+    protected bool $xmlEnable = false;
+    protected string $endpointUrl = '';
+    protected int $cacheSeconds = 2 * 24 * 60 * 60; // 2 weeks in seconds
+    protected string $breedDelimiter = '-';
 
     // error messages
-    protected $mainHasNoSubBreeds = 'Breed not found (no sub breeds exist for this main breed)';
-    protected $mainBreedNotFound = 'Breed not found (main breed does not exist)';
-    protected $subBreedNotFound = 'Breed not found (sub breed does not exist)';
-    protected $breedFileNotFound = 'Breed not found (No info file for this breed exists)';
+    protected string $mainHasNoSubBreeds = 'Breed not found (no sub breeds exist for this main breed)';
+    protected string $mainBreedNotFound = 'Breed not found (main breed does not exist)';
+    protected string $subBreedNotFound = 'Breed not found (sub breed does not exist)';
+    protected string $breedFileNotFound = 'Breed not found (No info file for this breed exists)';
 
     /**
      * Constructor.
@@ -57,7 +59,7 @@ class BreedUtil
         return $this;
     }
 
-    public function getXmlEnable(): string
+    public function getXmlEnable(): bool
     {
         return $this->xmlEnable;
     }
@@ -156,7 +158,7 @@ class BreedUtil
     {
         $suffix = 'breeds/list/all';
 
-        $url = $this->endpointUrl.$suffix;
+        $url = $this->endpointUrl . $suffix;
 
         // Hint: uncomment to debug full url
         //echo "WARNING: Debugging full url." . PHP_EOL;
@@ -174,7 +176,9 @@ class BreedUtil
      */
     public function getAllBreedsRandomSingle(): ?self
     {
-        $this->response->message = $this->randomItemFromAssociativeArray((array) $this->getAllBreeds()->arrayResponse()->message);
+        $this->response->message = $this->randomItemFromAssociativeArray(
+            (array)$this->getAllBreeds()->arrayResponse()->message
+        );
 
         return $this;
     }
@@ -188,7 +192,11 @@ class BreedUtil
      */
     public function getAllBreedsRandomMultiple(int $amount): ?self
     {
-        $this->response->message = $this->randomItemsFromArray((array) $this->getAllBreeds()->arrayResponse()->message, $amount, true);
+        $this->response->message = $this->randomItemsFromArray(
+            (array)$this->getAllBreeds()->arrayResponse()->message,
+            $amount,
+            true
+        );
 
         return $this;
     }
@@ -202,7 +210,7 @@ class BreedUtil
     {
         $suffix = 'breeds/list';
 
-        $url = $this->endpointUrl.$suffix;
+        $url = $this->endpointUrl . $suffix;
 
         $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
@@ -216,7 +224,9 @@ class BreedUtil
      */
     public function getAllTopLevelBreedsRandomSingle(): ?self
     {
-        $this->response->message = $this->randomItemFromArray((array) $this->getAllTopLevelBreeds()->arrayResponse()->message);
+        $this->response->message = $this->randomItemFromArray(
+            (array)$this->getAllTopLevelBreeds()->arrayResponse()->message
+        );
 
         return $this;
     }
@@ -230,7 +240,10 @@ class BreedUtil
      */
     public function getAllTopLevelBreedsRandomMultiple(int $amount): ?self
     {
-        $this->response->message = $this->randomItemsFromArray((array) $this->getAllTopLevelBreeds()->arrayResponse()->message, $amount);
+        $this->response->message = $this->randomItemsFromArray(
+            (array)$this->getAllTopLevelBreeds()->arrayResponse()->message,
+            $amount
+        );
 
         return $this;
     }
@@ -247,7 +260,7 @@ class BreedUtil
         if ($this->mainBreedExists($breed)) {
             $suffix = "breed/$breed/list";
 
-            $url = $this->endpointUrl.$suffix;
+            $url = $this->endpointUrl . $suffix;
 
             $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
@@ -304,7 +317,7 @@ class BreedUtil
         if ($this->mainBreedExists($breed)) {
             $suffix = "breed/$breed/images";
 
-            $url = $this->endpointUrl.$suffix;
+            $url = $this->endpointUrl . $suffix;
 
             $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
@@ -366,7 +379,7 @@ class BreedUtil
             if ($this->subBreedExists($breed1, $breed2)) {
                 $suffix = "breed/$breed1/$breed2/images";
 
-                $url = $this->endpointUrl.$suffix;
+                $url = $this->endpointUrl . $suffix;
 
                 $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
@@ -427,7 +440,10 @@ class BreedUtil
      */
     public function getRandomImage(): ?self
     {
-        $breeds = $this->collapseArrayWithString($this->getAllBreeds()->arrayResponse()->message, $this->breedDelimiter);
+        $breeds = $this->collapseArrayWithString(
+            $this->getAllBreeds()->arrayResponse()->message,
+            $this->breedDelimiter
+        );
 
         $randomBreed = $this->randomItemFromArray($breeds);
 
@@ -455,7 +471,10 @@ class BreedUtil
             $amount = 50;
         }
 
-        $breeds = $this->collapseArrayWithString($this->getAllBreeds()->arrayResponse()->message, $this->breedDelimiter);
+        $breeds = $this->collapseArrayWithString(
+            $this->getAllBreeds()->arrayResponse()->message,
+            $this->breedDelimiter
+        );
 
         $randomImages = [];
 
@@ -472,7 +491,7 @@ class BreedUtil
     /**
      * Get a random image from either a main or main/sub based on a string.
      *
-     * @param  string Collapsed breed e.g affenpischer or collie-border
+     * @param  string $collapsedBreed Collapsed breed e.g affenpischer or collie-border
      *
      * @return string The image
      */
@@ -507,7 +526,7 @@ class BreedUtil
 
             // multi dimensional breed
             foreach ($subs as $sub) {
-                $result[] = $main.$delimiter.$sub;
+                $result[] = $main . $delimiter . $sub;
             }
         }
 
@@ -529,7 +548,7 @@ class BreedUtil
     /**
      * Get a single random item from an associative array.
      *
-     * @param  array The array to select the item from
+     * @param  array $array The array to select the item from
      *
      * @return array Key/value
      */
@@ -825,7 +844,7 @@ class BreedUtil
         if ($this->mainBreedExists($breed)) {
             $suffix = "breed/$breed";
 
-            $url = $this->endpointUrl.$suffix;
+            $url = $this->endpointUrl . $suffix;
 
             $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
@@ -854,7 +873,7 @@ class BreedUtil
             if ($this->subBreedExists($breed1, $breed2)) {
                 $suffix = "breed/$breed1/$breed2";
 
-                $url = $this->endpointUrl.$suffix;
+                $url = $this->endpointUrl . $suffix;
 
                 $this->response = $this->cacheAndReturn($url, $this->cacheSeconds);
 
@@ -927,7 +946,7 @@ class BreedUtil
      */
     private function niceBreedAltFromFolder(string $folder = 'unknown-breed'): ?string
     {
-        $alt = $this->niceBreedNameFromFolder($folder).' dog';
+        $alt = $this->niceBreedNameFromFolder($folder) . ' dog';
 
         return $alt;
     }

@@ -10,9 +10,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class DefaultController extends AbstractController
 {
-    protected $breedUtil;
-    protected $cacheKey;
-    protected $request;
+    protected BreedUtil $breedUtil;
+    protected string $cacheKey;
+    protected Request $request;
 
     /**
      * @param BreedUtil $breedUtil
@@ -230,7 +230,7 @@ class DefaultController extends AbstractController
         $message = 'Cache was not cleared';
 
         // the false check means people can't clear the cache unless it is set
-        if ($this->cacheKey !== false && $this->request->headers->get('auth-key') === trim($this->cacheKey)) {
+        if ($this->cacheKey && substr($this->request->headers->get('auth-key'), 0, 64) === trim(substr($this->cacheKey, 0, 64))) {
             $message = 'Success, cache was cleared with key';
             $this->breedUtil->clearCache();
         }
