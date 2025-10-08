@@ -490,7 +490,7 @@ class BreedUtil
     /**
      * Get a random image from either a main or main/sub based on a string.
      *
-     * @param  string $collapsedBreed Collapsed breed e.g affenpischer or collie-border
+     * @param string $collapsedBreed Collapsed breed e.g affenpischer or collie-border
      *
      * @return string The image
      */
@@ -547,7 +547,7 @@ class BreedUtil
     /**
      * Get a single random item from an associative array.
      *
-     * @param  array $array The array to select the item from
+     * @param array $array The array to select the item from
      *
      * @return array Key/value
      */
