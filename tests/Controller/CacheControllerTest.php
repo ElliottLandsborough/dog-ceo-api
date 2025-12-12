@@ -54,12 +54,8 @@ class CacheControllerTest extends WebTestCase
 
     public function testCacheClearSuccess(): void
     {
-        if (!isset($_ENV['DOG_CEO_CACHE_KEY'])) {
-            exit('Cache key was not set for some reason?');
-        }
-
         $request = new Request();
-        $request->headers->set('auth-key', $_ENV['DOG_CEO_CACHE_KEY']);
+        $request->headers->set('auth-key', 'test-key');
 
         // Create a proper container mock with request stack that has the auth request
         $container = $this->createMock(ContainerInterface::class);

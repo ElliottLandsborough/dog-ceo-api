@@ -31,8 +31,8 @@ class CacheController extends AbstractController
 
     private function safeEnv(string $key): ?string
     {
-        var_dump(getenv('DOG_CEO_CACHE_KEY'));
-        return getenv($key) ?: null;
+        // Try $_ENV first (more reliable in Docker), then fallback to getenv()
+        return $_ENV[$key] ?? getenv($key) ?: null;
     }
 
     private function sanitizeKey(?string $key): ?string
@@ -101,8 +101,7 @@ class CacheController extends AbstractController
 
         $response->setStatusCode(200);
 
-        // Pause for 4
-        sleep(rand(5, 15));
+        //sleep(rand(5, 15));
 
         return $response;
     }
