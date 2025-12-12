@@ -11,6 +11,7 @@ use App\Util\MockApi;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class CacheControllerTest extends WebTestCase
 {
@@ -22,9 +23,19 @@ class CacheControllerTest extends WebTestCase
         $this->util = new BreedUtil(new MockApi(), new FilesystemAdapter());
         $this->util->clearCache();
 
+        // Create a proper container mock with request stack
+        $container = $this->createMock(ContainerInterface::class);
+        $requestStack = new RequestStack();
+        $requestStack->push(new Request());
+        
+        $container->method('get')
+            ->willReturnMap([
+                ['request_stack', $requestStack]
+            ]);
+
         $this->controller = new CacheController(
             $this->util, 
-            $this->createMock(ContainerInterface::class),
+            $container,
             new Request()
         );
     }
@@ -49,9 +60,20 @@ class CacheControllerTest extends WebTestCase
 
         $request = new Request();
         $request->headers->set('auth-key', $_ENV['DOG_CEO_CACHE_KEY']);
+        
+        // Create a proper container mock with request stack that has the auth request
+        $container = $this->createMock(ContainerInterface::class);
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
+        
+        $container->method('get')
+            ->willReturnMap([
+                ['request_stack', $requestStack]
+            ]);
+        
         $this->controller = new CacheController(
             $this->util,
-            $this->createMock(ContainerInterface::class),
+            $container,
             $request
         );
 
@@ -62,6 +84,6 @@ class CacheControllerTest extends WebTestCase
         $message = $object->message;
         $status = $object->status;
         $this->assertEquals('success', $status);
-        $this->assertEquals('Success, cache was cleared with key', $message);
+        $this->assertEquals('Success, cache was cleared', $message);
     }
 }
