@@ -23,6 +23,8 @@ class CacheController extends AbstractController
         Request $request
     ) {
         // Todo: figure out why injecting Request doesn't work as expected
+        $this->breedUtil = $breedUtil;
+        $this->container = $container;
         $this->request = $request;
 
         $this->cacheKey = isset($_ENV['DOG_CEO_CACHE_KEY']) ? $_ENV['DOG_CEO_CACHE_KEY'] : null;
