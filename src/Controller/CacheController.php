@@ -26,19 +26,18 @@ class CacheController extends AbstractController
         $this->container = $container;
         $this->request = $request;
 
-        $this->cacheKey = $this->sanitizeKey($this->safeEnv('DOG_CEO_CACHE_KEY'));
+        $this->cacheKey = $this->sanitizeKey($this->getCacheKeyFromEnv());
     }
 
-    // Safely gets an environment variable
-    private function safeEnv(string $key): ?string
+    private function getCacheKeyFromEnv(): ?string
     {
-        $value = $_ENV[$key] ?? getenv($key) ?: null;
+        $key = getenv('DOG_CEO_CACHE_KEY');
 
-        if ($value === false) {
+        if ($key === false) {
             return null;
         }
 
-        return $value;
+        return $key;
     }
 
     private function sanitizeKey(?string $key): ?string
