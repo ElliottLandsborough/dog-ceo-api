@@ -19,6 +19,7 @@ class DefaultController extends AbstractController
      */
     public function __construct(BreedUtil $breedUtil, Request $request)
     {
+        // Todo: figure out why injecting Request doesn't work as expected
         $this->request = $request;
 
         $this->cacheKey = isset($_ENV['DOG_CEO_CACHE_KEY']) ? $_ENV['DOG_CEO_CACHE_KEY'] : null;
@@ -227,24 +228,33 @@ class DefaultController extends AbstractController
     #[Route('/api/cache-clear', methods: ['GET', 'HEAD'])]
     public function cacheClear(): ?JsonResponse
     {
-        $message = 'Cache was not cleared';
+        // Get the current request instead of the injected one
+        $currentRequest = $this->container->get('request_stack')->getCurrentRequest();
 
-        // the false check means people can't clear the cache unless it is set
+        $successMessage = 'Success, cache was cleared';
+        $errorMessage = 'Cache was not cleared';
+
+        $success = false;
+
+        // Check for auth-key header
         if (
-            $this->request->headers->has('auth-key')
+            $currentRequest->headers->has('auth-key')
             && $this->cacheKey
-            && substr($this->request->headers->get('auth-key'), 0, 64) === trim(substr($this->cacheKey, 0, 64))
+            && trim(substr($currentRequest->headers->get('auth-key'), 0, 128)) === trim(substr($this->cacheKey, 0, 128))
         ) {
-            $message = 'Success, cache was cleared with key';
             $this->breedUtil->clearCache();
+            $success = true;
         }
 
         $response = new JsonResponse([
             'status'  => 'success',
-            'message' => $message,
+            'message' => $success ? $successMessage : $errorMessage,
         ]);
 
         $response->setStatusCode(200);
+
+        // Pause for 4
+        sleep(4);
 
         return $response;
     }
