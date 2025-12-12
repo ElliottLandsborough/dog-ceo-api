@@ -1,10 +1,10 @@
 <?php
 
-// tests/Util/DefaultControllerTest.php
+// tests/Util/MainController.php
 
 namespace App\Tests\Controller;
 
-use App\Controller\DefaultController;
+use App\Controller\MainController;
 use App\Util\BreedUtil;
 use App\Util\MockApi;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -13,17 +13,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 // todo: assert error codes
 // todo: get all strings etc from mock api and breedutil
-class DefaultControllerTest extends WebTestCase
+class MainControllerTest extends WebTestCase
 {
     protected BreedUtil $util;
-    protected DefaultController $controller;
+    protected MainController $controller;
 
     public function setUp(): void
     {
         $this->util = new BreedUtil(new MockApi(), new FilesystemAdapter());
         $this->util->clearCache();
 
-        $this->controller = new DefaultController($this->util, new Request());
+        $this->controller = new MainController($this->util, new Request());
     }
 
     public function testGetAllBreedsJson(): void
@@ -37,7 +37,7 @@ class DefaultControllerTest extends WebTestCase
     {
         $request = new Request();
         $request->headers->set('Content-Type', 'application/xml');
-        $controller = new DefaultController($this->util, $request);
+        $controller = new MainController($this->util, $request);
         $response = $controller->getAllBreeds();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertEquals(

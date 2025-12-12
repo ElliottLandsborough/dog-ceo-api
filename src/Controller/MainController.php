@@ -8,22 +8,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-class DefaultController extends AbstractController
+class MainController extends AbstractController
 {
     protected BreedUtil $breedUtil;
-    protected ?string $cacheKey;
-    protected ContainerInterface $container;
     protected Request $request;
 
     /**
      * @param BreedUtil $breedUtil
+     * @param Request $request
      */
     public function __construct(
         BreedUtil $breedUtil,
         Request $request
     ) {
-        $this->cacheKey = isset($_ENV['DOG_CEO_CACHE_KEY']) ? $_ENV['DOG_CEO_CACHE_KEY'] : null;
-
         $endpointUrl = isset($_ENV['DOG_CEO_LAMBDA_URI']) ? $_ENV['DOG_CEO_LAMBDA_URI'] : '';
 
         // Hint: uncomment to debug environment variables

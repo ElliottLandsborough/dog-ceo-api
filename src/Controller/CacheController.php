@@ -16,11 +16,7 @@ class CacheController extends AbstractController
     protected ContainerInterface $container;
     protected Request $request;
 
-    /**
-     * @param BreedUtil $breedUtil
-     */
     public function __construct(
-        BreedUtil $breedUtil,
         Request $request
     ) {
         // Todo: figure out why injecting Request doesn't work as expected
