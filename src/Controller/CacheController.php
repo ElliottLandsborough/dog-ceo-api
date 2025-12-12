@@ -31,8 +31,8 @@ class CacheController extends AbstractController
 
     private function safeEnv(string $key): ?string
     {
-        // Try $_ENV first (more reliable in Docker), then fallback to getenv()
-        return $_ENV[$key] ?? getenv($key) ?: null;
+        $value = filter_var($_ENV[$key] ?? getenv($key) ?? null, INPUT_ENV);
+        return $value !== false ? $value : null;
     }
 
     private function sanitizeKey(?string $key): ?string
