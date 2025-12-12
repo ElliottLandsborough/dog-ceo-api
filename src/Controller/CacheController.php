@@ -31,7 +31,8 @@ class CacheController extends AbstractController
 
     private function getCacheKeyFromEnv(): ?string
     {
-        $key = getenv('DOG_CEO_CACHE_KEY');
+        //$key = getenv('DOG_CEO_CACHE_KEY');
+        $key = isset($_ENV['DOG_CEO_CACHE_KEY']) ? $_ENV['DOG_CEO_CACHE_KEY'] : '';
 
         if ($key === false) {
             return null;
