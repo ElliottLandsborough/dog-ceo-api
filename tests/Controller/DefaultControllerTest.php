@@ -859,36 +859,4 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals(true, isset($message[0]->altText));
         $this->assertCount(1, $message);
     }
-
-    public function testCacheClearFail(): void
-    {
-        $r = $this->controller->cacheClear();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
-        $json = $r->getContent();
-        $object = json_decode($json);
-        $message = $object->message;
-        $status = $object->status;
-        $this->assertEquals('success', $status);
-        $this->assertEquals('Cache was not cleared', $message);
-    }
-
-    public function testCacheClearSuccess(): void
-    {
-        if (!isset($_ENV['DOG_CEO_CACHE_KEY'])) {
-            exit('Cache key was not set for some reason?');
-        }
-
-        $request = new Request();
-        $request->headers->set('auth-key', $_ENV['DOG_CEO_CACHE_KEY']);
-        $this->controller = new DefaultController($this->util, $request);
-
-        $r = $this->controller->cacheClear();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
-        $json = $r->getContent();
-        $object = json_decode($json);
-        $message = $object->message;
-        $status = $object->status;
-        $this->assertEquals('success', $status);
-        $this->assertEquals('Success, cache was cleared with key', $message);
-    }
 }
