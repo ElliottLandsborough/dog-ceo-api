@@ -106,7 +106,7 @@ class CacheController extends AbstractController
 
         $response->setStatusCode(200);
 
-        //sleep(rand(5, 15));
+        sleep(rand(5, 15));
 
         return $response;
     }
