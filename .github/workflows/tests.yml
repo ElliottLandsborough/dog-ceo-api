@@ -19,6 +19,8 @@ jobs:
         run: composer install --prefer-dist --no-progress
       
       - name: Run tests with coverage
+        env:
+          DOG_CEO_CACHE_KEY: test-key
         run: vendor/bin/phpunit --coverage-clover coverage/clover.xml
   
       - uses: codecov/codecov-action@v5
