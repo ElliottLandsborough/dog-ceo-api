@@ -4,10 +4,10 @@
 
 namespace App\Tests\Controller;
 
-use \Psr\Container\ContainerInterface;
 use App\Controller\CacheController;
 use App\Util\BreedUtil;
 use App\Util\MockApi;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,16 +27,16 @@ class CacheControllerTest extends WebTestCase
         $container = $this->createMock(ContainerInterface::class);
         $requestStack = new RequestStack();
         $requestStack->push(new Request());
-        
+
         $container->method('get')
             ->willReturnMap([
-                ['request_stack', $requestStack]
+                ['request_stack', $requestStack],
             ]);
 
         $this->controller = new CacheController(
-            $this->util, 
+            $this->util,
             $container,
-            new Request()
+            new Request(),
         );
     }
 
@@ -60,21 +60,21 @@ class CacheControllerTest extends WebTestCase
 
         $request = new Request();
         $request->headers->set('auth-key', $_ENV['DOG_CEO_CACHE_KEY']);
-        
+
         // Create a proper container mock with request stack that has the auth request
         $container = $this->createMock(ContainerInterface::class);
         $requestStack = new RequestStack();
         $requestStack->push($request);
-        
+
         $container->method('get')
             ->willReturnMap([
-                ['request_stack', $requestStack]
+                ['request_stack', $requestStack],
             ]);
-        
+
         $this->controller = new CacheController(
             $this->util,
             $container,
-            $request
+            $request,
         );
 
         $r = $this->controller->cacheClear();

@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Util\BreedUtil;
-use \Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -15,7 +14,7 @@ class MainController extends AbstractController
 
     /**
      * @param BreedUtil $breedUtil
-     * @param Request $request
+     * @param Request   $request
      */
     public function __construct(
         BreedUtil $breedUtil,
