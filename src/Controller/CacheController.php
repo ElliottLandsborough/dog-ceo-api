@@ -22,12 +22,54 @@ class CacheController extends AbstractController
         ContainerInterface $container,
         Request $request
     ) {
-        // Todo: figure out why injecting Request doesn't work as expected
         $this->breedUtil = $breedUtil;
         $this->container = $container;
         $this->request = $request;
 
-        $this->cacheKey = isset($_ENV['DOG_CEO_CACHE_KEY']) ? trim(substr($_ENV['DOG_CEO_CACHE_KEY'], 0, 128)) : null;
+        $this->cacheKey = $this->sanitizeKey($this->safeEnv('DOG_CEO_CACHE_KEY'));
+    }
+
+    private function safeEnv(string $key): ?string
+    {
+        var_dump(getenv('DOG_CEO_CACHE_KEY'));
+        return getenv($key) ?: null;
+    }
+
+    private function sanitizeKey(?string $key): ?string
+    {
+        if ($key === null || $key === '') {
+            return null;
+        }
+
+        // Remove any potentially dangerous characters, allow only alphanumeric, hyphens, underscores, and safe punctuation
+        $sanitized = preg_replace('/[^a-zA-Z0-9\-_\.!@#$%^&*()+=]/', '', trim($key));
+
+        // Limit length to prevent overflow attacks
+        $sanitized = substr($sanitized, 0, 128);
+
+        // Ensure the key has minimum length for security
+        if (strlen($sanitized) < 8) {
+            return null;
+        }
+
+        return $sanitized;
+    }
+
+    private function validateAuthKey(?string $providedKey): bool
+    {
+        if ($providedKey === null) {
+            return false;
+        }
+
+        // Apply the same sanitization to the provided key
+        $sanitizedProvidedKey = $this->sanitizeKey($providedKey);
+
+        if ($sanitizedProvidedKey === null) {
+            return false;
+        }
+
+        // Use timing-safe comparison to prevent timing attacks
+        return hash_equals($this->cacheKey, $sanitizedProvidedKey);
     }
 
     #[Route('/cache-clear', methods: ['GET', 'HEAD'])]
@@ -46,7 +88,7 @@ class CacheController extends AbstractController
         if (
             $currentRequest->headers->has('auth-key')
             && $this->cacheKey
-            && $this->cacheKey === trim(substr($currentRequest->headers->get('auth-key'), 0, 128))
+            && $this->validateAuthKey($currentRequest->headers->get('auth-key'))
         ) {
             $this->breedUtil->clearCache();
             $success = true;
@@ -60,7 +102,7 @@ class CacheController extends AbstractController
         $response->setStatusCode(200);
 
         // Pause for 4
-        sleep(4);
+        sleep(rand(5, 15));
 
         return $response;
     }
