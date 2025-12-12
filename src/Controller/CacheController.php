@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Util\BreedUtil;
 use \Psr\Container\ContainerInterface;
+use App\Util\BreedUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,11 +12,14 @@ use Symfony\Component\Routing\Attribute\Route;
 class CacheController extends AbstractController
 {
     protected BreedUtil $breedUtil;
-    protected ?string $cacheKey;
     protected ContainerInterface $container;
     protected Request $request;
 
+    protected ?string $cacheKey;
+
     public function __construct(
+        BreedUtil $breedUtil,
+        ContainerInterface $container,
         Request $request
     ) {
         // Todo: figure out why injecting Request doesn't work as expected

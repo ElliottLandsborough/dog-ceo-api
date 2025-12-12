@@ -4,6 +4,7 @@
 
 namespace App\Tests\Controller;
 
+use \Psr\Container\ContainerInterface;
 use App\Controller\CacheController;
 use App\Util\BreedUtil;
 use App\Util\MockApi;
@@ -21,7 +22,11 @@ class CacheControllerTest extends WebTestCase
         $this->util = new BreedUtil(new MockApi(), new FilesystemAdapter());
         $this->util->clearCache();
 
-        $this->controller = new CacheController($this->util, new Request());
+        $this->controller = new CacheController(
+            $this->util, 
+            $this->createMock(ContainerInterface::class),
+            new Request()
+        );
     }
 
     public function testCacheClearFail(): void
@@ -44,7 +49,11 @@ class CacheControllerTest extends WebTestCase
 
         $request = new Request();
         $request->headers->set('auth-key', $_ENV['DOG_CEO_CACHE_KEY']);
-        $this->controller = new CacheController($this->util, $request);
+        $this->controller = new CacheController(
+            $this->util,
+            $this->createMock(ContainerInterface::class),
+            $request
+        );
 
         $r = $this->controller->cacheClear();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
