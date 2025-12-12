@@ -10,6 +10,9 @@ build: ## Build the image (one-time)
 install: ## Install dependencies
 	docker run --rm -v $$(pwd):/app php-dev composer install
 
+install-prod-deps: ## Install production dependencies
+	docker run --rm -v $$(pwd):/app php-dev composer install --no-dev --optimize-autoloader
+
 test: ## Run PHPUnit
 	docker run --rm -v $$(pwd):/app php-dev composer dump-env test
 	docker run --rm -v $$(pwd):/app php-dev ./vendor/bin/phpunit --display-deprecations
