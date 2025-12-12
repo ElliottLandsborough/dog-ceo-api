@@ -27,7 +27,7 @@ class CacheController extends AbstractController
         $this->container = $container;
         $this->request = $request;
 
-        $this->cacheKey = isset($_ENV['DOG_CEO_CACHE_KEY']) ? $_ENV['DOG_CEO_CACHE_KEY'] : null;
+        $this->cacheKey = isset($_ENV['DOG_CEO_CACHE_KEY']) ? trim(substr($_ENV['DOG_CEO_CACHE_KEY'], 0, 128)) : null;
     }
 
     #[Route('/cache-clear', methods: ['GET', 'HEAD'])]
@@ -46,7 +46,7 @@ class CacheController extends AbstractController
         if (
             $currentRequest->headers->has('auth-key')
             && $this->cacheKey
-            && trim(substr($currentRequest->headers->get('auth-key'), 0, 128)) === trim(substr($this->cacheKey, 0, 128))
+            && $this->cacheKey === trim(substr($currentRequest->headers->get('auth-key'), 0, 128))
         ) {
             $this->breedUtil->clearCache();
             $success = true;
