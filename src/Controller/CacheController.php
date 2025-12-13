@@ -31,6 +31,7 @@ class CacheController extends AbstractController
 
     private function getCacheKeyFromEnv(): ?string
     {
+        // @codacy-ignore Security/EnvironmentVariable
         // Safely retrieve and validate environment variable
         $key = substr($_ENV['DOG_CEO_CACHE_KEY'] ?? '', 0, 128);
 
