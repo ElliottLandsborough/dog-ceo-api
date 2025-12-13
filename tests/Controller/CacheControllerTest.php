@@ -266,4 +266,69 @@ class CacheControllerTest extends WebTestCase
         // Clean up
         unset($_ENV['DOG_CEO_CACHE_KEY']);
     }
+
+    public function testValidateAuthKeyWithNullInput(): void
+    {
+        $reflection = new \ReflectionClass($this->controller);
+        $method = $reflection->getMethod('validateAuthKey');
+        $method->setAccessible(true);
+
+        // Test null input - should return false
+        $result = $method->invoke($this->controller, null);
+        $this->assertFalse($result);
+    }
+
+    public function testValidateAuthKeyWithInvalidInput(): void
+    {
+        $reflection = new \ReflectionClass($this->controller);
+        $method = $reflection->getMethod('validateAuthKey');
+        $method->setAccessible(true);
+
+        // Test inputs that will be sanitized to null - should return false
+        $result = $method->invoke($this->controller, 'short'); // Too short after sanitization
+        $this->assertFalse($result);
+
+        $result = $method->invoke($this->controller, '   '); // Whitespace only
+        $this->assertFalse($result);
+
+        $result = $method->invoke($this->controller, ''); // Empty string
+        $this->assertFalse($result);
+    }
+
+    public function testValidateAuthKeyWithValidInput(): void
+    {
+        // Set up environment with a valid key
+        $_ENV['DOG_CEO_CACHE_KEY'] = 'validtestkey123';
+
+        // Create a new controller instance to pick up the env var
+        $container = $this->createMock(ContainerInterface::class);
+        $requestStack = new RequestStack();
+        $requestStack->push(new Request());
+
+        $container->method('get')
+            ->willReturnMap([
+                ['request_stack', $requestStack],
+            ]);
+
+        $testController = new CacheController(
+            $this->util,
+            $container,
+            new Request(),
+        );
+
+        $reflection = new \ReflectionClass($testController);
+        $method = $reflection->getMethod('validateAuthKey');
+        $method->setAccessible(true);
+
+        // Test valid matching key
+        $result = $method->invoke($testController, 'validtestkey123');
+        $this->assertTrue($result);
+
+        // Test valid non-matching key
+        $result = $method->invoke($testController, 'differentkey123');
+        $this->assertFalse($result);
+
+        // Clean up
+        unset($_ENV['DOG_CEO_CACHE_KEY']);
+    }
 }
