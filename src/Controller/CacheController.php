@@ -32,17 +32,7 @@ class CacheController extends AbstractController
     private function getCacheKeyFromEnv(): ?string
     {
         // Safely retrieve and validate environment variable
-        $key = $_ENV['DOG_CEO_CACHE_KEY'] ?? null; // eslint-disable-line no-eval
-
-        // Ensure we have a string value and it's not empty
-        if (!is_string($key) || trim($key) === '') {
-            return null;
-        }
-
-        // Additional length check before returning
-        if (strlen($key) > 256) {
-            return null;
-        }
+        $key = substr($_ENV['DOG_CEO_CACHE_KEY'] ?? '', 0, 128);
 
         return $key;
     }

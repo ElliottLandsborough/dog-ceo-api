@@ -82,4 +82,101 @@ class CacheControllerTest extends WebTestCase
         $this->assertEquals('success', $status);
         $this->assertEquals('Success, cache was cleared', $message);
     }
+
+    public function testSanitizeKeyValidInput(): void
+    {
+        $reflection = new \ReflectionClass($this->controller);
+        $method = $reflection->getMethod('sanitizeKey');
+        $method->setAccessible(true);
+
+        // Valid key with allowed characters
+        $result = $method->invoke($this->controller, 'validKey123-_.');
+        $this->assertEquals('validKey123-_.', $result);
+
+        // Valid key with special characters
+        $result = $method->invoke($this->controller, 'test!@#$%^&*()+=');
+        $this->assertEquals('test!@#$%^&*()+', $result);
+    }
+
+    public function testSanitizeKeyInvalidInput(): void
+    {
+        $reflection = new \ReflectionClass($this->controller);
+        $method = $reflection->getMethod('sanitizeKey');
+        $method->setAccessible(true);
+
+        // Null input
+        $result = $method->invoke($this->controller, null);
+        $this->assertNull($result);
+
+        // Empty string
+        $result = $method->invoke($this->controller, '');
+        $this->assertNull($result);
+
+        // Whitespace only
+        $result = $method->invoke($this->controller, '   ');
+        $this->assertNull($result);
+
+        // Too short after sanitization
+        $result = $method->invoke($this->controller, 'short');
+        $this->assertNull($result);
+    }
+
+    public function testSanitizeKeyRemovesInvalidCharacters(): void
+    {
+        $reflection = new \ReflectionClass($this->controller);
+        $method = $reflection->getMethod('sanitizeKey');
+        $method->setAccessible(true);
+
+        // Input with invalid characters that should be removed
+        $result = $method->invoke($this->controller, 'test<script>alert();</script>validkey123');
+        $this->assertEquals('testscriptalertscriptvalidkey123', $result);
+
+        // Input with newlines and tabs
+        $result = $method->invoke($this->controller, "test\n\t\rvalidkey123");
+        $this->assertEquals('testvalidkey123', $result);
+
+        // Input with SQL injection attempt
+        $result = $method->invoke($this->controller, "test'; DROP TABLE users; --validkey123");
+        $this->assertEquals('testDROPTABLEusersvalidkey123', $result);
+    }
+
+    public function testSanitizeKeyLengthLimits(): void
+    {
+        $reflection = new \ReflectionClass($this->controller);
+        $method = $reflection->getMethod('sanitizeKey');
+        $method->setAccessible(true);
+
+        // Test length truncation at 128 characters
+        $longKey = str_repeat('a', 150) . '12345678';
+        $result = $method->invoke($this->controller, $longKey);
+        $this->assertEquals(128, strlen($result));
+        $this->assertEquals(str_repeat('a', 128), $result);
+
+        // Test exactly 128 characters
+        $exactKey = str_repeat('a', 120) . '12345678';
+        $result = $method->invoke($this->controller, $exactKey);
+        $this->assertEquals($exactKey, $result);
+
+        // Test minimum length requirement (8 characters)
+        $result = $method->invoke($this->controller, '12345678');
+        $this->assertEquals('12345678', $result);
+
+        $result = $method->invoke($this->controller, '1234567');
+        $this->assertNull($result);
+    }
+
+    public function testSanitizeKeyWhitespaceHandling(): void
+    {
+        $reflection = new \ReflectionClass($this->controller);
+        $method = $reflection->getMethod('sanitizeKey');
+        $method->setAccessible(true);
+
+        // Leading and trailing whitespace should be trimmed
+        $result = $method->invoke($this->controller, '  validkey123  ');
+        $this->assertEquals('validkey123', $result);
+
+        // Multiple spaces in middle should be removed (not allowed character)
+        $result = $method->invoke($this->controller, 'valid key 123 test');
+        $this->assertEquals('validkey123test', $result);
+    }
 }
