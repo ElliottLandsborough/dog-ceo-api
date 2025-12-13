@@ -31,10 +31,16 @@ class CacheController extends AbstractController
 
     private function getCacheKeyFromEnv(): ?string
     {
-        //$key = getenv('DOG_CEO_CACHE_KEY');
-        $key = isset($_ENV['DOG_CEO_CACHE_KEY']) ? $_ENV['DOG_CEO_CACHE_KEY'] : '';
+        // Safely retrieve and validate environment variable
+        $key = $_ENV['DOG_CEO_CACHE_KEY'] ?? null;
 
-        if ($key === false) {
+        // Ensure we have a string value and it's not empty
+        if (!is_string($key) || trim($key) === '') {
+            return null;
+        }
+
+        // Additional length check before returning
+        if (strlen($key) > 256) {
             return null;
         }
 
@@ -47,8 +53,19 @@ class CacheController extends AbstractController
             return null;
         }
 
+        // Trim whitespace and ensure input is a valid string
+        $key = trim($key);
+        if ($key === '') {
+            return null;
+        }
+
         // Remove any potentially dangerous characters, allow only alphanumeric, hyphens, underscores, and safe punctuation
-        $sanitized = preg_replace('/[^a-zA-Z0-9\-_\.!@#$%^&*()+=]/', '', trim($key));
+        $sanitized = preg_replace('/[^a-zA-Z0-9\-_\.!@#$%^&*()+=]/', '', $key);
+
+        // Check if sanitization removed too much content
+        if ($sanitized === null || $sanitized === '') {
+            return null;
+        }
 
         // Limit length to prevent overflow attacks
         $sanitized = substr($sanitized, 0, 128);
