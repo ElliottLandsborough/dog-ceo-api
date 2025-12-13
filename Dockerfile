@@ -12,6 +12,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip l
 # Install and enable pcov for code coverage
 RUN pecl install pcov && docker-php-ext-enable pcov
 
-ENV DOG_CEO_CACHE_KEY=test-key
-
 WORKDIR /app
