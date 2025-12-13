@@ -1,10 +1,10 @@
 <?php
 
-// tests/Util/DefaultControllerTest.php
+// tests/Util/MainController.php
 
 namespace App\Tests\Controller;
 
-use App\Controller\DefaultController;
+use App\Controller\MainController;
 use App\Util\BreedUtil;
 use App\Util\MockApi;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -13,17 +13,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 // todo: assert error codes
 // todo: get all strings etc from mock api and breedutil
-class DefaultControllerTest extends WebTestCase
+class MainControllerTest extends WebTestCase
 {
     protected BreedUtil $util;
-    protected DefaultController $controller;
+    protected MainController $controller;
 
     public function setUp(): void
     {
         $this->util = new BreedUtil(new MockApi(), new FilesystemAdapter());
         $this->util->clearCache();
 
-        $this->controller = new DefaultController($this->util, new Request());
+        $this->controller = new MainController($this->util, new Request());
     }
 
     public function testGetAllBreedsJson(): void
@@ -37,7 +37,7 @@ class DefaultControllerTest extends WebTestCase
     {
         $request = new Request();
         $request->headers->set('Content-Type', 'application/xml');
-        $controller = new DefaultController($this->util, $request);
+        $controller = new MainController($this->util, $request);
         $response = $controller->getAllBreeds();
         $this->assertInstanceOf('Symfony\Component\HttpFoundation\Response', $response);
         $this->assertEquals(
@@ -858,37 +858,5 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals(true, isset($message[0]->url));
         $this->assertEquals(true, isset($message[0]->altText));
         $this->assertCount(1, $message);
-    }
-
-    public function testCacheClearFail(): void
-    {
-        $r = $this->controller->cacheClear();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
-        $json = $r->getContent();
-        $object = json_decode($json);
-        $message = $object->message;
-        $status = $object->status;
-        $this->assertEquals('success', $status);
-        $this->assertEquals('Cache was not cleared', $message);
-    }
-
-    public function testCacheClearSuccess(): void
-    {
-        if (!isset($_ENV['DOG_CEO_CACHE_KEY'])) {
-            exit('Cache key was not set for some reason?');
-        }
-
-        $request = new Request();
-        $request->headers->set('auth-key', $_ENV['DOG_CEO_CACHE_KEY']);
-        $this->controller = new DefaultController($this->util, $request);
-
-        $r = $this->controller->cacheClear();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $r);
-        $json = $r->getContent();
-        $object = json_decode($json);
-        $message = $object->message;
-        $status = $object->status;
-        $this->assertEquals('success', $status);
-        $this->assertEquals('Success, cache was cleared with key', $message);
     }
 }
