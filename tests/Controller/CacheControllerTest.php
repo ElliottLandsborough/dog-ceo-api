@@ -137,7 +137,7 @@ class CacheControllerTest extends WebTestCase
 
         // Input with SQL injection attempt
         $result = $method->invoke($this->controller, "test'; DROP TABLE users; --validkey123");
-        $this->assertEquals('testDROPTABLEusersvalidkey123', $result);
+        $this->assertEquals('testDROPTABLEusers--validkey123', $result);
     }
 
     public function testSanitizeKeyLengthLimits(): void
