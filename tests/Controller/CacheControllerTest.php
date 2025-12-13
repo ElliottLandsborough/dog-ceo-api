@@ -142,6 +142,7 @@ class CacheControllerTest extends WebTestCase
 
     public function testSanitizeKeyLengthLimits(): void
     {
+        // Use reflection to access the private method
         $reflection = new \ReflectionClass($this->controller);
         $method = $reflection->getMethod('sanitizeKey');
         $method->setAccessible(true);
@@ -161,6 +162,7 @@ class CacheControllerTest extends WebTestCase
         $result = $method->invoke($this->controller, '12345678');
         $this->assertEquals('12345678', $result);
 
+        // Test below minimum length requirement (8 characters)
         $result = $method->invoke($this->controller, '1234567');
         $this->assertNull($result);
     }
