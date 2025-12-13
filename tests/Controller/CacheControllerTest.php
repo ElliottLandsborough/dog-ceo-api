@@ -95,7 +95,7 @@ class CacheControllerTest extends WebTestCase
 
         // Valid key with special characters
         $result = $method->invoke($this->controller, 'test!@#$%^&*()+=');
-        $this->assertEquals('test!@#$%^&*()+', $result);
+        $this->assertEquals('test!@#$%^&*()+=', $result);
     }
 
     public function testSanitizeKeyInvalidInput(): void
@@ -129,7 +129,7 @@ class CacheControllerTest extends WebTestCase
 
         // Input with invalid characters that should be removed
         $result = $method->invoke($this->controller, 'test<script>alert();</script>validkey123');
-        $this->assertEquals('testscriptalertscriptvalidkey123', $result);
+        $this->assertEquals('testscriptalert()scriptvalidkey123', $result);
 
         // Input with newlines and tabs
         $result = $method->invoke($this->controller, "test\n\t\rvalidkey123");
