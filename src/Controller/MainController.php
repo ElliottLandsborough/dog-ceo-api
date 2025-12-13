@@ -20,7 +20,9 @@ class MainController extends AbstractController
         BreedUtil $breedUtil,
         Request $request
     ) {
-        $endpointUrl = substr($_ENV['DOG_CEO_LAMBDA_URI'] ?? '', 0, 256); // codacy[Security/EnvironmentVariable]
+        // @codingStandardsIgnoreStart
+        $endpointUrl = substr($_ENV['DOG_CEO_LAMBDA_URI'] ?? '', 0, 256);
+        // @codingStandardsIgnoreEnd
 
         // Hint: uncomment to debug environment variables
         //echo "WARNING: Debugging environment variables.".PHP_EOL;
