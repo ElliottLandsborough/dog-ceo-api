@@ -181,4 +181,85 @@ class CacheControllerTest extends WebTestCase
         $result = $method->invoke($this->controller, 'valid key 123 test');
         $this->assertEquals('validkey123test', $result);
     }
+
+    public function testGetCacheKeyFromEnvWithValidKey(): void
+    {
+        // Set environment variable
+        $_ENV['DOG_CEO_CACHE_KEY'] = 'test-key-12345678';
+
+        $reflection = new \ReflectionClass($this->controller);
+        $method = $reflection->getMethod('getCacheKeyFromEnv');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($this->controller);
+        $this->assertEquals('test-key-12345678', $result);
+
+        // Clean up
+        unset($_ENV['DOG_CEO_CACHE_KEY']);
+    }
+
+    public function testGetCacheKeyFromEnvWithLongKey(): void
+    {
+        // Set environment variable longer than 128 chars
+        $longKey = str_repeat('a', 150);
+        $_ENV['DOG_CEO_CACHE_KEY'] = $longKey;
+
+        $reflection = new \ReflectionClass($this->controller);
+        $method = $reflection->getMethod('getCacheKeyFromEnv');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($this->controller);
+        $this->assertEquals(128, strlen($result));
+        $this->assertEquals(str_repeat('a', 128), $result);
+
+        // Clean up
+        unset($_ENV['DOG_CEO_CACHE_KEY']);
+    }
+
+    public function testGetCacheKeyFromEnvWithMissingKey(): void
+    {
+        // Ensure environment variable is not set
+        unset($_ENV['DOG_CEO_CACHE_KEY']);
+
+        $reflection = new \ReflectionClass($this->controller);
+        $method = $reflection->getMethod('getCacheKeyFromEnv');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($this->controller);
+        $this->assertEquals('', $result);
+    }
+
+    public function testGetCacheKeyFromEnvWithEmptyKey(): void
+    {
+        // Set empty environment variable
+        $_ENV['DOG_CEO_CACHE_KEY'] = '';
+
+        $reflection = new \ReflectionClass($this->controller);
+        $method = $reflection->getMethod('getCacheKeyFromEnv');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($this->controller);
+        $this->assertEquals('', $result);
+
+        // Clean up
+        unset($_ENV['DOG_CEO_CACHE_KEY']);
+    }
+
+    public function testGetCacheKeyFromEnvExactly128Chars(): void
+    {
+        // Set environment variable exactly 128 chars
+        $exactKey = str_repeat('a', 128);
+        $_ENV['DOG_CEO_CACHE_KEY'] = $exactKey;
+
+        $reflection = new \ReflectionClass($this->controller);
+        $method = $reflection->getMethod('getCacheKeyFromEnv');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($this->controller);
+        $this->assertEquals(128, strlen($result));
+        $this->assertEquals($exactKey, $result);
+
+        // Clean up
+        unset($_ENV['DOG_CEO_CACHE_KEY']);
+    }
 }
