@@ -140,7 +140,7 @@ class CacheControllerTest extends WebTestCase
         $this->assertEquals('testDROPTABLEusers--validkey123', $result);
 
         // Input with no valid characters
-        $result = $method->invoke($this->controller, "<>/?\\|{}[]~`");
+        $result = $method->invoke($this->controller, '<>/?\\|{}[]~`');
         $this->assertNull($result);
     }
 
