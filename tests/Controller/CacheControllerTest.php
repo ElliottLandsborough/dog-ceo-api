@@ -147,13 +147,13 @@ class CacheControllerTest extends WebTestCase
         $method->setAccessible(true);
 
         // Test length truncation at 128 characters
-        $longKey = str_repeat('a', 150) . '12345678';
+        $longKey = str_repeat('a', 150).'12345678';
         $result = $method->invoke($this->controller, $longKey);
         $this->assertEquals(128, strlen($result));
         $this->assertEquals(str_repeat('a', 128), $result);
 
         // Test exactly 128 characters
-        $exactKey = str_repeat('a', 120) . '12345678';
+        $exactKey = str_repeat('a', 120).'12345678';
         $result = $method->invoke($this->controller, $exactKey);
         $this->assertEquals($exactKey, $result);
 
