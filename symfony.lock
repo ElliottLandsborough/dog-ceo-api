@@ -77,16 +77,15 @@
         "version": "v4.3.0"
     },
     "symfony/console": {
-        "version": "3.3",
+        "version": "8.1",
         "recipe": {
             "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "3.3",
-            "ref": "482d233eb8de91ebd042992077bbd5838858890c"
+            "branch": "main",
+            "version": "5.3",
+            "ref": "1781ff40d8a17d87cf53f8d4cf0c8346ed2bb461"
         },
         "files": [
-            "bin/console",
-            "config/bootstrap.php"
+            "bin/console"
         ]
     },
     "symfony/debug": {
@@ -181,9 +180,6 @@
         "version": "v1.1.2"
     },
     "symfony/var-exporter": {
-        "version": "v4.3.0"
-    },
-    "symfony/yaml": {
         "version": "v4.3.0"
     }
 }
