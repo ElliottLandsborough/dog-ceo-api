@@ -76,10 +76,10 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "^8.1"
+            "require": "^8"
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^12.0"
+        "phpunit/phpunit": "^13"
     }
 }
