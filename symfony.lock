@@ -1,7 +1,4 @@
 {
-    "doctrine/cache": {
-        "version": "v1.8.0"
-    },
     "friendsofphp/php-cs-fixer": {
         "version": "3.88",
         "recipe": {

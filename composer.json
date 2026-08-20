@@ -7,7 +7,6 @@
         "ext-iconv": "*",
         "ext-mbstring": "*",
         "ext-xml": "*",
-        "doctrine/cache": "^2.2",
         "guzzlehttp/guzzle": "^8",
         "lastguest/murmurhash": "^2.1",
         "spatie/array-to-xml": "^3.3",
