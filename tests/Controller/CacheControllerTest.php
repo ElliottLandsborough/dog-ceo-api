@@ -24,7 +24,7 @@ class CacheControllerTest extends WebTestCase
         $this->util->clearCache();
 
         // Create a proper container mock with request stack
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $requestStack = new RequestStack();
         $requestStack->push(new Request());
 
@@ -58,7 +58,7 @@ class CacheControllerTest extends WebTestCase
         $request->headers->set('auth-key', 'test-key');
 
         // Create a proper container mock with request stack that has the auth request
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
@@ -289,7 +289,7 @@ class CacheControllerTest extends WebTestCase
         $_ENV['DOG_CEO_CACHE_KEY'] = 'validtestkey123';
 
         // Create a new controller instance to pick up the env var
-        $container = $this->createMock(ContainerInterface::class);
+        $container = $this->createStub(ContainerInterface::class);
         $requestStack = new RequestStack();
         $requestStack->push(new Request());
 
