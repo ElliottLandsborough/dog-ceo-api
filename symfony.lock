@@ -64,9 +64,6 @@
     "psr/log": {
         "version": "1.1.0"
     },
-    "ralouphie/getallheaders": {
-        "version": "2.0.5"
-    },
     "spatie/array-to-xml": {
         "version": "2.9.0"
     },
