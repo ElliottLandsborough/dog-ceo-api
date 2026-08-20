@@ -36,7 +36,6 @@ class BreedUtilTest extends TestCase
     {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
-        $method->setAccessible(true);
 
         return $method->invokeArgs($object, $parameters);
     }
@@ -334,7 +333,7 @@ class BreedUtilTest extends TestCase
         $this->assertEquals('success', json_decode($response->getContent())->status);
         $content = json_decode($response->getContent())->message;
 
-        $it = new ArrayIterator($content);
+        $it = new ArrayIterator((array) $content);
 
         while ($it->valid()) {
             $this->assertEquals(is_array($it->current()), true);
@@ -350,7 +349,7 @@ class BreedUtilTest extends TestCase
         $content = json_decode($response->getContent())->message;
         $this->assertGreaterThan(0, count((array) $content));
 
-        $it = new ArrayIterator($content);
+        $it = new ArrayIterator((array) $content);
 
         while ($it->valid()) {
             $this->assertEquals(is_array($it->current()), true);

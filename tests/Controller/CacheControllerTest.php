@@ -87,7 +87,6 @@ class CacheControllerTest extends WebTestCase
     {
         $reflection = new \ReflectionClass($this->controller);
         $method = $reflection->getMethod('sanitizeKey');
-        $method->setAccessible(true);
 
         // Valid key with allowed characters
         $result = $method->invoke($this->controller, 'validKey123-_.');
@@ -102,7 +101,6 @@ class CacheControllerTest extends WebTestCase
     {
         $reflection = new \ReflectionClass($this->controller);
         $method = $reflection->getMethod('sanitizeKey');
-        $method->setAccessible(true);
 
         // Null input
         $result = $method->invoke($this->controller, null);
@@ -125,7 +123,6 @@ class CacheControllerTest extends WebTestCase
     {
         $reflection = new \ReflectionClass($this->controller);
         $method = $reflection->getMethod('sanitizeKey');
-        $method->setAccessible(true);
 
         // Input with invalid characters that should be removed
         $result = $method->invoke($this->controller, 'test<script>alert();</script>validkey123');
@@ -149,7 +146,6 @@ class CacheControllerTest extends WebTestCase
         // Use reflection to access the private method
         $reflection = new \ReflectionClass($this->controller);
         $method = $reflection->getMethod('sanitizeKey');
-        $method->setAccessible(true);
 
         // Test length truncation at 128 characters
         $longKey = str_repeat('a', 150).'12345678';
@@ -175,7 +171,6 @@ class CacheControllerTest extends WebTestCase
     {
         $reflection = new \ReflectionClass($this->controller);
         $method = $reflection->getMethod('sanitizeKey');
-        $method->setAccessible(true);
 
         // Leading and trailing whitespace should be trimmed
         $result = $method->invoke($this->controller, '  validkey123  ');
@@ -193,7 +188,6 @@ class CacheControllerTest extends WebTestCase
 
         $reflection = new \ReflectionClass($this->controller);
         $method = $reflection->getMethod('getCacheKeyFromEnv');
-        $method->setAccessible(true);
 
         $result = $method->invoke($this->controller);
         $this->assertEquals('test-key-12345678', $result);
@@ -210,7 +204,6 @@ class CacheControllerTest extends WebTestCase
 
         $reflection = new \ReflectionClass($this->controller);
         $method = $reflection->getMethod('getCacheKeyFromEnv');
-        $method->setAccessible(true);
 
         $result = $method->invoke($this->controller);
         $this->assertEquals(128, strlen($result));
@@ -227,7 +220,6 @@ class CacheControllerTest extends WebTestCase
 
         $reflection = new \ReflectionClass($this->controller);
         $method = $reflection->getMethod('getCacheKeyFromEnv');
-        $method->setAccessible(true);
 
         $result = $method->invoke($this->controller);
         $this->assertEquals('', $result);
@@ -240,7 +232,6 @@ class CacheControllerTest extends WebTestCase
 
         $reflection = new \ReflectionClass($this->controller);
         $method = $reflection->getMethod('getCacheKeyFromEnv');
-        $method->setAccessible(true);
 
         $result = $method->invoke($this->controller);
         $this->assertEquals('', $result);
@@ -257,7 +248,6 @@ class CacheControllerTest extends WebTestCase
 
         $reflection = new \ReflectionClass($this->controller);
         $method = $reflection->getMethod('getCacheKeyFromEnv');
-        $method->setAccessible(true);
 
         $result = $method->invoke($this->controller);
         $this->assertEquals(128, strlen($result));
@@ -271,7 +261,6 @@ class CacheControllerTest extends WebTestCase
     {
         $reflection = new \ReflectionClass($this->controller);
         $method = $reflection->getMethod('validateAuthKey');
-        $method->setAccessible(true);
 
         // Test null input - should return false
         $result = $method->invoke($this->controller, null);
@@ -282,7 +271,6 @@ class CacheControllerTest extends WebTestCase
     {
         $reflection = new \ReflectionClass($this->controller);
         $method = $reflection->getMethod('validateAuthKey');
-        $method->setAccessible(true);
 
         // Test inputs that will be sanitized to null - should return false
         $result = $method->invoke($this->controller, 'short'); // Too short after sanitization
@@ -318,7 +306,6 @@ class CacheControllerTest extends WebTestCase
 
         $reflection = new \ReflectionClass($testController);
         $method = $reflection->getMethod('validateAuthKey');
-        $method->setAccessible(true);
 
         // Test valid matching key
         $result = $method->invoke($testController, 'validtestkey123');
