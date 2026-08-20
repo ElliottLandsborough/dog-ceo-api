@@ -1,12 +1,12 @@
 version: 2.1
 
 orbs:
-  php: circleci/php@1.1.0
+  php: circleci/php@3.0.0
 
 jobs:
   build:
     docker:
-      - image: cimg/php:8.3
+      - image: cimg/php:8.5
     steps:
       - checkout:
           method: blobless
