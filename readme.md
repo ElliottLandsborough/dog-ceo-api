@@ -1,8 +1,6 @@
 # Dog CEO API
 
-## Support
-
-[Buy me a dog treat](https://paypal.me/elliottlan)
+**[Buy me a dog treat and support the API](https://paypal.me/elliottlan)**
 
 ## Status
 
