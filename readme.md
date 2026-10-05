@@ -186,11 +186,17 @@ Note: Most sub-breeds return 404 with message "No info file for this breed exist
 
 Random image from any breed.
 
+The production Rust API chooses a main breed uniformly, then chooses an image
+from that breed's image pool (including its sub-breeds).
+
 #### /breeds/image/random/3
 
-Get 3 random images from any breed (max. 50)
+Get 3 random images from any breed.
 
-Returns array of image URLs. **Important**: Requests exceeding 50 images are silently capped at 50 (no error returned). Invalid numbers (non-numeric, zero, negative) default to 1 image.
+Returns an array of image URLs. The production Rust API silently caps random
+image count requests at 1,000. The PHP implementation in this repository
+silently caps this endpoint at 50. Invalid numbers (non-numeric, zero, or
+negative) default to 1 image.
 
 ### Breed Images
 
@@ -293,7 +299,7 @@ The API returns different error messages for different scenarios:
 
 - **Breed names are case-sensitive**: Use lowercase only. `hound` works, `Hound` returns 404.
 - **Number parameters are permissive**: Non-numeric values, zero, and negative numbers all default to 1 image (no error).
-- **50 image limit is enforced silently**: Requesting 51+ images returns exactly 50 with no error indication.
+- **Random image count limits differ by implementation**: Production Rust caps random image count endpoints at 1,000. The PHP implementation in this repository caps `/breeds/image/random/{amount}` at 50.
 - **No pagination**: Endpoints like `/breed/{breed}/images` return all images at once (can be hundreds).
 
 ## Beta/Unfinished Endpoints
