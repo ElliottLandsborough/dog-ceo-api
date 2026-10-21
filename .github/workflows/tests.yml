@@ -21,7 +21,7 @@ jobs:
       - name: Run tests with coverage
         run: vendor/bin/phpunit --coverage-clover coverage/clover.xml
   
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v7
         with:
           #fail_ci_if_error: true # optional (default = false)
           #files: ./coverage1.xml,./coverage2.xml # optional
