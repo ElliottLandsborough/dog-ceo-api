@@ -1,6 +1,8 @@
 # Dog CEO API
 
+
 **[Buy me a dog treat and support the API](https://paypal.me/elliottlan)**
+**[Buy a dog bed and support the API](https://link.amazon/B06vHUBGS)**
 
 ## Status
 
