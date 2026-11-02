@@ -5,7 +5,7 @@
 
 **[Buy a dog bed and support the API](https://link.amazon/B06vHUBGS)**
 
-<small>As an Amazon Associate I earn from qualifying purchases.</small>
+<small>*As an Amazon Associate I earn from qualifying dog bed purchases.</small>
 
 ## Status
 
