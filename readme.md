@@ -1,13 +1,7 @@
 # Dog CEO API
 
 
-**[Buy a dog bed and support the API](https://link.amazon/B06vHUBGS)**
-
-<small>*As an Amazon Associate I earn from qualifying dog bed purchases.</small>
-
 **[Buy me a coffee and support the API](https://buymeacoffee.com/elliottlan)**
-
-**[Buy me a dog treat and support the API](https://paypal.me/elliottlan)**
 
 ## Status
 
